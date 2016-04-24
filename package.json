@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "scripts": {
+    "compile": "tsc --sourcemap --out js/Application.js js/_all.ts",
+    "start": "compile"
+  },
+  "dependencies": {
+    "angular": "^1.5.5"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-copy": "0.0.2",
+    "gulp-typescript": "^2.13.0",
+    "typescript": "^1.8.10"
+  }
+}
