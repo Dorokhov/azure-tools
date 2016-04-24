@@ -1,8 +1,9 @@
-﻿/// <reference path='../_all.ts' />
+﻿/// <reference path='../all.ts' />
+import angular = require('angular');
+import angularMaterial = require('angular-material');
 
-namespace app {
-    'use str1ict';
-
-    angular.module('app', [
-    ]);
+export namespace app {
+    'use strict';
+    console.log(angularMaterial);
+    angular.module('app', ['ngMaterial']);
 }

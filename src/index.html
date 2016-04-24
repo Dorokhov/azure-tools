@@ -2,10 +2,17 @@
 <html>
 <head>
     <title></title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
+    <link type="text/css" rel="stylesheet" href="styles/styles.css" />
+
+    <!-- inject:css -->
+    <!-- endinject -->
 </head>
-<body>
-    Hello
-    <script src="js/app.module.js"></script>
+<body ng-app="app">
+    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+        <md-button class="md-raised md-primary">Redis</md-button>
+    </section>
+
+    <script src="app/app.module.js"></script>
 </body>
 </html>
