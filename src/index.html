@@ -3,16 +3,14 @@
 <head>
     <title></title>
     <meta charset="utf-8" />
+    <link type="text/css" rel="stylesheet" href="styles/resizer.css" />
     <link type="text/css" rel="stylesheet" href="styles/styles.css" />
 
     <!-- inject:css -->
     <!-- endinject -->
 </head>
 <body ng-app="app">
-    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-        <md-button class="md-raised md-primary">Redis</md-button>
-    </section>
-
+    <div ui-view></div>
     <script src="app/app.module.js"></script>
 </body>
 </html>

@@ -25,7 +25,7 @@ gulp.task('compile', ['clean'], function () {
 gulp.task('bundle', ['compile'], function () {
     return browserify({ entries: './dist/app/app.module.js' })
         .bundle()
-        .on('error', function (err) { console.log(err) })
+        //.on('error', function (err) { console.log(err) })
         .pipe(source('app.module.js'))
         .pipe(gulp.dest('./dist/app'));
 });
@@ -38,6 +38,10 @@ gulp.task('copy', ['bundle'], function () {
     gulp
         .src('./src/startup.js')
         .pipe(gulpCopy('./dist', { prefix: 1 }));
+
+    gulp
+       .src('./src/app/**/*.html')
+       .pipe(gulpCopy('./dist', { prefix: 1 }));
 });
 
 gulp.task('copy-css', ['bundle'], function () {

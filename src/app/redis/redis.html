@@ -1,0 +1,33 @@
+﻿<!--<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+    {{vm.title}}
+    <md-button class="md-raised" ui-sref="redis" ng-click="vm.showAlert($event)">Open Dialog</md-button>
+</section>-->
+
+
+
+<bg-splitter orientation="horizontal">
+    <bg-pane min-size="190" init-percentage="42.2">
+        Content1
+    </bg-pane>
+
+    <bg-pane min-size="190" init-percentage="42.2">
+        <md-tabs md-selected="selectedIndex"
+                 class="stretch-height"
+                 layout="column">
+            <md-tab label="One" layout="column">
+                <bg-splitter orientation="vertical">
+                    <bg-pane min-size="190" init-percentage="50">
+                        Content2
+                    </bg-pane>
+
+                    <bg-pane min-size="190" init-percentage="50">
+                        Content3
+                    </bg-pane>
+                </bg-splitter>
+            </md-tab>
+
+            <md-tab label="Two">Two</md-tab>
+        </md-tabs>
+    </bg-pane>
+</bg-splitter>
+

@@ -3,4 +3,4 @@
 /// <reference path='../typings/angular-material/angular-material.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
 /// <reference path='app/app.module.ts' />
-declare var console: any;
+declare var console: Console;
