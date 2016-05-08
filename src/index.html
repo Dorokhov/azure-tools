@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Azure Tools</title>
     <meta charset="utf-8" />
     <link type="text/css" rel="stylesheet" href="styles/font-awesome/css/font-awesome.css" />
     <link type="text/css" rel="stylesheet" href="styles/font-awesome/fonts/FontAwesome.otf" />
@@ -14,10 +14,18 @@
     <!-- endinject -->
 
     <link type="text/css" rel="stylesheet" href="styles/resizer.css" />
-    <link type="text/css" rel="stylesheet" href="styles/styles.css" />
+    <link type="text/css" rel="stylesheet" href="styles/styles.css"/>
+
+    <link type="text/css" rel="stylesheet" href="styles/angular-material/angular-material.min.css"/>
+    <!--js-->
+    <script type="text/javascript">
+        window.jQuery = window.$ = require('jquery');
+        window.angular = require('angular');
+    </script>
 </head>
-<body ng-app="app">
-    <div ui-view></div>
+<body ng-app="app" layout="column">
+    <div ui-view flex layout="column"></div>
+
     <script src="app/app.module.js"></script>
 </body>
 </html>

@@ -94,3 +94,17 @@ gulp.task('default', [
     'copy-css',
    'inject-css',
 ]);
+
+
+// electron development
+gulp.task('dev-electron', ['compile'], function () {
+     gulp
+        .src('./node_modules/angular-material/*.css')
+        .pipe(gulpCopy('./src/styles', { prefix: 1 }));
+        
+    return browserify({ entries: './dist/app/app.module.js' })
+        .bundle()
+        .pipe(source('app.module.js'))
+        .pipe(gulp.dest('./src/app'));
+});
+
