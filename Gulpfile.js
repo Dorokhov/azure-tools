@@ -50,7 +50,7 @@ gulp.task('copy-css', ['bundle'], function () {
         .pipe(gulpCopy('./dist'));
 
     return gulp
-         .src('./src/styles/*.css')
+         .src('./src/styles/**/*')
          .pipe(gulpCopy('./dist/styles', { prefix: 2 }));
 });
 

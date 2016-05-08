@@ -7,7 +7,43 @@
 
 <bg-splitter orientation="horizontal">
     <bg-pane min-size="190" init-percentage="42.2">
-        Content1
+        <md-toolbar md-scroll-shrink layout="row">
+            <md-button class="md-icon-button md-accent">
+                <md-icon md-font-icon="fa-arrow-circle-left" class="fa fa-2x"></md-icon>
+            </md-button>
+            Azure Tools
+        </md-toolbar>
+        <md-toolbar md-scroll-shrink>
+            <div layout="column">
+                <div style="height: 50px;" layout="row">
+                    <md-button class="md-icon-button">
+                        <md-icon md-font-icon="fa-cog" class="fa fa-lg"></md-icon>
+                    </md-button>
+
+                    <md-button class="md-icon-button" style="margin-left: -15px;">
+                        <md-icon md-font-icon="fa-refresh" class="fa fa-lg"></md-icon>
+                    </md-button>
+                </div>
+
+                <div style="background: yellow; height: 100%;"></div>
+            </div>
+        </md-toolbar>
+
+        <md-toolbar md-scroll-shrink layout="row">
+            <div>
+                Database
+            </div>
+                <md-select ng-model="ctrl.userState">
+                    <md-option>
+                        1
+                    </md-option>
+                </md-select>
+
+            <md-input-container class="md-block">
+                <label>Search</label>
+                <input>
+            </md-input-container>
+        </md-toolbar>
     </bg-pane>
 
     <bg-pane min-size="190" init-percentage="42.2">
