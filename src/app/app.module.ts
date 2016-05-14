@@ -1,9 +1,10 @@
-﻿/// <reference path='../all.ts' />
-/// <reference path='redis/redis.module.ts' />
+﻿
 import $ = require('jquery');
 import angularUiRouter = require('angular-ui-router');
-import angular = require('angular');
+import angular = require('angular');angular;
 import angularMaterial = require('angular-material');
+import uiGrid = require('angular-ui-grid');
+
 import * as redis from './redis/redis.module';
 
 export namespace app {
@@ -12,6 +13,8 @@ export namespace app {
     console.log(angularUiRouter);
     console.log(redis);
     console.log($);
+    
+   console.log(uiGrid);
     angular
         .module('app', ['ui.router', 'ngMaterial', 'redis'])
         .config(($stateProvider, $urlRouterProvider) => {

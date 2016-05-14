@@ -1,10 +1,10 @@
-﻿/// <reference path='../../all.ts' />
-export namespace app.redis {
+﻿export namespace app.redis {
     import AlertDialog = angular.material.IDialogService;
 
     export class RedisController {
         title: string = 'Redis';
         dialog: AlertDialog = null;
+        gridOptions: any;
         showAlert(ev) {
             this.dialog.show(
                 this.dialog.alert()
@@ -20,6 +20,16 @@ export namespace app.redis {
         static $inject: Array<string> = ['$mdDialog'];
         constructor($mdDialog: AlertDialog) {
             this.dialog = $mdDialog;
+            this.gridOptions = {
+                data: [{ name: 'name' }],
+                getTableHeight: () => {
+                    var rowHeight = 30;
+                    var headerHeight = 30;
+                    return {
+                        height: (this.gridOptions.data.length * rowHeight + headerHeight) + "px"
+                    };
+                }
+            };
         }
     };
 }

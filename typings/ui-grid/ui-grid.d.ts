@@ -15,7 +15,10 @@
 //   Added primary interfaces for row, column, api, grid, columnDef, and gridOptions.  Needs more tests!
 /// <reference path='../jquery/jquery.d.ts' />
 /// <reference path='../angularjs/angular.d.ts' />
-
+ declare module 'angular-ui-grid' {
+     var _: string;
+    export = _;
+}
 declare namespace uiGrid {
     export interface IUiGridConstants {
         LOG_DEBUG_MESSAGES: boolean;
@@ -3891,6 +3894,4 @@ declare namespace uiGrid {
     }
 }
 
-declare module 'angular-ui-grid' {
-    export = uiGrid;
-}
+

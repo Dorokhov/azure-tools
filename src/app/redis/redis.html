@@ -13,7 +13,9 @@
             <bg-pane flex layout="column" min-size="190" init-percentage="42.2">
                 <div flex layout="column">
                     <div style="height:50px;">New</div>
-                    <div flex layout="column" style="background:yellow">Tree</div>
+                    <div flex layout="column" style="background:yellow">
+                        <div ui-grid="vm.gridOptions" class="grid" ui-grid-auto-resize ng-style="vm.getTableHeight()" flex></div>
+                    </div>
                     <div style="height:50px;">Add Account</div>
                 </div>
             </bg-pane>

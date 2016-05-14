@@ -1,5 +1,4 @@
-﻿/// <reference path='../../all.ts' />
-
+﻿
 export namespace app.common {
     angular
         .module('resizer', [])
