@@ -1,9 +1,4 @@
-﻿<!--<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-    {{vm.title}}
-    <md-button class="md-raised" ui-sref="redis" ng-click="vm.showAlert($event)">Open Dialog</md-button>
-</section>-->
-
-<div flex>
+﻿<div flex>
     <md-toolbar>Azure Tools</md-toolbar>
     <md-toolbar class="md-warn">Search</md-toolbar>
 
@@ -14,7 +9,7 @@
                 <div flex layout="column">
                     <div style="height:50px;">New</div>
                     <div flex layout="column" style="background:yellow">
-                        <div ui-grid="vm.gridOptions" ui-grid-auto-resize ui-grid-selection flex layout="column"></div>
+                        <div ui-grid="vm.gridOptions"  class="grid"  ui-grid-auto-resize flex ></div>
                     </div>
                     <div style="height:50px;">Add Account</div>
                 </div>
@@ -60,65 +55,3 @@
         </ol>
     </div>
 </div>
-
-<!--<bg-splitter orientation="horizontal">
-    <bg-pane min-size="190" init-percentage="42.2">
-        <md-toolbar md-scroll-shrink layout="row">
-            <md-button class="md-icon-button md-accent">
-                <md-icon md-font-icon="fa-arrow-circle-left" class="fa fa-2x"></md-icon>
-            </md-button>
-            Azure Tools
-        </md-toolbar>
-        <md-toolbar md-scroll-shrink>
-            <div layout="column">
-                <div style="height: 50px;" layout="row">
-                    <md-button class="md-icon-button">
-                        <md-icon md-font-icon="fa-cog" class="fa fa-lg"></md-icon>
-                    </md-button>
-
-                    <md-button class="md-icon-button" style="margin-left: -15px;">
-                        <md-icon md-font-icon="fa-refresh" class="fa fa-lg"></md-icon>
-                    </md-button>
-                </div>
-
-                <div style="background: yellow; height: 100%;"></div>
-            </div>
-        </md-toolbar>
-
-        <md-toolbar md-scroll-shrink layout="row">
-            <div>
-                Database
-            </div>
-                <md-select ng-model="ctrl.userState">
-                    <md-option>
-                        1
-                    </md-option>
-                </md-select>
-
-            <md-input-container class="md-block">
-                <label>Search</label>
-                <input>
-            </md-input-container>
-        </md-toolbar>
-    </bg-pane>
-
-    <bg-pane min-size="190" init-percentage="42.2">
-        <md-tabs md-selected="selectedIndex"
-                 class="stretch-height"
-                 layout="column">
-            <md-tab label="One" layout="column">
-                <bg-splitter orientation="vertical">
-                    <bg-pane min-size="190" init-percentage="50">
-                        Content2
-                    </bg-pane>
-
-                    <bg-pane min-size="190" init-percentage="50">
-                        Content3
-                    </bg-pane>
-                </bg-splitter>
-            </md-tab>
-
-            <md-tab label="Two">Two</md-tab>
-        </md-tabs>
-    </bg-pane>
-</bg-splitter>-->
