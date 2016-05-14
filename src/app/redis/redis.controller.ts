@@ -27,17 +27,20 @@ export namespace app.redis {
         static $inject: Array<string> = ['$mdDialog', '$q'];
         constructor($mdDialog: AlertDialog, $q: ng.IQService) {
             this.dialog = $mdDialog;
-            console.log(treeViewModel)
+            
             var treeViewModel = new TreeViewModel();
             var accounts = new Array<RedisAccountViewModel>();
+            
             treeViewModel.add(new RedisAccountViewModel(treeViewModel, '1', '1', 6979, () => {
                 console.log('$q')
                 console.log($q)
                 return $q.resolve<RedisKeyViewModel[]>([new RedisKeyViewModel('key1')])
             }));
-            treeViewModel.add(new RedisAccountViewModel(treeViewModel, '2', '2', 6979, () => { return $q.resolve<RedisKeyViewModel[]>([new RedisKeyViewModel('key2')]) }))
+            treeViewModel.add(new RedisAccountViewModel(treeViewModel, '2', '2', 6979, () => { return $q.resolve<RedisKeyViewModel[]>([new RedisKeyViewModel('key2')]) }));
+            
             this.gridOptions = {
                 data: treeViewModel.items,
+                showHeader: false,
                 columnDefs: [
                     {
                         name: 'name',
@@ -46,8 +49,6 @@ export namespace app.redis {
                     },
                 ]
             };
-
-
         }
     };
 }
