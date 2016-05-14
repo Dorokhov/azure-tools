@@ -18,7 +18,7 @@ export namespace app.redis {
     console.log(angularUiGrid);
 
     angular
-        .module('redis', ['ui.router', 'ngMaterial', 'resizer', 'ui.grid']);
+        .module('redis', ['ui.router', 'ngMaterial', 'resizer', 'ui.grid.autoResize', 'ui.grid.selection', 'ui.grid']);
 
     angular
         .module('redis')
