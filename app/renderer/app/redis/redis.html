@@ -1,0 +1,57 @@
+﻿<div flex>
+    <md-toolbar>Azure Tools</md-toolbar>
+    <md-toolbar class="md-warn">Search</md-toolbar>
+
+    <div flex layout="row">
+        <bg-splitter orientation="horizontal" style="margin-top: 130px;" flex layout="row">
+            <!--left pane-->
+            <bg-pane flex layout="column" min-size="190" init-percentage="42.2">
+                <div flex layout="column">
+                    <div style="height:50px;">New</div>
+                    <div flex layout="column" style="background:yellow">
+                        <div ui-grid="vm.gridOptions"  class="grid"  ui-grid-auto-resize flex ></div>
+                    </div>
+                    <div style="height:50px;">Add Account</div>
+                </div>
+            </bg-pane>
+
+            <!-- right pane-->
+            <bg-pane flex layout="column" min-size="190" init-percentage="42.2">
+                <div flex layout="column">
+                    <md-tabs flex layout="column" md-selected="selectedIndex" class="stretch-height" layout="column">
+                        <md-tab flex layout="column" label="One" layout="column">
+                            <bg-splitter orientation="vertical" flex layout="column">
+                                <bg-pane flex min-size="190" init-percentage="50">
+                                    Content2
+                                </bg-pane>
+
+                                <bg-pane flex min-size="190" init-percentage="50">
+                                    Content3
+                                </bg-pane>
+                            </bg-splitter>
+                        </md-tab>
+
+                        <md-tab label="Two">Two</md-tab>
+                </div>
+            </bg-pane>
+
+        </bg-splitter>
+    </div>
+
+    <div ui-tree>
+        <ol ui-tree-nodes="" ng-model="list">
+            <li ng-repeat="item in list" ui-tree-node>
+                <div ui-tree-handle>
+                    {{item.title}}
+                </div>
+                <ol ui-tree-nodes="" ng-model="item.items">
+                    <li ng-repeat="subItem in item.items" ui-tree-node>
+                        <div ui-tree-handle>
+                            {{subItem.title}}
+                        </div>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+</div>

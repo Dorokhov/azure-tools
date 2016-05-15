@@ -1,15 +1,10 @@
-// Type definitions for Angular Material 1.0.0-rc5+ (angular.material module)
+// Type definitions for Angular Material 0.10.1-rc1+ (angular.material module)
 // Project: https://github.com/angular/material
 // Definitions by: Matt Traynham <https://github.com/mtraynham>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-declare module "angular-material" {
-    var _: string;
-    export = _;
-}
+// Definitions: https://github.com/borisyankov/DefinitelyTyped
 
 /// <reference path="../angularjs/angular.d.ts" />
-declare namespace angular.material {
+declare module angular.material {
 
     interface IBottomSheetOptions {
         templateUrl?: string;
@@ -21,7 +16,6 @@ declare namespace angular.material {
         targetEvent?: MouseEvent;
         resolve?: {[index: string]: angular.IPromise<any>}
         controllerAs?: string;
-        bindToController?: boolean;
         parent?: string|Element|JQuery; // default: root node
         disableParentScroll?: boolean; // default: true
     }
@@ -34,8 +28,7 @@ declare namespace angular.material {
 
     interface IPresetDialog<T> {
         title(title: string): T;
-        textContent(textContent: string): T;
-        htmlContent(htmlContent: string): T;
+        content(content: string): T;
         ok(ok: string): T;
         theme(theme: string): T;
         templateUrl(templateUrl?: string): T;
@@ -68,10 +61,7 @@ declare namespace angular.material {
     interface IDialogOptions {
         templateUrl?: string;
         template?: string;
-        autoWrap?: boolean; // default: true
         targetEvent?: MouseEvent;
-        openFrom?: any;
-        closeTo?: any;
         scope?: angular.IScope; // default: new child scope
         preserveScope?: boolean; // default: false
         disableParentScroll?: boolean; // default: true
@@ -85,17 +75,14 @@ declare namespace angular.material {
         resolve?: {[index: string]: angular.IPromise<any>}
         controllerAs?: string;
         parent?: string|Element|JQuery; // default: root node
-        onShowing?: Function;
         onComplete?: Function;
-        onRemoving?: Function;
-        fullscreen?: boolean;
     }
 
     interface IDialogService {
         show(dialog: IDialogOptions|IAlertDialog|IConfirmDialog): angular.IPromise<any>;
         confirm(): IConfirmDialog;
         alert(): IAlertDialog;
-        hide(response?: any): angular.IPromise<any>;
+        hide(response?: any): void;
         cancel(response?: any): void;
     }
 
@@ -128,15 +115,13 @@ declare namespace angular.material {
     }
 
     interface IToastPreset<T> {
-        textContent(content: string): T;
+        content(content: string): T;
         action(action: string): T;
         highlightAction(highlightAction: boolean): T;
-        highlightClass(highlightClass: string): T;
         capsule(capsule: boolean): T;
         theme(theme: string): T;
         hideDelay(delay: number): T;
         position(position: string): T;
-        parent(parent?: string|Element|JQuery): T; // default: root node
     }
 
     interface ISimpleToastPreset extends IToastPreset<ISimpleToastPreset> {
@@ -145,7 +130,6 @@ declare namespace angular.material {
     interface IToastOptions {
         templateUrl?: string;
         template?: string;
-        autoWrap?:boolean;
         scope?: angular.IScope; // default: new child scope
         preserveScope?: boolean; // default: false
         hideDelay?: number; // default (ms): 3000
@@ -235,45 +219,5 @@ declare namespace angular.material {
         extendPalette(name: string, palette: IPalette): IPalette;
         setDefaultTheme(theme: string): void;
         alwaysWatchTheme(alwaysWatch: boolean): void;
-    }
-
-    interface IDateLocaleProvider {
-        months: string[];
-        shortMonths: string[];
-        days: string[];
-        shortDays: string[];
-        dates: string[];
-        firstDayOfWeek: number;
-        parseDate(dateString: string): Date;
-        formatDate(date: Date): string;
-        monthHeaderFormatter(date: Date): string;
-        weekNumberFormatter(weekNumber: number): string;
-        msgCalendar: string;
-        msgOpenCalendar: string;
-    }
-
-    interface IMenuService {
-        hide(response?: any, options?: any): angular.IPromise<any>;
-    }
-
-    interface IColorPalette {
-        red: IPalette;
-        pink: IPalette;
-        'deep-purple': IPalette;
-        indigo: IPalette;
-        blue: IPalette;
-        'light-blue': IPalette;
-        cyan: IPalette;
-        teal: IPalette;
-        green: IPalette;
-        'light-green': IPalette;
-        lime: IPalette;
-        yellow: IPalette;
-        amber: IPalette;
-        orange: IPalette;
-        'deep-orange': IPalette;
-        brown: IPalette;
-        grey: IPalette;
-        'blue-grey': IPalette;
     }
 }

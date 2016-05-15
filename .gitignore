@@ -1,6 +1,8 @@
 node_modules
-built
-dist
-src/styles/angular-material/angular-material.css
-src/styles/angular-material/angular-material.min.css
-src/app/app.module.js
+bower_components
+*.log
+.DS_Store
+Thumbs.db
+/build/
+/releases/
+/tmp/
