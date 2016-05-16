@@ -5,7 +5,6 @@ import angular = require('angular');
 
 export class ExpandableViewModel {
     constructor(public source: Array<any>) {
-
     }
 
     protected isExpanded = false;

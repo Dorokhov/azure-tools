@@ -1,7 +1,7 @@
-﻿export module resizer{
+﻿export module resizer {
     angular
         .module('resizer', [])
-        .directive('bgSplitter', function() {
+        .directive('bgSplitter', function () {
             return {
                 restrict: 'E',
                 replace: true,
@@ -12,10 +12,10 @@
                 template: '<div class="split-panes {{orientation}}" ng-transclude></div>',
                 controller: [
                     '$scope',
-                    function($scope) {
+                    function ($scope) {
                         $scope.panes = [];
 
-                        this.addPane = function(pane) {
+                        this.addPane = function (pane) {
                             if ($scope.panes.length > 1) {
                                 throw 'splitters can only have two panes';
                             }
@@ -24,7 +24,7 @@
                         };
                     }
                 ],
-                link: function(scope, element) {
+                link: function (scope, element) {
                     var handler = angular.element('<div class="split-handler"></div>'),
                         pane1 = scope.panes[0],
                         pane2 = scope.panes[1],
@@ -61,7 +61,7 @@
 
                     pane1.elem.after(handler);
 
-                    element.bind('mousemove', function(ev) {
+                    element.bind('mousemove', function (ev) {
                         var bounds, pos, height, width;
                         if (!drag) {
                             return;
@@ -115,13 +115,13 @@
                         }
                     });
 
-                    handler.bind('mousedown', function(ev) {
+                    handler.bind('mousedown', function (ev) {
                         drag = false;
                         ev.preventDefault();
                         drag = true;
                     });
 
-                    angular.element(document).bind('mouseup', function() {
+                    angular.element(document).bind('mouseup', function () {
                         if (drag === true) {
                             scope.$emit('splitter-resize');
                         }
@@ -131,7 +131,7 @@
                 }
             };
         })
-        .directive('bgPane', function() {
+        .directive('bgPane', function () {
             return {
                 restrict: 'E',
                 require: '^bgSplitter',
@@ -143,7 +143,7 @@
                     initPercentage: '='
                 },
                 template: '<div class="split-pane{{index}}" ng-transclude></div>',
-                link: function(scope, element, attrs, bgSplitterCtrl) {
+                link: function (scope, element, attrs, bgSplitterCtrl) {
                     scope.elem = element;
                     scope.index = bgSplitterCtrl.addPane(scope);
                 }

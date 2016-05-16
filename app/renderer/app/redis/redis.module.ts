@@ -9,8 +9,6 @@ import resizer = require('../common/resizer.module');
 
 import * as angularUiGrid from 'angular-ui-grid';
 
-
-
 console.log(angularMaterial);
 console.log(router);
 console.log(resizer);

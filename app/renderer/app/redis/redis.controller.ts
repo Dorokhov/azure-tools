@@ -24,8 +24,8 @@ export class RedisController {
                 .targetEvent(ev));
     };
 
-    static $inject: Array<string> = ['$mdDialog', '$q'];
-    constructor($mdDialog: AlertDialog, $q: ng.IQService) {
+    static $inject: Array<string> = ['$log', '$mdDialog', '$q'];
+    constructor($log: ng.ILogService, $mdDialog: AlertDialog, $q: ng.IQService) {
         this.dialog = $mdDialog;
 
         var treeViewModel = new TreeViewModel();
