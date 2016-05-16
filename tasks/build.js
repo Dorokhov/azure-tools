@@ -24,6 +24,7 @@ var paths = {
         './node_modules/**',
         './bower_components/**',
         './vendor/**',
+        './renderer/styles/**',
         './renderer/**/*.js',
         './renderer/**/*.html',
     ]
@@ -74,7 +75,7 @@ gulp.task('src-watch', srcTask);
 
 var livereloadTask = function () {
     return gulp.src([
-        // destDir.path('renderer/**/*.js'), 
+         destDir.path('renderer/**/*.js'), 
         destDir.path('renderer/**/*.html')
     ])
     .pipe(livereload());
@@ -105,8 +106,8 @@ var typescriptTask = function () {
     });
     
     return gulp.src('app/renderer/**/*.ts')
-    .pipe(ts(tsProject))
-        .on('error', errorHandler('TypeScript'))
+     .pipe(ts(tsProject))
+    //     .on('error', errorHandler('TypeScript'))
     .pipe(gulp.dest(function() {
         return destDir.path('renderer/');
     }));
@@ -172,6 +173,7 @@ gulp.task('watch', function () {
     livereload.listen({ reloadPage: 'index.html' });
     gulp.watch(paths.devDir, { cwd: 'app' }, ['inject-livereload']);
     gulp.watch('app/renderer/**/*.ts', ['inject-typescript']);
+    gulp.watch('app/renderer/**/*.scss', ['inject-sass']);
     gulp.watch('app/renderer/**/*.scss', ['inject-sass']);
 });
 

@@ -1,10 +1,9 @@
 ﻿
 'use strict'
+    import {IHierarchy} from './expandableViewModel';
 
-import {IHierarchy} from './expandableViewModel';
+  export class RedisKeyViewModel implements IHierarchy {
+        public items: IHierarchy[];
 
-export class RedisKeyViewModel implements IHierarchy {
-    public items: IHierarchy[];
-
-    constructor(public name: string) { }
-}
+        constructor(public name: string) { }
+    }

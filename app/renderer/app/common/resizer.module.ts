@@ -1,5 +1,4 @@
-﻿
-export namespace app.common {
+﻿export module resizer{
     angular
         .module('resizer', [])
         .directive('bgSplitter', function() {
