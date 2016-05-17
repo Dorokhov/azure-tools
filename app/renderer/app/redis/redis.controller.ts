@@ -4,6 +4,7 @@
 import {TreeViewModel} from './tree/treeViewModel';
 import {RedisAccountViewModel} from './tree/redisAccountViewModel';
 import {RedisKeyViewModel} from './tree/redisKeyViewModel';
+import {ReliableRedisClient, RedisConnection} from './redis-model/reliableRedisClient';
 
 import AlertDialog = angular.material.IDialogService;
 
@@ -26,6 +27,8 @@ export class RedisController {
 
     static $inject: Array<string> = ['$log', '$mdDialog', '$q'];
     constructor($log: ng.ILogService, $mdDialog: AlertDialog, $q: ng.IQService) {
+        var redis = new ReliableRedisClient(new RedisConnection(1, '', ''));
+        
         this.dialog = $mdDialog;
 
         var treeViewModel = new TreeViewModel();

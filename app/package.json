@@ -14,7 +14,7 @@
     "angular-ui-router": "^0.2.18",
     "font-awesome": "^4.6.1",
     "jquery": "^2.2.3",
-    "node-redis": "^0.1.7"
+    "redis": "^2.6.0-2"
   },
   "devDependencies": {
     "browserify": "^13.0.0",

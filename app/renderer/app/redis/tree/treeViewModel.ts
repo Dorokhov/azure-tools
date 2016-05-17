@@ -2,6 +2,7 @@
 'use strict'
 
 import {RedisAccountViewModel} from './redisAccountViewModel';
+
 export class TreeViewModel {
     public items: any[];
     public name: string;
