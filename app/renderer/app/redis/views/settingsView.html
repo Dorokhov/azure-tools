@@ -1,0 +1,32 @@
+﻿<md-content layout-padding style="width: 500px; height: 400px;" flex layout="column">
+    <div flex layout="column">
+        <md-input-container class="md-block" flex>
+            <label>Host</label>
+            <input md-maxlength="30" required md-no-asterisk name="description" ng-model="vm.host">
+            <!--<div ng-messages="projectForm.description.$error">
+                <div ng-message="required">This is required.</div>
+                <div ng-message="md-maxlength">The name has to be less than 30 characters long.</div>
+            </div>-->
+        </md-input-container>
+
+        <md-input-container class="md-block" flex>
+            <label>Port</label>
+            <input md-maxlength="30" required md-no-asterisk name="description" ng-model="vm.port">
+            <!--<div ng-messages="projectForm.description.$error">
+                <div ng-message="required">This is required.</div>
+                <div ng-message="md-maxlength">The name has to be less than 30 characters long.</div>
+            </div>-->
+        </md-input-container>
+
+        <md-input-container class="md-block" flex>
+            <label>Password</label>
+            <input md-maxlength="30" required md-no-asterisk name="description" ng-model="vm.password">
+            <!--<div ng-messages="projectForm.description.$error">
+                <div ng-message="required">This is required.</div>
+                <div ng-message="md-maxlength">The name has to be less than 30 characters long.</div>
+            </div>-->
+        </md-input-container>
+    </div>
+
+    <md-button ng-click="vm.save()">Add</md-button>
+</md-content>

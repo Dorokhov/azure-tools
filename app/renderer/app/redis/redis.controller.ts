@@ -5,38 +5,37 @@ import {TreeViewModel} from './tree/treeViewModel';
 import {RedisAccountViewModel} from './tree/redisAccountViewModel';
 import {RedisKeyViewModel} from './tree/redisKeyViewModel';
 import {ReliableRedisClient, RedisConnection} from './redis-model/reliableRedisClient';
+import {RedisConnectionVM} from './viewModels/redisConnectionVM';
 
-import AlertDialog = angular.material.IDialogService;
+import IDialogService = angular.material.IDialogService;
 
 export class RedisController {
     title: string = 'Redis';
-    dialog: AlertDialog = null;
+    dialog: IDialogService = null;
     gridOptions: any;
+    scope: any;
     treeViewModel: TreeViewModel;
     showAlert(ev) {
-        this.dialog.show(
-            this.dialog.alert()
-                .parent(angular.element(document.querySelector('#popupContainer')))
-                .clickOutsideToClose(true)
-                .title('This is an alert title')
-                .textContent('You can specify some description text in here.')
-                .ariaLabel('Alert Dialog Demo')
-                .ok('Got it!')
-                .targetEvent(ev));
+        this.dialog.show({
+            templateUrl: `./app/redis/views/settingsView.html`,
+            clickOutsideToClose: true,
+            controller($scope, $mdDialog: ng.material.IDialogService) {
+                var vm = new RedisConnectionVM($mdDialog, (connection)=>{});
+                $scope.vm = vm;
+            }
+        });
     };
 
-    static $inject: Array<string> = ['$log', '$mdDialog', '$q'];
-    constructor($log: ng.ILogService, $mdDialog: AlertDialog, $q: ng.IQService) {
+    static $inject: Array<string> = ['$scope', '$log', '$mdDialog', '$q'];
+    constructor($scope, $log: ng.ILogService, $mdDialog: IDialogService, $q: ng.IQService) {
         var redis = new ReliableRedisClient(new RedisConnection(1, '', ''));
-        
+        this.scope = $scope;
         this.dialog = $mdDialog;
 
         var treeViewModel = new TreeViewModel();
         var accounts = new Array<RedisAccountViewModel>();
 
         treeViewModel.add(new RedisAccountViewModel(treeViewModel, '1', '1', 6979, () => {
-            console.log('$q')
-            console.log($q)
             return $q.resolve<RedisKeyViewModel[]>([new RedisKeyViewModel('key1')])
         }));
         treeViewModel.add(new RedisAccountViewModel(treeViewModel, '2', '2', 6979, () => { return $q.resolve<RedisKeyViewModel[]>([new RedisKeyViewModel('key2')]) }));

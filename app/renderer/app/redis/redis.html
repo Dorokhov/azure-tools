@@ -1,5 +1,7 @@
 ﻿<div flex>
-    <md-toolbar>Azure Tools</md-toolbar>
+    <md-toolbar>Azure Tools
+        <button ng-click="vm.showAlert()">Settings</button>
+    </md-toolbar>
     <md-toolbar class="md-warn">Search</md-toolbar>
 
     <div flex layout="row">
@@ -9,7 +11,7 @@
                 <div flex layout="column">
                     <div style="height:50px;">New</div>
                     <div flex layout="column" style="background:yellow">
-                        <div ui-grid="vm.gridOptions"  class="grid"  ui-grid-auto-resize flex ></div>
+                        <div ui-grid="vm.gridOptions" class="grid" ui-grid-auto-resize flex></div>
                     </div>
                     <div style="height:50px;">Add Account</div>
                 </div>

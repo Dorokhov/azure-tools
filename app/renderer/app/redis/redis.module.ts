@@ -1,21 +1,23 @@
 ﻿'use strict';
 
 import $ = require('jquery');
+$;
 import angular = require('angular');
+angular;
 import angularMaterial = require('angular-material');
+angularMaterial;
 import router = require('angular-ui-router');
+router;
 import {RedisController} from './redis.controller';
 import resizer = require('../common/resizer.module');
+resizer;
+import sanitize = require('angular-sanitize');
+sanitize;
 
 import * as angularUiGrid from 'angular-ui-grid';
 
-console.log(angularMaterial);
-console.log(router);
-console.log(resizer);
-console.log(angularUiGrid);
-
 angular
-    .module('redis', ['ui.router', 'ngMaterial', 'resizer', 'ui.grid.autoResize', 'ui.grid.selection', 'ui.grid']);
+    .module('redis', ['ui.router', 'ngMaterial', 'resizer', 'ui.grid.autoResize', 'ui.grid.selection', 'ui.grid', 'ngSanitize' ]);
 
 angular
     .module('redis')

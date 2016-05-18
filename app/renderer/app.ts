@@ -1,26 +1,20 @@
-/// <reference path="../../typings/tsd.d.ts" />
-/// <reference path="./app.config.ts" />
-/// <reference path="./app.route.ts" />
-/// <reference path="./app.run.ts" />
+'use strict';
 
+import $ = require('jquery');
+$;
+import angularUiRouter = require('angular-ui-router');
+angularUiRouter;
+import angular = require('angular');
+angular;
+import angularMaterial = require('angular-material');
+angularMaterial;
+import uiGrid = require('angular-ui-grid');
+uiGrid;
 
-	import $ = require('jquery');
-	import angularUiRouter = require('angular-ui-router');
-	import angular = require('angular'); angular;
-	import angularMaterial = require('angular-material');
-	import uiGrid = require('angular-ui-grid');
-
-	import * as redis from './app/redis/redis.module';
+import * as redis from './app/redis/redis.module';
+redis;
 
 module app {
-
-    'use strict';
-    console.log(angularMaterial);
-    console.log(angularUiRouter);
-    console.log(redis);
-    console.log($);
-
-	console.log(uiGrid);
     angular
         .module('app', ['ui.router', 'ngMaterial', 'redis'])
         .config(($stateProvider, $urlRouterProvider) => {

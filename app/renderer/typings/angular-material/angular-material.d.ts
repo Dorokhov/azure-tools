@@ -3,10 +3,10 @@
 // Definitions by: Matt Traynham <https://github.com/mtraynham>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-declare module "angular-material" {
-    var _: string;
-    export = _;
-}
+    declare module "angular-material" {
+        var _: string;
+        export = _;
+    }
 
 /// <reference path="../angularjs/angular.d.ts" />
 declare namespace angular.material {
