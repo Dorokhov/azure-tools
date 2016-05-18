@@ -1,6 +1,9 @@
 'use strict'
 
 import redis = require('redis');
+import bluebird = require('bluebird');
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
 
 export class ReliableRedisClient {
     private client: redis.RedisClient;
@@ -14,8 +17,12 @@ export class ReliableRedisClient {
         this.getClient().get(key, callback);
     }
 
+    keysAsync(): Promise<Array<string>> {
+        return this.getClient().keysAsync('*');
+    }
+
     private getClient() {
-        if (!this.client.connected) {
+        if (this.client === null || this.client === undefined || !this.client.connected) {
             this.client = redis.createClient(this.connection.port, this.connection.host, { auth_pass: this.connection.password });
         }
 

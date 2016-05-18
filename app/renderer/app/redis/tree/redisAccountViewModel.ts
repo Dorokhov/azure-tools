@@ -3,17 +3,21 @@
 import {ExpandableViewModel, IHierarchy} from './expandableViewModel';
 import {RedisKeyViewModel} from './redisKeyViewModel';
 import {TreeViewModel} from './treeViewModel';
+import {ReliableRedisClient, RedisConnection} from '../redis-model/reliableRedisClient';
+import * as _ from 'lodash';
 
 export class RedisAccountViewModel extends ExpandableViewModel implements IHierarchy {
-    public items: RedisKeyViewModel[];
+    public items: RedisKeyViewModel[] = new Array<RedisKeyViewModel>();
+    public name: string;
 
     constructor(
         public root: TreeViewModel,
-        public name: string,
-        public password: string,
-        public port: number,
-        public load: () => angular.IPromise<Array<RedisKeyViewModel>>) {
+        public connection: RedisConnection,
+        public redis: ReliableRedisClient) {
         super(root.items);
+        console.log(connection)
+        
+        this.name = connection.host;
     }
 
     expandOrCollapse() {
@@ -26,14 +30,16 @@ export class RedisAccountViewModel extends ExpandableViewModel implements IHiera
 
     expand() {
         this.isExpanded = true;
-        if (this.items === null || angular.isUndefined(this.items)) {
-            this.load().then((data) => {
-                this.items = data;
-                this.add(data);
+        if (this.items.length === 0) {
+            this.redis.keysAsync().then((keys) => {
+                this.items = _.map(keys, x => new RedisKeyViewModel(x));
+                console.log(this.items)
+                console.log(keys)
+                
+                this.add(this.items);
             });
         }
         else {
-
             this.add(this.items);
         }
     }

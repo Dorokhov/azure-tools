@@ -6,7 +6,6 @@ import {RedisAccountViewModel} from './tree/redisAccountViewModel';
 import {RedisKeyViewModel} from './tree/redisKeyViewModel';
 import {ReliableRedisClient, RedisConnection} from './redis-model/reliableRedisClient';
 import {RedisConnectionVM} from './viewModels/redisConnectionVM';
-
 import IDialogService = angular.material.IDialogService;
 
 export class RedisController {
@@ -14,17 +13,8 @@ export class RedisController {
     dialog: IDialogService = null;
     gridOptions: any;
     scope: any;
-    treeViewModel: TreeViewModel;
-    showAlert(ev) {
-        this.dialog.show({
-            templateUrl: `./app/redis/views/settingsView.html`,
-            clickOutsideToClose: true,
-            controller($scope, $mdDialog: ng.material.IDialogService) {
-                var vm = new RedisConnectionVM($mdDialog, (connection)=>{});
-                $scope.vm = vm;
-            }
-        });
-    };
+    connection: RedisConnection;
+    treeViewModel: TreeViewModel = new TreeViewModel();
 
     static $inject: Array<string> = ['$scope', '$log', '$mdDialog', '$q'];
     constructor($scope, $log: ng.ILogService, $mdDialog: IDialogService, $q: ng.IQService) {
@@ -32,16 +22,10 @@ export class RedisController {
         this.scope = $scope;
         this.dialog = $mdDialog;
 
-        var treeViewModel = new TreeViewModel();
         var accounts = new Array<RedisAccountViewModel>();
 
-        treeViewModel.add(new RedisAccountViewModel(treeViewModel, '1', '1', 6979, () => {
-            return $q.resolve<RedisKeyViewModel[]>([new RedisKeyViewModel('key1')])
-        }));
-        treeViewModel.add(new RedisAccountViewModel(treeViewModel, '2', '2', 6979, () => { return $q.resolve<RedisKeyViewModel[]>([new RedisKeyViewModel('key2')]) }));
-
         this.gridOptions = {
-            data: treeViewModel.items,
+            data: this.treeViewModel.items,
             showHeader: false,
             columnDefs: [
                 {
@@ -51,5 +35,26 @@ export class RedisController {
                 },
             ]
         };
+    }
+
+    showConnectionDialog(ev) {
+        var self = this
+        self.dialog.show({
+            templateUrl: `./app/redis/views/settingsView.html`,
+            controller($scope, $mdDialog: IDialogService) {
+                var vm = new RedisConnectionVM($mdDialog, (connection) => {
+                    self.connection = connection;
+                    self.loadAccounts();
+                });
+                $scope.vm = vm;
+            }
+        });
+    };
+
+    loadAccounts() {
+        var redis = new ReliableRedisClient(this.connection);
+        var account = new RedisAccountViewModel(this.treeViewModel, this.connection, redis);
+        this.treeViewModel.add(account);
+
     }
 };
