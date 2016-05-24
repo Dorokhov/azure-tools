@@ -35,3 +35,13 @@ export class RedisConnection {
 
     }
 }
+
+export class RedisConnectionRepository implements IRedisConnectionRepository {
+    get(): RedisConnection {
+        return new RedisConnection(6379, 'redisdor.redis.cache.windows.net', 'ZaVlBh0AHJmw2r3PfWVKvm7X3FfC5fe+sMKJ93RueNY=');
+    }
+}
+
+export interface IRedisConnectionRepository{
+    get();
+}

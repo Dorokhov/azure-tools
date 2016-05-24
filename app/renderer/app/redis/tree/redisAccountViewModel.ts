@@ -11,12 +11,13 @@ export class RedisAccountViewModel extends ExpandableViewModel implements IHiera
     public name: string;
 
     constructor(
+        public $timeout: any,
         public root: TreeViewModel,
         public connection: RedisConnection,
         public redis: ReliableRedisClient) {
         super(root.items);
         console.log(connection)
-        
+
         this.name = connection.host;
     }
 
@@ -32,11 +33,10 @@ export class RedisAccountViewModel extends ExpandableViewModel implements IHiera
         this.isExpanded = true;
         if (this.items.length === 0) {
             this.redis.keysAsync().then((keys) => {
+                this.$timeout(() => {
                 this.items = _.map(keys, x => new RedisKeyViewModel(x));
-                console.log(this.items)
-                console.log(keys)
-                
-                this.add(this.items);
+                    this.add(this.items);
+                });
             });
         }
         else {

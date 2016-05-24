@@ -13,6 +13,7 @@ import resizer = require('../common/resizer.module');
 resizer;
 import sanitize = require('angular-sanitize');
 sanitize;
+import redis = require('./redis-model/reliableRedisCLient');
 
 import * as angularUiGrid from 'angular-ui-grid';
 
@@ -22,6 +23,7 @@ angular
 angular
     .module('redis')
     .controller('RedisController', RedisController)
+    .service('RedisConnectionRepository', redis.RedisConnectionRepository)
     .config(($stateProvider) => {
         $stateProvider.state('redis', {
             url: '/redis',
