@@ -1,19 +1,27 @@
 ﻿<div flex>
-    <md-toolbar>Azure Tools
-        <button ng-click="vm.showConnectionDialog()">Settings</button>
+    <md-toolbar style="background: white;color:black;">Azure Tools
     </md-toolbar>
-    <md-toolbar class="md-warn">Search</md-toolbar>
+    <md-toolbar style="background: white;">
+        <md-input-container class="md-block">
+            <input ng-model="vm.search">
+        </md-input-container>
+    </md-toolbar>
 
     <div flex layout="row">
-        <bg-splitter orientation="horizontal" style="margin-top: 130px;" flex layout="row">
+        <bg-splitter orientation="horizontal" style="margin-top: 190px;" flex layout="row">
             <!--left pane-->
             <bg-pane flex layout="column" min-size="190" init-percentage="42.2">
                 <div flex layout="column">
-                    <div style="height:50px;">New</div>
-                    <div flex layout="column" style="background:yellow">
-                        <div ui-grid="vm.gridOptions" class="grid" ui-grid-auto-resize flex></div>
+                    <div style="height:50px;">
+                        <md-button class="md-warn md-raised md-hue-2">New</md-button>
+                        <md-button class="md-primary md-raised md-hue-2">Refresh</md-button>
                     </div>
-                    <div style="height:50px;">Add Account</div>
+                    <div flex layout="column">
+                        <div ui-grid="vm.treeViewModel.gridOptions" class="grid" ui-grid-auto-resize ui-grid-selection flex></div>
+                    </div>
+                    <div style="height:50px;">
+                        <md-button class="md-raised md-warn" ng-click="vm.showConnectionDialog()">Add account</md-button>
+                    </div>
                 </div>
             </bg-pane>
 
@@ -21,39 +29,11 @@
             <bg-pane flex layout="column" min-size="190" init-percentage="42.2">
                 <div flex layout="column">
                     <md-tabs flex layout="column" md-selected="selectedIndex" class="stretch-height" layout="column">
-                        <md-tab flex layout="column" label="One" layout="column">
-                            <bg-splitter orientation="vertical" flex layout="column">
-                                <bg-pane flex min-size="190" init-percentage="50">
-                                    Content2
-                                </bg-pane>
-
-                                <bg-pane flex min-size="190" init-percentage="50">
-                                    Content3
-                                </bg-pane>
-                            </bg-splitter>
+                        <md-tab ng-repeat="tab in vm.treeViewModel.selectedItems" label="{{tab.name}}" flex layout="column" layout="column">
                         </md-tab>
-
-                        <md-tab label="Two">Two</md-tab>
                 </div>
             </bg-pane>
 
         </bg-splitter>
-    </div>
-
-    <div ui-tree>
-        <ol ui-tree-nodes="" ng-model="list">
-            <li ng-repeat="item in list" ui-tree-node>
-                <div ui-tree-handle>
-                    {{item.title}}
-                </div>
-                <ol ui-tree-nodes="" ng-model="item.items">
-                    <li ng-repeat="subItem in item.items" ui-tree-node>
-                        <div ui-tree-handle>
-                            {{subItem.title}}
-                        </div>
-                    </li>
-                </ol>
-            </li>
-        </ol>
     </div>
 </div>

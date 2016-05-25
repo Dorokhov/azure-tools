@@ -16,7 +16,7 @@ var destDir = projectDir.cwd('./build');
 var paths = {
     devDir: [
         './renderer/**/*.js',
-        './renderer/**/*.html'  
+        './renderer/**/*.html'
     ],
     copyFromAppDir: [
         './main.js',
@@ -30,11 +30,11 @@ var paths = {
     ]
 };
 
-var errorHandler = function(title) {
-  return function(err) {
-    gutil.log(gutil.colors.red('[' + title + ']'), err.toString());
-    this.emit('end');
-  };
+var errorHandler = function (title) {
+    return function (err) {
+        gutil.log(gutil.colors.red('[' + title + ']'), err.toString());
+        this.emit('end');
+    };
 };
 
 
@@ -42,18 +42,33 @@ var errorHandler = function(title) {
 // Tasks
 // -------------------------------------
 
-gulp.task('clean', function(callback) {
+gulp.task('clean', function (callback) {
     return destDir.dirAsync('.', { empty: true });
 });
 
-
-// var injectBowerTask = function () {
-//     return gulp.src(srcDir.path('renderer/app.html'))
-//     .pipe(wiredep({ cwd: 'app' }))
-//     .pipe(gulp.dest(srcDir.path('renderer/')));
-// }
-// gulp.task('inject-bower', injectBowerTask);
-
+var copyStylesTask = function () {
+    return projectDir.copyAsync('app/node_modules', srcDir.path('renderer/styles'), {
+        overwrite: true,
+        relative: true,
+        matching: [
+            './angular-material/**/*.css',
+            './angular-material/**/*.ttf',
+            './angular-material/**/*.woff',
+            
+            './angular-ui-grid/**/*.css',
+            './angular-ui-grid/**/*.ttf',
+            './angular-ui-grid/**/*.woff',
+            
+            './font-awesome/**/*.css',
+            './font-awesome/**/*.ttf',
+            './font-awesome/**/*.woff',
+            './font-awesome/**/*.woff2',
+            './font-awesome/**/*.otf',
+            './font-awesome/**/*.eot',
+            ],
+    });
+};
+gulp.task('copy-styles', ['clean'], copyStylesTask);
 
 var copyTask = function () {
     return projectDir.copyAsync('app', destDir.path(), {
@@ -61,7 +76,7 @@ var copyTask = function () {
         matching: paths.copyFromAppDir
     });
 };
-gulp.task('copy', ['clean'], copyTask);
+gulp.task('copy', ['copy-styles'], copyTask);
 
 
 var srcTask = function () {
@@ -75,68 +90,71 @@ gulp.task('src-watch', srcTask);
 
 var livereloadTask = function () {
     return gulp.src([
-         destDir.path('renderer/**/*.js'), 
+        destDir.path('renderer/**/*.js'),
         destDir.path('renderer/**/*.html')
     ])
-    .pipe(livereload());
+        .pipe(livereload());
 };
 gulp.task('livereload-watch', ['src-watch'], livereloadTask);
 
 
 var sassTask = function () {
     return gulp.src('app/renderer/**/*.scss')
-    .pipe(sass())
-    .pipe(gulp.dest(function() {
-        return destDir.path('renderer/');
-    }));
+        .pipe(sass())
+        .pipe(gulp.dest(function () {
+            return destDir.path('renderer/');
+        }));
 };
 var sassTaskDev = function () {
     return sassTask()
-    .pipe(livereload());
+        .pipe(livereload());
 };
 gulp.task('sass', ['clean'], sassTask);
 gulp.task('sass-watch', sassTaskDev);
 
 
 var typescriptTask = function () {
-    
+
     var tsProject = ts.createProject({
         target: 'es5',
         sortOutput: true
     });
-    
+
     return gulp.src('app/renderer/**/*.ts')
-     .pipe(ts(tsProject))
-    //     .on('error', errorHandler('TypeScript'))
-    .pipe(gulp.dest(function() {
-        return destDir.path('renderer/');
-    }));
+        .pipe(ts(tsProject))
+        //     .on('error', errorHandler('TypeScript'))
+        .pipe(gulp.dest(function () {
+            return destDir.path('renderer/');
+        }));
 };
 var typescriptTaskDev = function () {
     return typescriptTask()
-    .pipe(livereload());
+        .pipe(livereload());
 };
 gulp.task('typescript', ['clean'], typescriptTask);
 gulp.task('typescript-watch', typescriptTaskDev);
 
 
 var injectTask = function () {
-    var target = gulp.src(destDir.path('renderer/app.html')); 
-    var sources = gulp.src([ 
+    var target = gulp.src(destDir.path('renderer/app.html'));
+    var sources = gulp.src([
         destDir.path('renderer/**/*.css'),
+        destDir.path('renderer/**/*.ttf'),
+        destDir.path('renderer/**/*.woff'),
         destDir.path('renderer/**/*.js'),
-        '!'+destDir.path('renderer/app.js')
+        '!' + destDir.path('renderer/app.js')
     ], {
-        read: false
-    });
+            read: false
+        });
     var angularEntry = gulp.src([
         destDir.path('renderer/app.js')
     ], {
-        read: false
-    });
-    
-    return target.pipe(inject(series(sources, angularEntry), { relative: true }))
-    .pipe(gulp.dest(destDir.path('renderer/')));
+            read: false
+        });
+
+    return target
+        .pipe(inject(series(sources, angularEntry), { relative: true }))
+        .pipe(gulp.dest(destDir.path('renderer/')));
 };
 gulp.task('inject', ['sass', 'typescript', 'copy'], injectTask);
 gulp.task('inject-sass', ['sass-watch'], injectTask);

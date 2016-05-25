@@ -6,3 +6,6 @@ Thumbs.db
 /build/
 /releases/
 /tmp/
+
+app/renderer/styles/angular-material
+app/renderer/styles/angular-ui-grid

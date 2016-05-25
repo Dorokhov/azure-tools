@@ -13,35 +13,26 @@ export class RedisController {
     dialog: IDialogService = null;
     gridOptions: any;
     scope: any;
-    treeViewModel: TreeViewModel = new TreeViewModel();
+    treeViewModel: TreeViewModel;
     $timeout: any;
 
-    static $inject: Array<string> = ['$scope', '$timeout', '$log', '$mdDialog', '$q', 'RedisConnectionRepository'];
+    static $inject: Array<string> = ['$scope', '$timeout', '$log', '$mdDialog', '$q', 'RedisConnectionRepository','uiGridConstants'];
     constructor(
         $scope,
         $timeout,
         $log: ng.ILogService,
         $mdDialog: IDialogService,
         $q: ng.IQService,
-        redisConnectionRepo: IRedisConnectionRepository) {
-            
+        redisConnectionRepo: IRedisConnectionRepository,
+        uiGridConstants) {
+$log.debug(uiGridConstants);
+        this.treeViewModel = new TreeViewModel($log, $scope);
+        
         this.scope = $scope;
         this.dialog = $mdDialog;
         this.$timeout = $timeout;
 
         var accounts = new Array<RedisAccountViewModel>();
-
-        this.gridOptions = {
-            data: this.treeViewModel.items,
-            showHeader: false,
-            columnDefs: [
-                {
-                    name: 'name',
-                    field: 'name',
-                    cellTemplate: '<div class="ui-grid-cell-contents"><button ng-click="row.entity.expandOrCollapse()" ng-bind="row.entity.isExpanded ? \'-\' : \'+\'"></button>{{row.entity[col.field]}}</div>'
-                },
-            ]
-        };
 
         var connection = redisConnectionRepo.get();
         if (connection !== null) {
