@@ -25,7 +25,8 @@ export class TreeViewModel {
                     field: 'name',
                     cellTemplate:
                     String.format(
-                    '<div class="ui-grid-cell-contents" ng-click="row.entity.expandOrCollapse()">' +
+                    '<div class="ui-grid-cell-contents" ng-click="row.entity.expandOrCollapse()" flex layout="row" layout-align="start center">' +
+                    '<div >'+
                     // account
                     '<i class="fa" aria-hidden="true" ng-class="row.entity.isExpanded ? \'fa-caret-down\' : \'fa-caret-right\'" style="margin:5px;" {0}></i>' +
                     '<i class="fa fa fa-server" aria-hidden="true" style="margin-right:5px" {0}></i>' +
@@ -34,6 +35,8 @@ export class TreeViewModel {
                     '<i class="fa fa fa-key" aria-hidden="true" style="margin-right:5px" {1}></i>' +
                     
                     '{{row.entity[col.field]}}' +
+                    '</div>' +
+                    '<md-progress-circular mode="indeterminate" class="md-accent" md-diameter="30" flex ng-if="row.entity.executingPromise.isPending()"></md-progress-circular>'+
                     '</div>', ifAccount, ifKey)
                 },
             ],

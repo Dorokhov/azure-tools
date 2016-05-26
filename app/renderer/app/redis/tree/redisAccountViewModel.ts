@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 export class RedisAccountViewModel extends ExpandableViewModel implements IHierarchy {
     public items: RedisKeyViewModel[] = new Array<RedisKeyViewModel>();
     public name: string;
+    public executingPromise: any;
 
     constructor(
         public $log: ng.ILogService,
@@ -33,7 +34,7 @@ export class RedisAccountViewModel extends ExpandableViewModel implements IHiera
     expand() {
         this.isExpanded = true;
         if (this.items.length === 0) {
-            this.redis.keysAsync().then((keys) => {
+            this.executingPromise = this.redis.keysAsync().then((keys) => {
                 this.$timeout(() => {
                 this.items = _.map(keys, x => new RedisKeyViewModel(this.$log, this.$timeout, this.$q, this.redis, x));
                     this.add(this.items);
