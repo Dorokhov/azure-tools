@@ -2,6 +2,8 @@
 'use strict'
 
 import {RedisAccountViewModel} from './redisAccountViewModel';
+import {RedisKeyViewModel} from './redisKeyViewModel';
+import {utils} from '../../common/utils';
 
 export class TreeViewModel {
     public items: any[];
@@ -12,6 +14,8 @@ export class TreeViewModel {
         var self = this;
         this.items = new Array();
 
+        var ifAccount = 'ng-if="row.entity.constructor.name === \'' + RedisAccountViewModel.name + '\'"';
+        var ifKey = 'ng-if="row.entity.constructor.name === \'' + RedisKeyViewModel.name + '\'"';
         this.gridOptions = {
             data: this.items,
             showHeader: false,
@@ -19,7 +23,18 @@ export class TreeViewModel {
                 {
                     name: 'name',
                     field: 'name',
-                    cellTemplate: '<div class="ui-grid-cell-contents"><button ng-click="row.entity.expandOrCollapse()" ng-bind="row.entity.isExpanded ? \'-\' : \'+\'"></button>{{row.entity[col.field]}}</div>'
+                    cellTemplate:
+                    String.format(
+                    '<div class="ui-grid-cell-contents" ng-click="row.entity.expandOrCollapse()">' +
+                    // account
+                    '<i class="fa" aria-hidden="true" ng-class="row.entity.isExpanded ? \'fa-caret-down\' : \'fa-caret-right\'" style="margin:5px;" {0}></i>' +
+                    '<i class="fa fa fa-server" aria-hidden="true" style="margin-right:5px" {0}></i>' +
+                    
+                    // key
+                    '<i class="fa fa fa-key" aria-hidden="true" style="margin-right:5px" {1}></i>' +
+                    
+                    '{{row.entity[col.field]}}' +
+                    '</div>', ifAccount, ifKey)
                 },
             ],
 
@@ -41,6 +56,10 @@ export class TreeViewModel {
                 $log.log(row.entity);
                 self.selectedItems.length = 0;
                 self.selectedItems.push(row.entity);
+
+                if (utils.isOfType(row.entity, RedisKeyViewModel)) {
+                    row.entity.loadDetails();
+                }
             });
 
             gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {

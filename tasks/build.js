@@ -10,6 +10,7 @@ var livereload = require('gulp-livereload');
 var wiredep = require('wiredep').stream;
 var jetpack = require('fs-jetpack');
 var utils = require('./utils');
+var templateCache = require('gulp-angular-templatecache');
 var projectDir = jetpack;
 var srcDir = projectDir.cwd('./app');
 var destDir = projectDir.cwd('./build');
@@ -54,18 +55,18 @@ var copyStylesTask = function () {
             './angular-material/**/*.css',
             './angular-material/**/*.ttf',
             './angular-material/**/*.woff',
-            
+
             './angular-ui-grid/**/*.css',
             './angular-ui-grid/**/*.ttf',
             './angular-ui-grid/**/*.woff',
-            
+
             './font-awesome/**/*.css',
             './font-awesome/**/*.ttf',
             './font-awesome/**/*.woff',
             './font-awesome/**/*.woff2',
             './font-awesome/**/*.otf',
             './font-awesome/**/*.eot',
-            ],
+        ],
     });
 };
 gulp.task('copy-styles', ['clean'], copyStylesTask);
@@ -97,6 +98,13 @@ var livereloadTask = function () {
 };
 gulp.task('livereload-watch', ['src-watch'], livereloadTask);
 
+gulp.task('angular-templates', ['clean'], function () {
+    return gulp.src('app/renderer/app/**/templates/**/*.html')
+        .pipe(templateCache('templates.js', { standalone: true }))
+        .pipe(gulp.dest(function () {
+            return destDir.path('renderer/');
+        }));
+});
 
 var sassTask = function () {
     return gulp.src('app/renderer/**/*.scss')
@@ -156,7 +164,7 @@ var injectTask = function () {
         .pipe(inject(series(sources, angularEntry), { relative: true }))
         .pipe(gulp.dest(destDir.path('renderer/')));
 };
-gulp.task('inject', ['sass', 'typescript', 'copy'], injectTask);
+gulp.task('inject', ['angular-templates', 'sass', 'typescript', 'copy'], injectTask);
 gulp.task('inject-sass', ['sass-watch'], injectTask);
 gulp.task('inject-typescript', ['typescript-watch'], injectTask);
 gulp.task('inject-livereload', ['livereload-watch'], injectTask);

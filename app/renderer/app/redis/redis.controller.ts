@@ -16,18 +16,18 @@ export class RedisController {
     treeViewModel: TreeViewModel;
     $timeout: any;
 
-    static $inject: Array<string> = ['$scope', '$timeout', '$log', '$mdDialog', '$q', 'RedisConnectionRepository','uiGridConstants'];
+    static $inject: Array<string> = ['$scope', '$timeout', '$log', '$mdDialog', '$q', 'RedisConnectionRepository', 'uiGridConstants'];
     constructor(
         $scope,
         $timeout,
-        $log: ng.ILogService,
+        protected $log: ng.ILogService,
         $mdDialog: IDialogService,
-        $q: ng.IQService,
+        protected $q: ng.IQService,
         redisConnectionRepo: IRedisConnectionRepository,
         uiGridConstants) {
-$log.debug(uiGridConstants);
+        $log.debug(uiGridConstants);
         this.treeViewModel = new TreeViewModel($log, $scope);
-        
+
         this.scope = $scope;
         this.dialog = $mdDialog;
         this.$timeout = $timeout;
@@ -55,7 +55,7 @@ $log.debug(uiGridConstants);
 
     loadAccounts(connection: RedisConnection) {
         var redis = new ReliableRedisClient(connection);
-        var account = new RedisAccountViewModel(this.$timeout, this.treeViewModel, connection, redis);
+        var account = new RedisAccountViewModel(this.$log, this.$timeout, this.$q, this.treeViewModel, connection, redis);
         this.treeViewModel.add(account);
     };
 };

@@ -16,14 +16,13 @@ redis;
 
 module app {
     angular
-        .module('app', ['ui.router', 'ngMaterial', 'redis'])
+        .module('app', ['ui.router', 'ngMaterial', 'redis', 'templates'])
         .config(($stateProvider, $urlRouterProvider) => {
             $stateProvider
                 .state('tiles', {
                     url: '/tiles',
                     templateUrl: 'app/tiles/tiles.html',
                 });
-
             // default
             $urlRouterProvider.otherwise('tiles');
         });

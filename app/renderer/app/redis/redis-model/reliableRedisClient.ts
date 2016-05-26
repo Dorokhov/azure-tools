@@ -13,12 +13,20 @@ export class ReliableRedisClient {
         this.connection = connection;
     }
 
-    get(key: string, callback: (error: any, reply: any) => any): void {
-        this.getClient().get(key, callback);
+    getAsync(key: string): Promise<string> {
+        return this.getClient().getAsync(key);
     }
 
     keysAsync(): Promise<Array<string>> {
         return this.getClient().keysAsync('*');
+    }
+    
+    typeAsync(key: string): Promise<string> {
+        return this.getClient().typeAsync(key);
+    }
+    
+    pttlAsync(key: string): Promise<number> {
+        return this.getClient().pttlAsync(key);
     }
 
     private getClient() {
