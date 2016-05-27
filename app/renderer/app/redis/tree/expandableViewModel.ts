@@ -15,9 +15,9 @@ export class ExpandableViewModel {
         this.source.splice(nextToCurrent, 0, ...itemsToAdd);
     }
 
-    protected remove(count: number) {
-        var indexOfCurrentKey = this.source.indexOf(this);
-        var nextToCurrent = indexOfCurrentKey + 1;
+    protected remove(currentItem: ExpandableViewModel, count: number) {
+        var indexOfCurrentItem = this.source.indexOf(currentItem);
+        var nextToCurrent = indexOfCurrentItem + 1;
         this.source.splice(nextToCurrent, count);
     }
 }

@@ -14,12 +14,13 @@ export class RedisKeyViewModel implements IHierarchy {
         public $timeout: any,
         protected $q: ng.IQService,
         public redis: ReliableRedisClient,
-        public name: string) { }
+        public name: string,
+        public db: number) { }
 
     loadDetails() {
         this.$log.debug('loading TTL..');
         this.redis
-            .pttlAsync(name)
+            .pttlAsync(this.db, name)
             .then((data) => {
                 this.$log.debug('TTL: ' + data);
                 this.$timeout(() => {
@@ -34,12 +35,12 @@ export class RedisKeyViewModel implements IHierarchy {
     private loadDataStructureAsync(): ng.IPromise<RedisDataStructure> {        
         var deferred = this.$q.defer();
         this.redis
-            .typeAsync(this.name)
+            .typeAsync(this.db, this.name)
             .then(type => {
                 switch (type) {
                     case 'string':
                         this.redis
-                            .getAsync(this.name)
+                            .getAsync(this.db, this.name)
                             .then(value => deferred.resolve(new RedisStringVM(value)));
                         break;
                     default:

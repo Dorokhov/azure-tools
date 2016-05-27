@@ -7,33 +7,50 @@ bluebird.promisifyAll(redis.Multi.prototype);
 
 export class ReliableRedisClient {
     private client: redis.RedisClient;
-    private connection: RedisConnection;
 
-    constructor(connection: RedisConnection) {
-        this.connection = connection;
-    }
-
-    getAsync(key: string): Promise<string> {
-        return this.getClient().getAsync(key);
+    constructor(
+        public $log: ng.ILogService,
+        protected $q: ng.IQService,
+        public connection: RedisConnection) {
     }
 
-    keysAsync(): Promise<Array<string>> {
-        return this.getClient().keysAsync('*');
-    }
-    
-    typeAsync(key: string): Promise<string> {
-        return this.getClient().typeAsync(key);
-    }
-    
-    pttlAsync(key: string): Promise<number> {
-        return this.getClient().pttlAsync(key);
+    getNumberOfKeysInDb(db: number): ng.IPromise<Array<any>> {
+        this.$log.debug(db)
+        var defer = this.$q.defer();
+        this.newClient().multi().select(db).dbsize().execAsync().then(res => {
+            res.push(db);
+            defer.resolve(res);
+        });
+        return defer.promise;
     }
 
-    private getClient() {
+    getAsync(db: number, key: string): Promise<string> {
+        return this.tryingReuseConnection(db).getAsync(key);
+    }
+
+    keysAsync(db: number): Promise<Array<string>> {
+        return this.tryingReuseConnection(db).keysAsync('*');
+    }
+
+    typeAsync(db: number, key: string): Promise<string> {
+        return this.tryingReuseConnection(db).typeAsync(key);
+    }
+
+    pttlAsync(db: number, key: string): Promise<number> {
+        return this.tryingReuseConnection(db).pttlAsync(key);
+    }
+
+    private tryingReuseConnection(db: number) {
         if (this.client === null || this.client === undefined || !this.client.connected) {
             this.client = redis.createClient(this.connection.port, this.connection.host, { auth_pass: this.connection.password });
         }
 
+        this.client.select(db);
+        return this.client;
+    }
+
+    private newClient() {
+        this.client = redis.createClient(this.connection.port, this.connection.host, { auth_pass: this.connection.password });
         return this.client;
     }
 }
@@ -50,6 +67,6 @@ export class RedisConnectionRepository implements IRedisConnectionRepository {
     }
 }
 
-export interface IRedisConnectionRepository{
+export interface IRedisConnectionRepository {
     get();
 }

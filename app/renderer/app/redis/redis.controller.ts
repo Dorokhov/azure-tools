@@ -54,7 +54,7 @@ export class RedisController {
     };
 
     loadAccounts(connection: RedisConnection) {
-        var redis = new ReliableRedisClient(connection);
+        var redis = new ReliableRedisClient(this.$log, this.$q, connection);
         var account = new RedisAccountViewModel(this.$log, this.$timeout, this.$q, this.treeViewModel, connection, redis);
         this.treeViewModel.add(account);
     };

@@ -2,6 +2,7 @@
 'use strict'
 
 import {RedisAccountViewModel} from './redisAccountViewModel';
+import {RedisDatabaseViewModel} from './redisDatabaseViewModel';
 import {RedisKeyViewModel} from './redisKeyViewModel';
 import {utils} from '../../common/utils';
 
@@ -14,8 +15,9 @@ export class TreeViewModel {
         var self = this;
         this.items = new Array();
 
-        var ifAccount = 'ng-if="row.entity.constructor.name === \'' + RedisAccountViewModel.name + '\'"';
-        var ifKey = 'ng-if="row.entity.constructor.name === \'' + RedisKeyViewModel.name + '\'"';
+        var ifAccount = 'row.entity.constructor.name === \'' + RedisAccountViewModel.name + '\'';
+        var ifDatabase = 'row.entity.constructor.name === \'' + RedisDatabaseViewModel.name + '\'';
+        var ifKey = 'row.entity.constructor.name === \'' + RedisKeyViewModel.name + '\'';
         this.gridOptions = {
             data: this.items,
             showHeader: false,
@@ -28,16 +30,21 @@ export class TreeViewModel {
                     '<div class="ui-grid-cell-contents" ng-click="row.entity.expandOrCollapse()" flex layout="row" layout-align="start center">' +
                     '<div >'+
                     // account
-                    '<i class="fa" aria-hidden="true" ng-class="row.entity.isExpanded ? \'fa-caret-down\' : \'fa-caret-right\'" style="margin:5px;" {0}></i>' +
-                    '<i class="fa fa fa-server" aria-hidden="true" style="margin-right:5px" {0}></i>' +
+                    '<i class="fa" aria-hidden="true" ng-class="row.entity.isExpanded ? \'fa-caret-down\' : \'fa-caret-right\'" style="margin:5px;" ng-if="{0} || {1}"></i>' +
+                    '<md-icon md-font-icon="fa fa-server fa-lg" class="md-warn" ng-if="{0}"></md-icon>' +
+                   // '<i class="fa fa-server" aria-hidden="true" style="margin-right:5px" ng-if="{0}"></i>' +
+                    
+                    // database
+                    '<i class="fa fa fa-database" aria-hidden="true" style="margin-right:5px; margin-left:15px;" ng-if="{1}"></i>' +
                     
                     // key
-                    '<i class="fa fa fa-key" aria-hidden="true" style="margin-right:5px" {1}></i>' +
+                    '<i class="fa fa fa-key" aria-hidden="true" style="margin-right:5px; margin-left:55px;" ng-if="{2}"></i>' +
                     
                     '{{row.entity[col.field]}}' +
                     '</div>' +
-                    '<md-progress-circular mode="indeterminate" class="md-accent" md-diameter="30" flex ng-if="row.entity.executingPromise.isPending()"></md-progress-circular>'+
-                    '</div>', ifAccount, ifKey)
+                    // busy indicator
+                    '<md-progress-circular mode="indeterminate" class="md-accent" md-diameter="30" flex ng-if="row.entity.executingPromise.isPending() || row.entity.executingPromise.$$state.pending"></md-progress-circular>'+
+                    '</div>', ifAccount, ifDatabase, ifKey)
                 },
             ],
 
