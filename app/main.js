@@ -1,7 +1,8 @@
 ﻿'use strict';
 
-var app = require('app');
-var BrowserWindow = require('browser-window');
+var app = require('electron').app;
+var BrowserWindow = require('electron').BrowserWindow;
+var os = require('os');
 var env = require('./vendor/electron_boilerplate/env_config');
 var devHelper = require('./vendor/electron_boilerplate/dev_helper');
 var windowStateKeeper = require('./vendor/electron_boilerplate/window_state');
@@ -15,7 +16,6 @@ var mainWindowState = windowStateKeeper('main', {
 });
 
 app.on('ready', function () {
-
     mainWindow = new BrowserWindow({
         x: mainWindowState.x,
         y: mainWindowState.y,
@@ -27,7 +27,7 @@ app.on('ready', function () {
         mainWindow.maximize();
     }
 
-    mainWindow.loadUrl('file://' + __dirname + '/renderer/app.html');
+    mainWindow.loadURL('file://' + __dirname + '/renderer/app.html');
 
     if (env.name === 'development') {
         devHelper.setDevMenu();

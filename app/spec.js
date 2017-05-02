@@ -1,6 +1,6 @@
 'use strict';
 
-var app = require('app');
+var app = require('electron').app;
 var BrowserWindow = require('browser-window');
 var devHelper = require('./vendor/electron_boilerplate/dev_helper');
 var windowStateKeeper = require('./vendor/electron_boilerplate/window_state');

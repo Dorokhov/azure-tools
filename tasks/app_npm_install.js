@@ -15,6 +15,7 @@ var utils = require('./utils');
 var electronVersion = utils.getElectronVersion();
 
 var nodeModulesDir = jetpack.cwd(__dirname + '/../app/node_modules')
+
 var dependenciesCompiledAgainst = nodeModulesDir.read('electron_version');
 
 // When you raised version of Electron used in your project, the safest

@@ -52,13 +52,13 @@ var copyStylesTask = function () {
         overwrite: true,
         relative: true,
         matching: [
-            './angular-material/**/*.css',
-            './angular-material/**/*.ttf',
-            './angular-material/**/*.woff',
+            // './angular-material/**/*.css',
+            // './angular-material/**/*.ttf',
+            // './angular-material/**/*.woff',
 
-            './angular-ui-grid/**/*.css',
-            './angular-ui-grid/**/*.ttf',
-            './angular-ui-grid/**/*.woff',
+            // './angular-ui-grid/**/*.css',
+            // './angular-ui-grid/**/*.ttf',
+            // './angular-ui-grid/**/*.woff',
 
             './font-awesome/**/*.css',
             './font-awesome/**/*.ttf',
@@ -77,7 +77,7 @@ var copyTask = function () {
         matching: paths.copyFromAppDir
     });
 };
-gulp.task('copy', ['copy-styles'], copyTask);
+gulp.task('copy', copyTask);
 
 
 var srcTask = function () {
@@ -92,7 +92,8 @@ gulp.task('src-watch', srcTask);
 var livereloadTask = function () {
     return gulp.src([
         destDir.path('renderer/**/*.js'),
-        destDir.path('renderer/**/*.html')
+        destDir.path('renderer/**/*.html'),
+        destDir.path('renderer/app.html'),
     ])
         .pipe(livereload());
 };
