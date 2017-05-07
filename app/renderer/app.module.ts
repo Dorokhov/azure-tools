@@ -1,14 +1,17 @@
-import { NgModule, Inject } from '@angular/core';
+import 'hammerjs';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { } from '@angular/animations/browser';
+
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule, Routes, Router, NavigationEnd } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from '@angular/material';
+
 import { RedisMainComponent } from './redis/redis.main.component';
 import { RedisManagementComponent } from './redis/redis.management.component';
 import { RedisServerManagementComponent } from './redis/server.management.component';
-import { RouterModule, Routes, Router, NavigationEnd } from '@angular/router';
-import { trigger, state, style, transition, animate } from '@angular/animations'
-import { } from '@angular/animations/browser'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCheckboxModule, MaterialModule } from '@angular/material';
-import 'hammerjs';
+
 
 
 const appRoutes: Routes = [
@@ -23,10 +26,8 @@ const appRoutes: Routes = [
     BrowserModule,
     RouterModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(appRoutes, { useHash: true }),
-    MdButtonModule,
-    MdCheckboxModule,
-    MaterialModule
+    MaterialModule,
+    RouterModule.forRoot(appRoutes, { useHash: true })
   ],
   declarations: [
     RedisManagementComponent,

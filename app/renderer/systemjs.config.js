@@ -39,7 +39,7 @@
     },
     'angular2-in-memory-web-api': {
       defaultExtension: 'js'
-    }
+    },
   };
 
   var packageNames = [
@@ -54,7 +54,8 @@
     '@angular/upgrade',
     'core-js',
     'reflect-metadata',
-    'hammerjs'
+    'hammerjs',
+    'angular-tree-component'
   ];
 
   var config = {

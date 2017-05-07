@@ -1,15 +1,9 @@
 import { Component } from '@angular/core';
 import { RedisServer } from './model/profile';
-import {
-  CanActivate, Router,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  CanActivateChild,
-  NavigationExtras
-} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
-  templateUrl: './redis/server.management.component.view.html'
+   templateUrl: './redis/server.management.component.view.html'
 })
 
 export class RedisServerManagementComponent {
@@ -24,7 +18,6 @@ export class RedisServerManagementComponent {
     this.router = router;
     this.currentServer = defaultServer;
   }
-  
   connect() {
     this.router.navigate(['redis']);
   }
