@@ -1,4 +1,8 @@
 import 'hammerjs';
+import "lodash";
+import "ng2-mobx";
+import "mobx";
+
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { } from '@angular/animations/browser';
 
@@ -7,6 +11,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes, Router, NavigationEnd } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { TreeModule } from 'angular2-tree-component';
 
 import { RedisMainComponent } from './redis/redis.main.component';
 import { RedisManagementComponent } from './redis/redis.management.component';
@@ -27,6 +34,10 @@ const appRoutes: Routes = [
     RouterModule,
     BrowserAnimationsModule,
     MaterialModule,
+    FormsModule,
+    
+    HttpModule,
+    TreeModule,
     RouterModule.forRoot(appRoutes, { useHash: true })
   ],
   declarations: [
@@ -39,7 +50,7 @@ const appRoutes: Routes = [
 
 export class AppModule {
   constructor(router: Router) {
-    router.events.subscribe((_) => {
+    router.events.subscribe((val) => {
       console.log(`current navigation state: ${router.url}`)
     });
   }

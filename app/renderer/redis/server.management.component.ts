@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 
 export class RedisServerManagementComponent {
   currentServer: RedisServer;
-  router: Router;
+  router: Router; 
 
   constructor(router: Router) {
     let defaultServer = new RedisServer();
@@ -18,6 +18,7 @@ export class RedisServerManagementComponent {
     this.router = router;
     this.currentServer = defaultServer;
   }
+ 
   connect() {
     this.router.navigate(['redis']);
   }

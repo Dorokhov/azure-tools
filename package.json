@@ -3,6 +3,7 @@
     "wiredep": "^3.0.0-beta"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.50",
     "asar": "^0.7.2",
     "electron-prebuilt": "^1.4.13",
     "fs-jetpack": "^0.13.3",

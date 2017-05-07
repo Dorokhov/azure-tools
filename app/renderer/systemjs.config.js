@@ -8,6 +8,9 @@
 
     'reflect-metadata': '../node_modules/reflect-metadata/Reflect.js',
 
+    'hammerjs': '../node_modules/hammerjs/hammer.js',
+    'lodash': '../node_modules/lodash/lodash.js',
+
     '@angular/core': '../node_modules/@angular/core/bundles/core.umd.js',
     '@angular/common': '../node_modules/@angular/common/bundles/common.umd.js',
     '@angular/compiler': '../node_modules/@angular/compiler/bundles/compiler.umd.js',
@@ -22,7 +25,9 @@
     '@angular/animations/browser': '../node_modules/@angular/animations/bundles/animations-browser.umd.js',
     '@angular/platform-browser/animations': '../node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
 
-    'hammerjs': '../node_modules/hammerjs/hammer.js',
+    'mobx': '../node_modules/mobx/lib/mobx.umd.js',
+    'ng2-mobx': '../node_modules/ng2-mobx/dist/ng2-mobx.umd.js',
+    'angular2-tree-component': '../node_modules/angular2-tree-component/dist/angular2-tree-component.umd.js',
 
     'rxjs': '../node_modules/rxjs',
     'angular2-in-memory-web-api': '../node_modules/angular2-in-memory-web-api'
@@ -40,6 +45,12 @@
     'angular2-in-memory-web-api': {
       defaultExtension: 'js'
     },
+    'ng2-tree': {
+      defaultExtension: 'js'
+    },
+    'lodash': {
+      defaultExtension: 'js'
+    },
   };
 
   var packageNames = [
@@ -55,6 +66,7 @@
     'core-js',
     'reflect-metadata',
     'hammerjs',
+    'lodash',
     'angular-tree-component'
   ];
 
