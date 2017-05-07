@@ -1,6 +1,6 @@
 ﻿(function (global) {
-  global.os  = require('os');
-  
+  global.os = require('os');
+
   // map tells the System loader where to look for things
   var map = {
     'app': '',
@@ -16,6 +16,13 @@
     '@angular/http': '../node_modules/@angular/http/bundles/http.umd.js',
     '@angular/router': '../node_modules/@angular/router/bundles/router.umd.js',
     '@angular/forms': '../node_modules/@angular/forms/bundles/forms.umd.js',
+    '@angular/material': '../node_modules/@angular/material/bundles/material.umd.js',
+
+    '@angular/animations': '../node_modules/@angular/animations/bundles/animations.umd.min.js',
+    '@angular/animations/browser': '../node_modules/@angular/animations/bundles/animations-browser.umd.js',
+    '@angular/platform-browser/animations': '../node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
+
+    'hammerjs': '../node_modules/hammerjs/hammer.js',
 
     'rxjs': '../node_modules/rxjs',
     'angular2-in-memory-web-api': '../node_modules/angular2-in-memory-web-api'
@@ -46,7 +53,8 @@
     '@angular/router',
     '@angular/upgrade',
     'core-js',
-    'reflect-metadata'
+    'reflect-metadata',
+    'hammerjs'
   ];
 
   var config = {

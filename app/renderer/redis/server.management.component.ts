@@ -6,7 +6,7 @@ import {
   RouterStateSnapshot,
   CanActivateChild,
   NavigationExtras
-}                           from '@angular/router';
+} from '@angular/router';
 
 @Component({
   templateUrl: './redis/server.add.view.html'
@@ -15,7 +15,7 @@ import {
 export class RedisServerManagementComponent {
   currentServer: RedisServer;
 
-  constructor(){
+  constructor() {
     let defaultServer = new RedisServer();
     defaultServer.host = '127.0.0.1'
     defaultServer.port = 6379;

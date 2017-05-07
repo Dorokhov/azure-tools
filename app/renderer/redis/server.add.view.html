@@ -1,2 +1,44 @@
-<p>{{currentServer.host}}</p>
-<p>{{currentServer.port}}</p>
+
+<md-input-container>
+    <input mdInput placeholder="example" value="{{currentServer.host}}" required>
+    <input mdInput placeholder="example" value="{{currentServer.port}}" required>
+</md-input-container>
+
+<button md-button>flat</button>
+
+<!--<md-content layout-padding style="width: 500px; height: 400px;" flex layout="column">
+    <div flex layout="column">
+        <md-input-container class="md-block" flex>
+            <label>Host</label>
+            <input required md-no-asterisk name="host" ng-model="vm.host">
+        </md-input-container>
+
+        <md-input-container class="md-block" flex>
+            <label>Port</label>
+            <input required md-no-asterisk name="port" ng-model="vm.port">
+        </md-input-container>
+
+        <md-input-container class="md-block" flex>
+            <label>Password</label>
+            <input required md-no-asterisk name="password" ng-model="vm.password">
+        </md-input-container>
+    </div>
+
+    <md-button ng-click="vm.save()">Add</md-button>
+</md-content>-->
+
+
+<!--<div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s6">
+          <input placeholder="Placeholder" id="first_name" type="text" class="validate">
+          <label for="first_name">First Name</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="last_name" type="text" class="validate">
+          <label for="last_name">Last Name</label>
+        </div>
+      </div>
+    </form>
+</div>-->
