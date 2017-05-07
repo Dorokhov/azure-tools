@@ -1,0 +1,28 @@
+<md-card>
+    <md-card-content>
+        <p>
+            <md-input-container class="input-field col s6">
+                <label>Host</label>
+                <input mdInput required md-no-asterisk name="host" value="{{currentServer.host}}">
+            </md-input-container>
+        </p>
+
+        <p>
+            <md-input-container class="input-field col s6">
+                <label>Port</label>
+                <input mdInput required md-no-asterisk name="port" value="{{currentServer.port}}">
+            </md-input-container>
+        </p>
+
+        <p>
+            <md-input-container class="input-field col s6">
+                <label>Password</label>
+                <input mdInput required md-no-asterisk name="password" value="{{currentServer.password}}">
+            </md-input-container>
+        </p>
+    </md-card-content>
+
+    <p>
+        <button (click)="connect()" md-button>Add</button>
+    </p>
+</md-card>

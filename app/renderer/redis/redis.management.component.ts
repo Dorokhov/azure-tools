@@ -1,19 +1,21 @@
 import { Component, Inject } from '@angular/core';
 import { Profile, RedisServer } from './model/profile';
-import {Router,ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  templateUrl: './redis/redis.management.view.html'
+  templateUrl: './redis/redis.management.component.view.html'
 })
 
 export class RedisManagementComponent {
   currentProfile: Profile;
+  router: Router;
 
-  constructor(router: Router){
+  constructor(router: Router) {
     let defaultProfile = new Profile();
     defaultProfile.name = 'Default';
 
     this.currentProfile = defaultProfile;
+    this.router = router;
 
     router.navigate(['management/server/add']);
   }
