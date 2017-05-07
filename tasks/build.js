@@ -125,8 +125,29 @@ gulp.task('sass-watch', sassTaskDev);
 var typescriptTask = function () {
 
     var tsProject = ts.createProject({
-        target: 'es5',
-        sortOutput: true
+        // target: 'es5',
+        //  sortOutput: true
+
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [ "es2015", "dom" ],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true
+
+        //  target: "es5",
+        //         module: "umd",
+        //         declaration: false,
+        //         noImplicitAny: true,
+        //         removeComments: true,
+        //         emitDecoratorMetadata: true,
+        //         experimentalDecorators: true,
+        //         sourceMap: false,
+        //         moduleResolution: "node",
+        //         suppressImplicitAnyIndexErrors: true
     });
 
     return gulp.src('app/renderer/**/*.ts')
