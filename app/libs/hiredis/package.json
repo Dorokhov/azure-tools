@@ -1,0 +1,9 @@
+{
+        "name": "hiredis",
+ 
+  "scripts": {
+    "install": "node-gyp rebuild",
+    "test": "node test/reader.js && node test/writer.js"
+  },
+  "version": "0.5.0"
+}
