@@ -6,6 +6,7 @@ app/node_modules/*
 !app/node_modules/redis/*
 !app/node_modules/redis-parser/*
 !app/node_modules/redis-commands/*
+!app/node_modules/bluebird/*
 
 bower_components
 *.log
