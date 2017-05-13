@@ -19,6 +19,14 @@ import { RedisMainComponent } from './redis/redis.main.component';
 import { RedisManagementComponent } from './redis/redis.management.component';
 import { RedisServerManagementComponent } from './redis/server.management.component';
 
+import {readFile} from '@node/fs'
+ readFile;
+ import redis  from 'redis';
+ redis;
+ import bluebird from 'bluebird';
+ bluebird;
+import { ReliableRedisClient } from './redis/model/reliableRedisClient';
+
 
 
 const appRoutes: Routes = [
@@ -43,7 +51,9 @@ const appRoutes: Routes = [
   declarations: [
     RedisManagementComponent,
     RedisServerManagementComponent,
-    RedisMainComponent
+    RedisMainComponent,
+
+    //ReliableRedisClient
   ],
   bootstrap: [RedisManagementComponent]
 })

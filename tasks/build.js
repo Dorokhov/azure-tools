@@ -125,7 +125,17 @@ gulp.task('sass-watch', sassTaskDev);
 var typescriptTask = function () {
 
     var tsProject = ts.createProject({
-        "target": "es5",
+        // "target": "es5",
+        // "module": "commonjs",
+        // "moduleResolution": "node",
+        // "sourceMap": true,
+        // "emitDecoratorMetadata": true,
+        // "experimentalDecorators": true,
+        // "lib": ["es2015", "dom"],
+        // "noImplicitAny": true,
+        // "suppressImplicitAnyIndexErrors": true
+
+          "target": "es5",
         "module": "commonjs",
         "moduleResolution": "node",
         "sourceMap": true,

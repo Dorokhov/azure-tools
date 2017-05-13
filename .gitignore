@@ -1,4 +1,12 @@
-node_modules
+node_modules/*
+app/node_modules/*
+
+!app/node_modules/bindings/*
+!app/node_modules/hiredis/*
+!app/node_modules/redis/*
+!app/node_modules/redis-parser/*
+!app/node_modules/redis-commands/*
+
 bower_components
 *.log
 .DS_Store

@@ -6,6 +6,7 @@ export class Profile {
 }
 
 export class RedisServer{
+  id: number;
   name: string;
   host: string;
   port: number;

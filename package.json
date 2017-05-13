@@ -1,11 +1,13 @@
 {
   "dependencies": {
+    "systemjs-plugin-node-binary": "^0.1.2",
     "wiredep": "^3.0.0-beta"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.50",
     "asar": "^0.7.2",
     "electron-prebuilt": "^1.4.13",
+    "electron-rebuild": "^1.5.11",
     "fs-jetpack": "^0.13.3",
     "gulp": "^3.9.1",
     "gulp-angular-templatecache": "^1.8.0",

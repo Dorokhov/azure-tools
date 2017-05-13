@@ -20,6 +20,6 @@ export class RedisServerManagementComponent {
   }
  
   connect() {
-    this.router.navigate(['redis']);
+    this.router.navigate(['redis', this.currentServer]);
   }
 }
