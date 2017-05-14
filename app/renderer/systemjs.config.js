@@ -36,7 +36,7 @@
     'double-ended-queue': '../node_modules/double-ended-queue/js/deque.js',
     'redis-parser': '../node_modules/redis-parser/index.js',
 
-    'redis': '../node_modules/redis/index.js',
+    'redis': '../node_modules/redis/index',
     'redis-commands': '../node_modules/redis-commands/index.js',
     'bluebird': '../node_modules/bluebird/js/browser/bluebird.min.js',
     'hiredis': '../node_modules/hiredis/hiredis.js',
@@ -44,7 +44,8 @@
     'hiredis.node': '../node_modules/hiredis/build/Release/hiredis.node',
 
     'node-binary': '../node_modules/systemjs-plugin-node-binary/node-binary.js',
-    'angular2-fontawesome': '../node_modules/angular2-fontawesome/bundles/angular2-fontawesome.umd.js'
+    'angular2-fontawesome': '../node_modules/angular2-fontawesome/bundles/angular2-fontawesome.umd.js',
+    'ng2-split-pane': '../node_modules/ng2-split-pane/lib/ng2-split-pane.js'
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
@@ -97,6 +98,12 @@
     },
     'angular2-fontawesome': {
       defaultExtension: 'js'
+    },
+    'ng2-split-pane': {
+      defaultExtension: 'js'
+    },
+    '.': {
+      defaultExtension: 'js'
     }
   };
 
@@ -134,6 +141,7 @@
   // filterSystemConfig - index.html's chance to modify config before we register it.
   if (global.filterSystemConfig) { global.filterSystemConfig(config); }
 
+  System.defaultJSExtensions = true;
   System.config(config);
 
 })(this);

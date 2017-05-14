@@ -20,6 +20,7 @@ import { TreeModule } from 'angular2-tree-component';
 import { RedisMainComponent } from './redis/redis.main.component';
 import { RedisManagementComponent } from './redis/redis.management.component';
 import { RedisServerManagementComponent } from './redis/server.management.component';
+import { SplitPaneModule } from 'ng2-split-pane';
 
 import { readFile } from '@node/fs'
 readFile;
@@ -48,6 +49,7 @@ const appRoutes: Routes = [
     HttpModule,
     TreeModule,
     FlexLayoutModule,
+    SplitPaneModule,
     Angular2FontawesomeModule,
     RouterModule.forRoot(appRoutes, { useHash: true })
   ],
