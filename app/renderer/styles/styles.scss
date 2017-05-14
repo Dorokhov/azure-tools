@@ -13,3 +13,17 @@ md-icon {
 .node-content-wrapper{
     width: 100% !important;
 }
+html, body{
+  padding: 0;
+  margin: 0;
+}
+html{
+  height: 100%;
+}
+body{
+  min-height: 100%;
+}
+
+#mainScreen{
+    height:-webkit-calc(100vh - 120px);
+}

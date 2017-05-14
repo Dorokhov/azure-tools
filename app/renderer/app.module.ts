@@ -54,9 +54,7 @@ const appRoutes: Routes = [
   declarations: [
     RedisManagementComponent,
     RedisServerManagementComponent,
-    RedisMainComponent,
-
-    //ReliableRedisClient
+    RedisMainComponent
   ],
   bootstrap: [RedisManagementComponent]
 })

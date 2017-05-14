@@ -30,6 +30,9 @@ export class RedisMainComponent {
   _: object;
   RedisTypes: object;
   TreeItemType: object;
+  options: object = {
+    nodeHeight : 32
+  };
 
   constructor(
     router: Router,
@@ -66,13 +69,11 @@ export class RedisMainComponent {
   onActivate = ($event) => {
     $event.node.data.isExpanded = true;
     $event.node.toggleExpanded();
-  //  this.getSubItems($event.node);
 };
 
  onDeactivate = ($event) => {
     $event.node.data.isExpanded = false;
-    $event.node.toggleCollapsed()
-  //  this.getSubItems($event.node);
+    $event.node.toggleCollapsed();
   };
 
   private async getSubItems(node: any) {

@@ -1,7 +1,7 @@
 ﻿export class ExpandableViewModel {
     constructor(type: TreeItemType, name: string = '') {
+        this.type = type;        
         this.name = name;
-        this.type = type;
     }
 
     id: number;
