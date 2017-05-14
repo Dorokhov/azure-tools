@@ -9,19 +9,16 @@ export class RedisKeyViewModel {
     constructor(
         private redis: ReliableRedisClient,
         public name: string,
-        public db: number) { }
+        public db: number) {
 
-    loadDetails() {
+    }
+
+    async loadDetailsAsync() {
         console.log('loading TTL..');
-        this.redis
-            .pttlAsync(this.db, name)
-            .then((data) => {
-                console.log('TTL: ' + data);
-                this.ttl = data;
-            });
+        this.ttl = await this.redis.ttlAsync(this.db, name);
+        console.log(`TTL: ${this.ttl}`);
 
-        this.loadDataStructureAsync()
-            .then(ds => this.dataStructure = ds);
+        this.dataStructure = await this.loadDataStructureAsync();
     }
 
     private loadDataStructureAsync(): ng.IPromise<RedisDataStructure> {
@@ -30,6 +27,7 @@ export class RedisKeyViewModel {
             this.redis
                 .typeAsync(this.db, this.name)
                 .then(type => {
+                    console.log(`Type: ${type}`);
                     switch (type) {
                         case 'string':
 

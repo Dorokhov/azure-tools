@@ -42,8 +42,8 @@ export class ReliableRedisClient {
         return this.tryingReuseConnection(db).typeAsync(key);
     }
 
-    pttlAsync(db: number, key: string): Promise<number> {
-        return this.tryingReuseConnection(db).pttlAsync(key);
+    ttlAsync(db: number, key: string): Promise<number> {
+        return this.tryingReuseConnection(db).ttlAsync(key);
     }
 
     private tryingReuseConnection(db: number) {

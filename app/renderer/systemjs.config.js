@@ -20,6 +20,7 @@
     '@angular/router': '../node_modules/@angular/router/bundles/router.umd.js',
     '@angular/forms': '../node_modules/@angular/forms/bundles/forms.umd.js',
     '@angular/material': '../node_modules/@angular/material/bundles/material.umd.js',
+    '@angular/flex-layout': '../node_modules/@angular/flex-layout/bundles/flex-layout.umd.js',
 
     '@angular/animations': '../node_modules/@angular/animations/bundles/animations.umd.min.js',
     '@angular/animations/browser': '../node_modules/@angular/animations/bundles/animations-browser.umd.js',

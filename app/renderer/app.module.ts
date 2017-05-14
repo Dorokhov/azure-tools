@@ -13,18 +13,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { FlexLayoutModule } from "@angular/flex-layout";
 import { TreeModule } from 'angular2-tree-component';
 
 import { RedisMainComponent } from './redis/redis.main.component';
 import { RedisManagementComponent } from './redis/redis.management.component';
 import { RedisServerManagementComponent } from './redis/server.management.component';
 
-import {readFile} from '@node/fs'
- readFile;
- import redis  from 'redis';
- redis;
- import bluebird from 'bluebird';
- bluebird;
+import { readFile } from '@node/fs'
+readFile;
+import redis from 'redis';
+redis;
+import bluebird from 'bluebird';
+bluebird;
 import { ReliableRedisClient } from './redis/model/reliableRedisClient';
 
 
@@ -43,9 +44,10 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
-    
+
     HttpModule,
     TreeModule,
+    FlexLayoutModule,
     RouterModule.forRoot(appRoutes, { useHash: true })
   ],
   declarations: [

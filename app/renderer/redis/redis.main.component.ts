@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TreeModel, TreeNode, TREE_ACTIONS } from 'angular2-tree-component';
 
 import { Profile, RedisServer, RedisDatabase } from './model/profile';
+import { RedisTypes } from './model/redisTypes';
 import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from './viewmodels/expandableViewModel';
 import { RedisKeyViewModel } from './viewmodels/redisKeyViewModel';
 import { ReliableRedisClient } from './model/reliableRedisClient';
@@ -24,6 +25,10 @@ export class RedisMainComponent {
   nodes: ExpandableViewModel[] = [];
   redis: ReliableRedisClient;
   keyVmList: RedisKeyViewModel[] = [];
+  selectedKeyVm: RedisKeyViewModel = null;
+  JSON: object;
+  _: object;
+  RedisTypes: object;
 
   constructor(
     router: Router,
@@ -35,6 +40,9 @@ export class RedisMainComponent {
     this.ngZone = ngZone;
     this.route = route;
     this.userPreferencesRepository = userPreferencesRepository;
+    this.JSON = JSON;
+    this._ = _;
+    this.RedisTypes = RedisTypes;
 
     let currentProfile = this.userPreferencesRepository.getCurrentProfile();
     this.currentProfile = currentProfile;
@@ -45,8 +53,7 @@ export class RedisMainComponent {
   }
 
   onSelectedKeyVmChanged = ($event: any): void => {
-    console.log('event => ', $event);
-    console.log('index => ', $event.index);
+    this.selectedKeyVm = this.keyVmList[$event.index];
   }
 
   onEvent = ($event) => console.log($event);
@@ -56,6 +63,7 @@ export class RedisMainComponent {
 
   private async getSubItems(node: any) {
     let vm = <ExpandableViewModel>node.data;
+    console.log(`getting subitems for type: ${TreeItemType[vm.type]}`)
     switch (vm.type) {
       case TreeItemType.Server:
         this.getServerSubItems(node, vm);
@@ -67,7 +75,10 @@ export class RedisMainComponent {
 
       case TreeItemType.Key:
         let keyVm = new RedisKeyViewModel(this.redis, vm.name, 0);
-        keyVm.isActive = false;
+        _.forEach(this.keyVmList, each => each.isActive = false);
+        keyVm.isActive = true;
+        keyVm.loadDetailsAsync();
+
         this.keyVmList.push(keyVm);
         break;
     }

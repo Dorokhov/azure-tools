@@ -1,9 +1,19 @@
 <h2>Redis</h2>
 
-<tree-root #tree [nodes]="nodes" [options]="options" (onToggleExpanded)="onToggleExpanded($event)" (onEvent)="onEvent($event)"></tree-root>
+<div class="flex-container" fxLayout="row">
+    <tree-root fxFlex="30%" #tree [nodes]="nodes" [options]="options" (onToggleExpanded)="onToggleExpanded($event)" (onEvent)="onEvent($event)"></tree-root>
 
-<md-tab-group>
-    <md-tab *ngFor="let keyVm of keyVmList" label="{{keyVm.name}}">
-        {{keyVm.name}}
-    </md-tab>
-</md-tab-group>
+    <md-tab-group fxFlex="40%" (selectChange)="onSelectedKeyVmChanged($event)">
+        <md-tab *ngFor="let keyVm of keyVmList" label="{{keyVm.name}}">
+            <p>Value</p>
+            <p></p>
+        </md-tab>
+    </md-tab-group>
+
+    <md-list fxFlex="*">
+        <md-list-item> Key: {{_.isNil(selectedKeyVm) ? '-' :selectedKeyVm.name}} </md-list-item>
+        <md-list-item> TTL: {{_.isNil(selectedKeyVm) ? '-': selectedKeyVm.ttl}} </md-list-item>
+        <md-list-item> Type: {{_.isNil(selectedKeyVm) || _.isNil(selectedKeyVm.dataStructure) ? '-' : selectedKeyVm.dataStructure.typeToDisplay}}
+            </md-list-item>
+    </md-list>
+</div>
