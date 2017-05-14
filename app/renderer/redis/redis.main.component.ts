@@ -29,6 +29,7 @@ export class RedisMainComponent {
   JSON: object;
   _: object;
   RedisTypes: object;
+  TreeItemType: object;
 
   constructor(
     router: Router,
@@ -43,6 +44,7 @@ export class RedisMainComponent {
     this.JSON = JSON;
     this._ = _;
     this.RedisTypes = RedisTypes;
+    this.TreeItemType = TreeItemType;
 
     let currentProfile = this.userPreferencesRepository.getCurrentProfile();
     this.currentProfile = currentProfile;
@@ -59,6 +61,18 @@ export class RedisMainComponent {
   onEvent = ($event) => console.log($event);
   onToggleExpanded = ($event) => {
     this.getSubItems($event.node);
+  };
+
+  onActivate = ($event) => {
+    $event.node.data.isExpanded = true;
+    $event.node.toggleExpanded();
+  //  this.getSubItems($event.node);
+};
+
+ onDeactivate = ($event) => {
+    $event.node.data.isExpanded = false;
+    $event.node.toggleCollapsed()
+  //  this.getSubItems($event.node);
   };
 
   private async getSubItems(node: any) {
@@ -97,6 +111,7 @@ export class RedisMainComponent {
 
   private async getDatabaseSubItems(node: any, vm: ExpandableViewModel) {
     let db = <ExpandableViewModelGeneric<RedisDatabase>>vm;
+
     let keys = await this.redis.keysAsync(db.model.number);
     vm.children.length = 0;
     _.map(keys, key => {

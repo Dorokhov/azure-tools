@@ -33,19 +33,18 @@
     'rxjs': '../node_modules/rxjs',
     'angular2-in-memory-web-api': '../node_modules/angular2-in-memory-web-api',
 
-'double-ended-queue': '../node_modules/double-ended-queue/js/deque.js',
-'redis-parser': '../node_modules/redis-parser/index.js',
+    'double-ended-queue': '../node_modules/double-ended-queue/js/deque.js',
+    'redis-parser': '../node_modules/redis-parser/index.js',
 
-   'redis': '../node_modules/redis/index.js',
-   'redis-commands': '../node_modules/redis-commands/index.js',
-   'bluebird': '../node_modules/bluebird/js/browser/bluebird.min.js',
-   'hiredis': '../node_modules/hiredis/hiredis.js',
-   'bindings': '../node_modules/bindings/bindings.js',
-   'hiredis.node' : '../node_modules/hiredis/build/Release/hiredis.node',
+    'redis': '../node_modules/redis/index.js',
+    'redis-commands': '../node_modules/redis-commands/index.js',
+    'bluebird': '../node_modules/bluebird/js/browser/bluebird.min.js',
+    'hiredis': '../node_modules/hiredis/hiredis.js',
+    'bindings': '../node_modules/bindings/bindings.js',
+    'hiredis.node': '../node_modules/hiredis/build/Release/hiredis.node',
 
-
-    'node-binary': '../node_modules/systemjs-plugin-node-binary/node-binary.js'
-   
+    'node-binary': '../node_modules/systemjs-plugin-node-binary/node-binary.js',
+    'angular2-fontawesome': '../node_modules/angular2-fontawesome/bundles/angular2-fontawesome.umd.js'
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
@@ -68,7 +67,7 @@
     },
     'redis': {
       defaultExtension: 'js',
-      map : {
+      map: {
         'utils': '../node_modules/redis/lib/utils.js',
       }
     },
@@ -80,15 +79,15 @@
     },
     'bindings': {
       defaultExtension: 'js',
-        meta: {
+      meta: {
         'bindings': {
-            'format': "cjs",
-            'deps': ['hiredis.node']
+          'format': "cjs",
+          'deps': ['hiredis.node']
         }
-    }
+      }
     },
 
-     '../node_modules/hiredis/build/Release': {
+    '../node_modules/hiredis/build/Release': {
       defaultExtension: false,
       meta: {
         '*.node': {
@@ -96,6 +95,9 @@
         }
       }
     },
+    'angular2-fontawesome': {
+      defaultExtension: 'js'
+    }
   };
 
   var packageNames = [
@@ -114,7 +116,7 @@
     'lodash',
     'angular-tree-component',
     'redis',
-  //  'hiredis',
+    //  'hiredis',
     'bindings'
   ];
 
@@ -122,10 +124,10 @@
     map: map,
     packages: packages,
     meta: {
-        'bindings': {
-            'format': "cjs",
-            'deps': ['hiredis.node']
-        }
+      'bindings': {
+        'format': "cjs",
+        'deps': ['hiredis.node']
+      }
     }
   }
 

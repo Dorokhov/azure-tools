@@ -2,12 +2,14 @@
     height: 100%;
 }
 
-
-/*button.sm {
-    width: 25px !important;
-    height: 25px !important;
-}*/
-
 md-icon {
     color: white;
+}
+
+.toggle-children{
+    display: none !important;
+}
+
+.node-content-wrapper{
+    width: 100% !important;
 }

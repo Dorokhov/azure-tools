@@ -14,6 +14,7 @@ import { MaterialModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { Angular2FontawesomeModule } from 'angular2-fontawesome'
 import { TreeModule } from 'angular2-tree-component';
 
 import { RedisMainComponent } from './redis/redis.main.component';
@@ -44,10 +45,10 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
-
     HttpModule,
     TreeModule,
     FlexLayoutModule,
+    Angular2FontawesomeModule,
     RouterModule.forRoot(appRoutes, { useHash: true })
   ],
   declarations: [

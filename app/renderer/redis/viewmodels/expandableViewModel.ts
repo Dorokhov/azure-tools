@@ -9,6 +9,7 @@
     type: TreeItemType;
     children: ExpandableViewModel[] = [];
     hasChildren: boolean = true;
+    isExpanded : boolean = false;
 }
 
 export class ExpandableViewModelGeneric<T> extends ExpandableViewModel {

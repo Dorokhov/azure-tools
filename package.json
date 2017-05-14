@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "angular2-fontawesome": "^0.9.0",
     "systemjs-plugin-node-binary": "^0.1.2",
     "wiredep": "^3.0.0-beta"
   },
