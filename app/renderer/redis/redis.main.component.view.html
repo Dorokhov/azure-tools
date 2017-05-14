@@ -1,51 +1,66 @@
-<div style="height:100vh;" fxFlex fxLayoutAlign="stretch stretch">
+<div style="height:100vh;" fxFlex fxLayout="column">
+    <md-toolbar style="background: white;  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); z-index:1000; position:relative;">
+        <!--<span>{{buildVersion}}</span>
 
-    <vertical-split-pane fxFlex="70" primary-component-minsize="150" secondary-component-minsize="180" primary-component-initialratio="0.3"
-    local-storage-key="azure-tools-redis-main-splitter">
+        <span class="example-fill-remaining-space"></span>-->
+        <div   fxFlex="20" >
+            <button fxFlexAlign="start center" md-raised-button color="primary">New Key</button>
+        </div>
 
-        <div class="split-pane-content-primary">
+        <div fxFlex="60" fxLayout="column" fxFlexAlign="center center" fxFill>
             <md-input-container>
                 <input mdInput placeholder="search" [mdAutocomplete]="auto">
             </md-input-container>
-
-            <md-autocomplete #auto="mdAutocomplete">
-                <md-option *ngFor="let state of filteredStates | async" [value]="state">
-                    {{ state }}
-                </md-option>
-            </md-autocomplete>
-            <tree-root #tree [nodes]="nodes" [options]="options" (onToggleExpanded)="onToggleExpanded($event)" (onActivate)="onActivate($event)"
-                (onDeactivate)="onDeactivate($event)" (onEvent)="onEvent($event)" style="min-height: 100%">
-                <ng-template #treeNodeTemplate let-node let-index="index">
-                    <i fa class="{{node.data.isExpanded ? 'fa-caret-down' : 'fa-caret-right'}}" style="margin:5px;"></i>
-                    <i fa class="fa-server fa-lg" style="margin:5px; color:#f44336;" *ngIf="node.data.type === TreeItemType.Server"></i>
-                    <i fa class="fa-database fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Database"></i>
-                    <i fa class="fa-key fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Key"></i>
-
-                    <span>{{ node.data.name }}</span>
-                </ng-template>
-            </tree-root>
         </div>
 
-        <div class="split-pane-content-secondary">
-            <md-tab-group (selectChange)="onSelectedKeyVmChanged($event)" style="margin:20px 0 0 10px">
-                <md-tab *ngFor="let keyVm of keyVmList" label="{{keyVm.name}}" style="background:white;">
-                    <p>Value</p>
-                    <p>{{keyVm.dataStructure.value}}</p>
-                </md-tab>
-            </md-tab-group>
+        <md-autocomplete #auto="mdAutocomplete">
+            <md-option *ngFor="let state of filteredStates | async" [value]="state">
+                {{ state }}
+            </md-option>
+        </md-autocomplete>
+
+        <div fxFlex="20"></div>
+    </md-toolbar>
+
+    <div fxFlex fxLayoutAlign="stretch stretch" fxLayout="row">
+        <vertical-split-pane fxFlex="70" primary-component-minsize="150" secondary-component-minsize="180" primary-component-initialratio="0.3"
+            local-storage-key="azure-tools-redis-main-splitter">
+
+            <div class="split-pane-content-primary" style="margin:20px 0 0 0">
+                <tree-root #tree [nodes]="nodes" [options]="options" (onToggleExpanded)="onToggleExpanded($event)" (onActivate)="onActivate($event)"
+                    (onDeactivate)="onDeactivate($event)" (onEvent)="onEvent($event)">
+                    <ng-template #treeNodeTemplate let-node let-index="index">
+                        <i fa class="{{node.data.isExpanded ? 'fa-caret-down' : 'fa-caret-right'}}" style="margin:5px;"></i>
+                        <i fa class="fa-server fa-lg" style="margin:5px; color:#f44336;" *ngIf="node.data.type === TreeItemType.Server"></i>
+                        <i fa class="fa-database fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Database"></i>
+                        <i fa class="fa-key fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Key"></i>
+
+                        <span>{{ node.data.name }}</span>
+                    </ng-template>
+                </tree-root>
+            </div>
+
+            <div class="split-pane-content-secondary">
+                <md-tab-group (selectChange)="onSelectedKeyVmChanged($event)" style="margin:20px 0 0 10px">
+                    <md-tab *ngFor="let keyVm of keyVmList" label="{{keyVm.name}}" style="background:white;">
+                        <p>Value</p>
+                        <p>{{ _.isNil(keyVm.dataStructure)? '-': keyVm.dataStructure.value}}</p>
+                    </md-tab>
+                </md-tab-group>
+            </div>
+        </vertical-split-pane>
+
+        <div fxFlex="30" style="background: white; box-shadow: -5px 0px 5px 1px rgba(0,0,0,0.19)">
+            <md-list fxFlex="*" style="background:white;align-items:stretch; min-height: 100%; margin: 20px 20px 20px 20px">
+                <h3 md-subheader>Details</h3>
+                <md-list-item> Key: {{_.isNil(selectedKeyVm) ? '-' :selectedKeyVm.name}} </md-list-item>
+                <md-list-item> TTL: {{_.isNil(selectedKeyVm) ? '-': selectedKeyVm.ttl}} </md-list-item>
+                <md-list-item> Type: {{_.isNil(selectedKeyVm) || _.isNil(selectedKeyVm.dataStructure) ? '-' : selectedKeyVm.dataStructure.typeToDisplay}}</md-list-item>
+
+                <md-divider></md-divider>
+
+                <h3 md-subheader>Actions</h3>
+            </md-list>
         </div>
-    </vertical-split-pane>
-
-    <div fxFlex="30" style="background: white; box-shadow: -5px 0px 5px 1px rgba(0,0,0,0.19)">
-        <md-list fxFlex="*" style="background:white;align-items:stretch; min-height: 100%; margin: 20px 20px 20px 20px">
-            <h3 md-subheader>Details</h3>
-            <md-list-item> Key: {{_.isNil(selectedKeyVm) ? '-' :selectedKeyVm.name}} </md-list-item>
-            <md-list-item> TTL: {{_.isNil(selectedKeyVm) ? '-': selectedKeyVm.ttl}} </md-list-item>
-            <md-list-item> Type: {{_.isNil(selectedKeyVm) || _.isNil(selectedKeyVm.dataStructure) ? '-' : selectedKeyVm.dataStructure.typeToDisplay}}</md-list-item>
-
-            <md-divider></md-divider>
-
-            <h3 md-subheader>Actions</h3>
-        </md-list>
     </div>
 </div>

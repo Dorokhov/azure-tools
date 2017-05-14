@@ -73,7 +73,7 @@ export class RedisMainComponent {
 
  onDeactivate = ($event) => {
     $event.node.data.isExpanded = false;
-    $event.node.toggleCollapsed();
+  //  $event.node.toggleCollapsed();
   };
 
   private async getSubItems(node: any) {
