@@ -1,51 +1,46 @@
-﻿import {IHierarchy} from './expandableViewModel';
-import {RedisDataStructure, RedisStringVM} from './redisDataStructures';
-//import {ReliableRedisClient, RedisConnection} from '../redis-model/reliableRedisClient';
+﻿import { RedisDataStructure, RedisStringVM } from './redisDataStructures';
+import { ReliableRedisClient } from '../model/reliableRedisClient'
 
-export class RedisKeyViewModel implements IHierarchy {
-    public ttl: number;
-    public items: IHierarchy[] = new Array<IHierarchy>();
-    public dataStructure: RedisDataStructure;
+export class RedisKeyViewModel {
+    ttl: number;
+    dataStructure: RedisDataStructure;
+    isActive: boolean;
 
     constructor(
-        public $log: ng.ILogService,
-        public $timeout: any,
-        protected $q: ng.IQService,
-      //  public redis: ReliableRedisClient,
+        private redis: ReliableRedisClient,
         public name: string,
         public db: number) { }
 
     loadDetails() {
         console.log('loading TTL..');
-        // this.redis
-        //     .pttlAsync(this.db, name)
-        //     .then((data) => {
-        //         this.$log.debug('TTL: ' + data);
-        //         this.$timeout(() => {
-        //             this.ttl = data
-        //         });
-        //     });
+        this.redis
+            .pttlAsync(this.db, name)
+            .then((data) => {
+                console.log('TTL: ' + data);
+                this.ttl = data;
+            });
 
         this.loadDataStructureAsync()
             .then(ds => this.dataStructure = ds);
     }
 
-    private loadDataStructureAsync(): ng.IPromise<RedisDataStructure> {        
-        var deferred = this.$q.defer();
-        // this.redis
-        //     .typeAsync(this.db, this.name)
-        //     .then(type => {
-        //         switch (type) {
-        //             case 'string':
-        //                 this.redis
-        //                     .getAsync(this.db, this.name)
-        //                     .then(value => deferred.resolve(new RedisStringVM(value)));
-        //                 break;
-        //             default:
-        //                 break;
-        //         }
-        //     });
+    private loadDataStructureAsync(): ng.IPromise<RedisDataStructure> {
 
-        return deferred.promise;
+        return new Promise((resolve, reject) => {
+            this.redis
+                .typeAsync(this.db, this.name)
+                .then(type => {
+                    switch (type) {
+                        case 'string':
+
+                            this.redis
+                                .getAsync(this.db, this.name)
+                                .then(value => resolve(new RedisStringVM(value)));
+                            break;
+                        default:
+                            break;
+                    }
+                });
+        });
     }
 }

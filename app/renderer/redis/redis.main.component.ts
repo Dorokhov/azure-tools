@@ -1,33 +1,58 @@
 import { Component, NgZone } from '@angular/core';
-import { Profile, RedisServer, RedisDatabase } from './model/profile';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TreeModel, TreeNode, TREE_ACTIONS } from 'angular2-tree-component';
+
+import { Profile, RedisServer, RedisDatabase } from './model/profile';
 import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from './viewmodels/expandableViewModel';
-import { ReliableRedisClient } from './model/reliableRedisClient'
+import { RedisKeyViewModel } from './viewmodels/redisKeyViewModel';
+import { ReliableRedisClient } from './model/reliableRedisClient';
+import { UserPreferencesRepository } from './model/userPreferencesRepository';
 
 @Component({
   templateUrl: './redis/redis.main.component.view.html',
-  providers: [ReliableRedisClient]
+  providers: [ReliableRedisClient, UserPreferencesRepository]
 })
 
+
 export class RedisMainComponent {
+  private ngZone: NgZone;
+  private route: ActivatedRoute;
+  private userPreferencesRepository: UserPreferencesRepository;
+  private currentProfile: Profile;
+
   router: Router;
   nodes: ExpandableViewModel[] = [];
   redis: ReliableRedisClient;
+  keyVmList: RedisKeyViewModel[] = [];
+
+  constructor(
+    router: Router,
+    route: ActivatedRoute,
+    redis: ReliableRedisClient,
+    ngZone: NgZone,
+    userPreferencesRepository: UserPreferencesRepository) {
+    this.redis = redis;
+    this.ngZone = ngZone;
+    this.route = route;
+    this.userPreferencesRepository = userPreferencesRepository;
+
+    let currentProfile = this.userPreferencesRepository.getCurrentProfile();
+    this.currentProfile = currentProfile;
+
+    let newServer = <RedisServer>route.params.value;
+
+    this.nodes = _.map(this.currentProfile.servers, server => new ExpandableViewModel(TreeItemType.Server, server.host));
+  }
+
+  onSelectedKeyVmChanged = ($event: any): void => {
+    console.log('event => ', $event);
+    console.log('index => ', $event.index);
+  }
 
   onEvent = ($event) => console.log($event);
   onToggleExpanded = ($event) => {
     this.getSubItems($event.node);
   };
-
-  constructor(router: Router, private route: ActivatedRoute, redis: ReliableRedisClient, private _ngZone: NgZone) {
-    this.redis = redis;
-
-    let newServer = <RedisServer>route.params.value;
-
-    let vm = new ExpandableViewModel(TreeItemType.Server, newServer.host);
-    this.nodes.push(vm);
-  }
 
   private async getSubItems(node: any) {
     let vm = <ExpandableViewModel>node.data;
@@ -38,6 +63,12 @@ export class RedisMainComponent {
 
       case TreeItemType.Database:
         this.getDatabaseSubItems(node, vm);
+        break;
+
+      case TreeItemType.Key:
+        let keyVm = new RedisKeyViewModel(this.redis, vm.name, 0);
+        keyVm.isActive = false;
+        this.keyVmList.push(keyVm);
         break;
     }
   }
@@ -61,6 +92,6 @@ export class RedisMainComponent {
       db.children.push(new ExpandableViewModel(TreeItemType.Key, key));
     });
 
-    this._ngZone.run(() => { node.treeModel.update(); });
+    this.ngZone.run(() => { node.treeModel.update(); });
   }
 }

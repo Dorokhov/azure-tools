@@ -1,3 +1,9 @@
-<h2>REDIS</h2>
+<h2>Redis</h2>
 
 <tree-root #tree [nodes]="nodes" [options]="options" (onToggleExpanded)="onToggleExpanded($event)" (onEvent)="onEvent($event)"></tree-root>
+
+<md-tab-group>
+    <md-tab *ngFor="let keyVm of keyVmList" label="{{keyVm.name}}">
+        {{keyVm.name}}
+    </md-tab>
+</md-tab-group>

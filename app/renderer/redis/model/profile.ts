@@ -2,7 +2,7 @@ import { RedisType } from './redisTypes';
 
 export class Profile {
   name: string;
-  servers: RedisServer[];
+  servers: RedisServer[] = [];
 }
 
 export class RedisServer{
@@ -12,13 +12,13 @@ export class RedisServer{
   port: number;
   password: string;
   maxNumberToScanNotEmpty: number = 100;
-  databases: RedisDatabase[];
+  databases: RedisDatabase[] = [];
 }
 
 export class RedisDatabase{
   number: number;
   name: string;
-  keys: RedisKey[];
+  keys: RedisKey[] = [];
   separator: string;
 }
 

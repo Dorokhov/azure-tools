@@ -1,22 +1,33 @@
 import { Component } from '@angular/core';
-import { Profile, RedisServer } from './model/profile';
 import { Router } from '@angular/router';
+import { Profile, RedisServer } from './model/profile';
+import { UserPreferencesRepository } from './model/userPreferencesRepository';
 
 @Component({
-  templateUrl: './redis/redis.management.component.view.html'
+  templateUrl: './redis/redis.management.component.view.html',
+  providers: [UserPreferencesRepository]
 })
 
 export class RedisManagementComponent {
   currentProfile: Profile;
   router: Router;
 
-  constructor(router: Router) {
-    let defaultProfile = new Profile();
-    defaultProfile.name = 'Default';
+  buildVersion: number = 1;
 
-    this.currentProfile = defaultProfile;
+  constructor(router: Router, userPreferencesRepository: UserPreferencesRepository) {
     this.router = router;
 
-    router.navigate(['management/server/add']);
+    // constantly increments counter and displays counter on the screen for dev purpose
+    // that allows to see when watch has recompiled the app
+    this.buildVersion = _.isNil(localStorage.getItem('buildVersion')) ? 3 : parseInt(localStorage.getItem('buildVersion'), 10);
+    localStorage.setItem('buildVersion', (this.buildVersion + 1).toString());
+
+    let currentProfile = userPreferencesRepository.getCurrentProfile();
+    if (currentProfile === null) {
+      router.navigate(['management/server/add']);
+    }
+    else {
+      router.navigate(['redis']);
+    }
   }
 }

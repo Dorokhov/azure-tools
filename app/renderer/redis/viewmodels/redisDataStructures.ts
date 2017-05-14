@@ -1,6 +1,4 @@
-'use strict'
-
-import {RedisTypes} from '../../redis/model/redisTypes';
+import { RedisTypes } from '../../redis/model/redisTypes';
 
 export class RedisDataStructure {
     public type: RedisTypes;
