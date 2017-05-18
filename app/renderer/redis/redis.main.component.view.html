@@ -41,7 +41,7 @@
             </div>
 
             <div class="split-pane-content-secondary">
-                <md-tab-group (selectChange)="onSelectedKeyVmChanged($event)" style="margin:20px 0 0 10px">
+                <md-tab-group #tabGroup (selectChange)="onSelectedKeyVmChanged($event)" [(selectedIndex)]="selectedKeyVmIndex" style="margin:20px 0 0 10px">
                     <md-tab *ngFor="let keyVm of keyVmList" label="{{keyVm.name}}" style="background:white;">
                         <p>Value</p>
                         <p>{{ _.isNil(keyVm.dataStructure)? '-': keyVm.dataStructure.value}}</p>

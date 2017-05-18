@@ -26,12 +26,13 @@ export class RedisMainComponent {
   redis: ReliableRedisClient;
   keyVmList: RedisKeyViewModel[] = [];
   selectedKeyVm: RedisKeyViewModel = null;
+  selectedKeyVmIndex: number;
   JSON: object;
   _: object;
   RedisTypes: object;
   TreeItemType: object;
   options: object = {
-    nodeHeight : 32
+    nodeHeight: 32
   };
 
   constructor(
@@ -69,11 +70,11 @@ export class RedisMainComponent {
   onActivate = ($event) => {
     $event.node.data.isExpanded = true;
     $event.node.toggleExpanded();
-};
+  };
 
- onDeactivate = ($event) => {
+  onDeactivate = ($event) => {
     $event.node.data.isExpanded = false;
-  //  $event.node.toggleCollapsed();
+    //  $event.node.toggleCollapsed();
   };
 
   private async getSubItems(node: any) {
@@ -81,25 +82,20 @@ export class RedisMainComponent {
     console.log(`getting subitems for type: ${TreeItemType[vm.type]}`)
     switch (vm.type) {
       case TreeItemType.Server:
-        this.getServerSubItems(node, vm);
+        this.displayServerSubItems(node, vm);
         break;
 
       case TreeItemType.Database:
-        this.getDatabaseSubItems(node, vm);
+        this.displayDatabaseSubItems(node, vm);
         break;
 
       case TreeItemType.Key:
-        let keyVm = new RedisKeyViewModel(this.redis, vm.name, 0);
-        _.forEach(this.keyVmList, each => each.isActive = false);
-        keyVm.isActive = true;
-        keyVm.loadDetailsAsync();
-
-        this.keyVmList.push(keyVm);
+        this.displayKey(vm);
         break;
     }
   }
 
-  private getServerSubItems(node: any, vm: ExpandableViewModel) {
+  private displayServerSubItems(node: any, vm: ExpandableViewModel) {
     vm.children.length = 0;
     _.map(_.range(0, 10 + 1, 1), each => {
       let db = new RedisDatabase();
@@ -110,7 +106,7 @@ export class RedisMainComponent {
     node.treeModel.update();
   }
 
-  private async getDatabaseSubItems(node: any, vm: ExpandableViewModel) {
+  private async displayDatabaseSubItems(node: any, vm: ExpandableViewModel) {
     let db = <ExpandableViewModelGeneric<RedisDatabase>>vm;
 
     let keys = await this.redis.keysAsync(db.model.number);
@@ -120,5 +116,24 @@ export class RedisMainComponent {
     });
 
     this.ngZone.run(() => { node.treeModel.update(); });
+  }
+
+  private displayKey(vm: ExpandableViewModel) {
+    if (_.some(this.keyVmList, x => x.name === vm.name)) {
+      this.selectedKeyVmIndex = _.indexOf(this.keyVmList, _.find(this.keyVmList, x => x.name === vm.name));
+      return;
+    }
+
+    let keyVm = new RedisKeyViewModel(this.redis, vm.name, 0);
+    _.forEach(this.keyVmList, each => each.isActive = false);
+    keyVm.isActive = true;
+    keyVm.loadDetailsAsync();
+
+
+
+    this.selectedKeyVmIndex = this.keyVmList.length;
+    console.log(`selected Key ${this.selectedKeyVmIndex}`)
+
+    this.ngZone.run(() => this.keyVmList.push(keyVm));
   }
 }
