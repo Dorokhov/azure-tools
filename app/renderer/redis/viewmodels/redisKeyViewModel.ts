@@ -1,4 +1,4 @@
-﻿import { RedisDataStructure, RedisStringVM } from './redisDataStructures';
+﻿import { RedisDataStructure, RedisStringVM, RedisHashVM } from './redisDataStructures';
 import { ReliableRedisClient } from '../model/reliableRedisClient'
 
 export class RedisKeyViewModel {
@@ -30,10 +30,18 @@ export class RedisKeyViewModel {
                     console.log(`Type: ${type}`);
                     switch (type) {
                         case 'string':
-
                             this.redis
                                 .getAsync(this.db, this.name)
                                 .then(value => resolve(new RedisStringVM(value)));
+                            break;
+                       case 'hash':
+                            this.redis
+                                .hgetall(this.db, this.name)
+                                .then(value => {
+                                    console.log('hash loaded');
+                                    console.log(value);
+                                    return resolve(new RedisHashVM(value));
+                                });
                             break;
                         default:
                             break;

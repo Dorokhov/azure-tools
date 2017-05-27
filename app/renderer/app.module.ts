@@ -21,6 +21,7 @@ import { RedisMainComponent } from './redis/redis.main.component';
 import { RedisManagementComponent } from './redis/redis.management.component';
 import { RedisServerManagementComponent } from './redis/server.management.component';
 import { SplitPaneModule } from 'ng2-split-pane';
+import {DataTableModule,SharedModule} from 'primeng';
 
 import { readFile } from '@node/fs'
 readFile;
@@ -51,6 +52,10 @@ const appRoutes: Routes = [
     FlexLayoutModule,
     SplitPaneModule,
     Angular2FontawesomeModule,
+
+    DataTableModule,
+    SharedModule,
+
     RouterModule.forRoot(appRoutes, { useHash: true })
   ],
   declarations: [

@@ -3,7 +3,7 @@
         <!--<span>{{buildVersion}}</span>
 
         <span class="example-fill-remaining-space"></span>-->
-        <div   fxFlex="20" >
+        <div fxFlex="20">
             <button fxFlexAlign="start center" md-raised-button color="primary">New Key</button>
         </div>
 
@@ -26,7 +26,7 @@
         <vertical-split-pane fxFlex="70" primary-component-minsize="150" secondary-component-minsize="180" primary-component-initialratio="0.3"
             local-storage-key="azure-tools-redis-main-splitter">
 
-            <div class="split-pane-content-primary" style="margin:20px 0 0 0">
+            <div class="split-pane-content-primary windowHeight" style="margin:20px 0 0 0;">
                 <tree-root #tree [nodes]="nodes" [options]="options" (onToggleExpanded)="onToggleExpanded($event)" (onActivate)="onActivate($event)"
                     (onDeactivate)="onDeactivate($event)" (onEvent)="onEvent($event)">
                     <ng-template #treeNodeTemplate let-node let-index="index">
@@ -38,6 +38,12 @@
                         <span>{{ node.data.name }}</span>
                     </ng-template>
                 </tree-root>
+
+                <!--<p-treeTable [value]="nodes">
+    <p-column field="id" header="ID"></p-column>
+    <p-column field="name" header="Name"></p-column>
+    <p-column field="type" header="Type"></p-column>
+</p-treeTable>-->
             </div>
 
             <div class="split-pane-content-secondary">
@@ -45,6 +51,15 @@
                     <md-tab *ngFor="let keyVm of keyVmList" label="{{keyVm.name}}" style="background:white;">
                         <p>Value</p>
                         <p>{{ _.isNil(keyVm.dataStructure)? '-': keyVm.dataStructure.value}}</p>
+
+                        <div>
+                            <p *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'Hash'" class="tabHashHeight">
+                                <p-dataTable [value]="keyVm.dataStructure.keyValues">
+                                    <p-column field="key" header="Key"></p-column>
+                                    <p-column field="value" header="Value"></p-column>
+                                </p-dataTable>
+                            </p>
+                        </div>
                     </md-tab>
                 </md-tab-group>
             </div>
@@ -54,7 +69,7 @@
             <md-list fxFlex="*" style="background:white;align-items:stretch; min-height: 100%; margin: 20px 20px 20px 20px">
                 <h3 md-subheader>Details</h3>
                 <md-list-item> Key: {{_.isNil(selectedKeyVm) ? '-' :selectedKeyVm.name}} </md-list-item>
-                <md-list-item> TTL: {{_.isNil(selectedKeyVm) ? '-': selectedKeyVm.ttl}} </md-list-item>
+                <md-list-item> TTL: {{_.isNil(selectedKeyVm) ? '-': (selectedKeyVm.ttl == -1 ? 'Never Expires' : selectedKeyVm.ttl)}} </md-list-item>
                 <md-list-item> Type: {{_.isNil(selectedKeyVm) || _.isNil(selectedKeyVm.dataStructure) ? '-' : selectedKeyVm.dataStructure.typeToDisplay}}</md-list-item>
 
                 <md-divider></md-divider>

@@ -45,12 +45,16 @@
 
     'node-binary': '../node_modules/systemjs-plugin-node-binary/node-binary.js',
     'angular2-fontawesome': '../node_modules/angular2-fontawesome/bundles/angular2-fontawesome.umd.js',
-    'ng2-split-pane': '../node_modules/ng2-split-pane/lib/ng2-split-pane.js'
+    'ng2-split-pane': '../node_modules/ng2-split-pane/lib/ng2-split-pane.js',
+    'primeng': '../node_modules/primeng/primeng.js'
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app': {
       main: 'boot.js',
+      defaultExtension: 'js'
+    },
+    primeng: {
       defaultExtension: 'js'
     },
     'rxjs': {

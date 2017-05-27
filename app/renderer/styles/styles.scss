@@ -24,6 +24,15 @@ body{
   min-height: 100%;
 }
 
-#mainScreen{
+.windowHeight{
     height:-webkit-calc(100vh - 120px);
+}
+
+.tabHashHeight{
+    height:-webkit-calc(100vh - 250px);
+    margin: 20px;
+}
+
+md-tab-body{
+    margin-right:10px;
 }

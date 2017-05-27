@@ -32,7 +32,10 @@ export class RedisMainComponent {
   RedisTypes: object;
   TreeItemType: object;
   options: object = {
-    nodeHeight: 32
+    //nodeHeight: 17,
+    useVirtualScroll: true,
+     nodeHeight: (node: TreeNode) => 17,
+     dropSlotHeight: 0
   };
 
   constructor(
@@ -110,7 +113,9 @@ export class RedisMainComponent {
     let db = <ExpandableViewModelGeneric<RedisDatabase>>vm;
 
     let keys = await this.redis.keysAsync(db.model.number);
+    console.log(`number of keys loaded from db '${db.model.number}' is ${_.isNil(keys) ? 0 : keys.length}`);
     vm.children.length = 0;
+    
     _.map(keys, key => {
       db.children.push(new ExpandableViewModel(TreeItemType.Key, key));
     });
