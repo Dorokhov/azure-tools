@@ -17,6 +17,11 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { Angular2FontawesomeModule } from 'angular2-fontawesome'
 import { TreeModule } from 'angular2-tree-component';
 
+import { RedisStringComponent } from './redis/components/redis.string.component';
+import { RedisHashComponent } from './redis/components/redis.hash.component';
+import { RedisSetComponent } from './redis/components/redis.set.component';
+import { RedisZSetComponent } from './redis/components/redis.zset.component';
+
 import { RedisMainComponent } from './redis/redis.main.component';
 import { RedisManagementComponent } from './redis/redis.management.component';
 import { RedisServerManagementComponent } from './redis/server.management.component';
@@ -61,7 +66,12 @@ const appRoutes: Routes = [
   declarations: [
     RedisManagementComponent,
     RedisServerManagementComponent,
-    RedisMainComponent
+    RedisMainComponent,
+
+    RedisStringComponent,
+    RedisHashComponent,
+    RedisSetComponent,
+    RedisZSetComponent
   ],
   bootstrap: [RedisManagementComponent]
 })

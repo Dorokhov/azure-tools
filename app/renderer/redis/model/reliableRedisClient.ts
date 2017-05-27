@@ -34,11 +34,19 @@ export class ReliableRedisClient {
         return this.tryingReuseConnection(db).getAsync(key);
     }
 
-    hgetall(db: number, key: string): Promise<string> {
+    hgetallAsync(db: number, key: string): Promise<object[]> {
         return this.tryingReuseConnection(db).hgetallAsync(key);
     }
 
-    keysAsync(db: number): Promise<Array<string>> {
+    smembersAsync(db: number, key: string): Promise<string[]> {
+        return this.tryingReuseConnection(db).smembersAsync(key);
+    }
+
+    zrangeAsync(db: number, key: string): Promise<object[]> {
+        return this.tryingReuseConnection(db).zrangeAsync(key, 0, 1);
+    }
+
+    keysAsync(db: number): Promise<string[]> {
         return this.tryingReuseConnection(db).keysAsync('*');
     }
 

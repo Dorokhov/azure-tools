@@ -32,10 +32,9 @@ export class RedisMainComponent {
   RedisTypes: object;
   TreeItemType: object;
   options: object = {
-    //nodeHeight: 17,
     useVirtualScroll: true,
-     nodeHeight: (node: TreeNode) => 17,
-     dropSlotHeight: 0
+    nodeHeight: (node: TreeNode) => 17,
+    dropSlotHeight: 0
   };
 
   constructor(
@@ -77,7 +76,7 @@ export class RedisMainComponent {
 
   onDeactivate = ($event) => {
     $event.node.data.isExpanded = false;
-    //  $event.node.toggleCollapsed();
+    //$event.node.toggleCollapsed();
   };
 
   private async getSubItems(node: any) {
@@ -115,7 +114,7 @@ export class RedisMainComponent {
     let keys = await this.redis.keysAsync(db.model.number);
     console.log(`number of keys loaded from db '${db.model.number}' is ${_.isNil(keys) ? 0 : keys.length}`);
     vm.children.length = 0;
-    
+
     _.map(keys, key => {
       db.children.push(new ExpandableViewModel(TreeItemType.Key, key));
     });

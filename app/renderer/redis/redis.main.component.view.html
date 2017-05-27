@@ -38,28 +38,19 @@
                         <span>{{ node.data.name }}</span>
                     </ng-template>
                 </tree-root>
-
-                <!--<p-treeTable [value]="nodes">
-    <p-column field="id" header="ID"></p-column>
-    <p-column field="name" header="Name"></p-column>
-    <p-column field="type" header="Type"></p-column>
-</p-treeTable>-->
             </div>
 
             <div class="split-pane-content-secondary">
                 <md-tab-group #tabGroup (selectChange)="onSelectedKeyVmChanged($event)" [(selectedIndex)]="selectedKeyVmIndex" style="margin:20px 0 0 10px">
                     <md-tab *ngFor="let keyVm of keyVmList" label="{{keyVm.name}}" style="background:white;">
                         <p>Value</p>
-                        <p>{{ _.isNil(keyVm.dataStructure)? '-': keyVm.dataStructure.value}}</p>
 
-                        <div>
-                            <p *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'Hash'" class="tabHashHeight">
-                                <p-dataTable [value]="keyVm.dataStructure.keyValues">
-                                    <p-column field="key" header="Key"></p-column>
-                                    <p-column field="value" header="Value"></p-column>
-                                </p-dataTable>
-                            </p>
-                        </div>
+                        <p class="tabHashHeight">
+                            <redis-string [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'String'"></redis-string>
+                            <redis-hash [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'Hash'"></redis-hash>
+                            <redis-set [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'Set'"></redis-set>
+                            <redis-zset [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'ZSet'"></redis-zset>
+                        </p>
                     </md-tab>
                 </md-tab-group>
             </div>
