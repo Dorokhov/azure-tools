@@ -2,11 +2,13 @@
     constructor(type: TreeItemType, name: string = '') {
         this.type = type;        
         this.name = name;
+        this.typeToDisplay = TreeItemType[type];
     }
 
     id: number;
     name: string;
     type: TreeItemType;
+    typeToDisplay: string;
     children: ExpandableViewModel[] = [];
     hasChildren: boolean = true;
     isExpanded : boolean = false;

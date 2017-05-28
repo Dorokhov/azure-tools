@@ -1,0 +1,9 @@
+<md-list fxFlex="*" style="background:white;align-items:stretch; min-height: 100%; margin: 20px 20px 20px 20px">
+    <h3 md-subheader>Database Details</h3>
+    <md-list-item> Database Number: {{_.isNil(selectedTreeViewModel) ? '-' :selectedTreeViewModel.name}} </md-list-item>
+
+    <md-divider></md-divider>
+
+    <h3 md-subheader>Actions</h3>
+    <md-list-item><a href="javascript:void(0)" (click)="createNewKey()">New Key</a></md-list-item>
+</md-list>

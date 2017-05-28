@@ -23,11 +23,15 @@ export class ReliableRedisClient {
                 .select(db)
                 .dbsize()
                 .execAsync()
-                .then(res => {
-                    res.push(db);
-                    resolve(res);
+                .then(result => {
+                    result.push(db);
+                    resolve(result);
                 });
         });
+    }
+
+    searchKeysAsync(db: number, keyPattern: string): Promise<string[]> {
+        return this.tryingReuseConnection(db).keysAsync(keyPattern);
     }
 
     getAsync(db: number, key: string): Promise<string> {

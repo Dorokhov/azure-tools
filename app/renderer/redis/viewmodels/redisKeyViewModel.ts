@@ -1,7 +1,8 @@
 ﻿import { RedisDataStructure, RedisStringVM, RedisHashVM, RedisSetVM, RedisZSetVM } from './redisDataStructures';
 import { ReliableRedisClient } from '../model/reliableRedisClient'
+import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from './expandableViewModel';
 
-export class RedisKeyViewModel {
+export class RedisKeyViewModel extends ExpandableViewModel {
     ttl: number;
     dataStructure: RedisDataStructure;
     isActive: boolean;
@@ -10,7 +11,7 @@ export class RedisKeyViewModel {
         private redis: ReliableRedisClient,
         public name: string,
         public db: number) {
-
+        super(TreeItemType.Key, name);
     }
 
     async loadDetailsAsync() {

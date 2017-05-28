@@ -1,0 +1,10 @@
+<md-list fxFlex="*" style="background:white;align-items:stretch; min-height: 100%; margin: 20px 20px 20px 20px">
+    <h3 md-subheader>Details</h3>
+    <md-list-item> Key: {{_.isNil(selectedTreeViewModel) ? '-' :selectedTreeViewModel.name}} </md-list-item>
+    <md-list-item> TTL: {{_.isNil(selectedTreeViewModel) ? '-': (selectedTreeViewModel.ttl == -1 ? 'Never Expires' : selectedTreeViewModel.ttl)}} </md-list-item>
+    <md-list-item> Type: {{_.isNil(selectedTreeViewModel) || _.isNil(selectedTreeViewModel.dataStructure) ? '-' : selectedTreeViewModel.dataStructure.typeToDisplay}}</md-list-item>
+
+    <md-divider></md-divider>
+
+    <h3 md-subheader>Actions</h3>
+</md-list>

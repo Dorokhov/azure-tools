@@ -10,7 +10,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes, Router, NavigationEnd } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from '@angular/material';
+import { MaterialModule, MdDialog, MdDialogRef } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FlexLayoutModule } from "@angular/flex-layout";
@@ -21,12 +21,16 @@ import { RedisStringComponent } from './redis/components/redis.string.component'
 import { RedisHashComponent } from './redis/components/redis.hash.component';
 import { RedisSetComponent } from './redis/components/redis.set.component';
 import { RedisZSetComponent } from './redis/components/redis.zset.component';
+import { ServerDetailsComponent } from './redis/components/server.details.component';
+import { DatabaseDetailsComponent } from './redis/components/database.details.component';
+import { KeyDetailsComponent } from './redis/components/key.details.component';
+import { CreateKeyDialogComponent } from './redis/components/create.key.component';
 
 import { RedisMainComponent } from './redis/redis.main.component';
 import { RedisManagementComponent } from './redis/redis.management.component';
 import { RedisServerManagementComponent } from './redis/server.management.component';
 import { SplitPaneModule } from 'ng2-split-pane';
-import {DataTableModule,SharedModule} from 'primeng';
+import { DataTableModule, SharedModule } from 'primeng';
 
 import { readFile } from '@node/fs'
 readFile;
@@ -51,6 +55,8 @@ const appRoutes: Routes = [
     RouterModule,
     BrowserAnimationsModule,
     MaterialModule,
+    // MdDialog, 
+     //MdDialogRef,
     FormsModule,
     HttpModule,
     TreeModule,
@@ -60,7 +66,7 @@ const appRoutes: Routes = [
 
     DataTableModule,
     SharedModule,
-
+//CreateKeyDialogComponent,
     RouterModule.forRoot(appRoutes, { useHash: true })
   ],
   declarations: [
@@ -71,8 +77,14 @@ const appRoutes: Routes = [
     RedisStringComponent,
     RedisHashComponent,
     RedisSetComponent,
-    RedisZSetComponent
+    RedisZSetComponent,
+    ServerDetailsComponent,
+    DatabaseDetailsComponent,
+    KeyDetailsComponent,
+
+    CreateKeyDialogComponent
   ],
+  entryComponents: [CreateKeyDialogComponent],
   bootstrap: [RedisManagementComponent]
 })
 

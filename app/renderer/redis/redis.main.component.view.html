@@ -9,7 +9,8 @@
 
         <div fxFlex="60" fxLayout="column" fxFlexAlign="center center" fxFill>
             <md-input-container>
-                <input mdInput placeholder="search" [mdAutocomplete]="auto">
+                <input mdInput placeholder="search" [mdAutocomplete]="auto" fxFlexAlign="center center" [(ngModel)]="searchPattern">
+                <i fa class="fa-search" style="margin:5px;" (click)="search()"></i>
             </md-input-container>
         </div>
 
@@ -57,7 +58,12 @@
         </vertical-split-pane>
 
         <div fxFlex="30" style="background: white; box-shadow: -5px 0px 5px 1px rgba(0,0,0,0.19)">
-            <md-list fxFlex="*" style="background:white;align-items:stretch; min-height: 100%; margin: 20px 20px 20px 20px">
+            <div>
+                <server-details [selectedTreeViewModel]="selectedTreeViewModel" *ngIf="_.isNil(selectedTreeViewModel) ? false : selectedTreeViewModel.typeToDisplay == 'Server'"></server-details>
+                <database-details [selectedTreeViewModel]="selectedTreeViewModel" *ngIf="_.isNil(selectedTreeViewModel) ? false : selectedTreeViewModel.typeToDisplay == 'Database'"></database-details>
+                <key-details [selectedTreeViewModel]="selectedKeyVm" *ngIf="!_.isNil(selectedKeyVm)"></key-details>
+            </div>
+            <!--<md-list fxFlex="*" style="background:white;align-items:stretch; min-height: 100%; margin: 20px 20px 20px 20px">
                 <h3 md-subheader>Details</h3>
                 <md-list-item> Key: {{_.isNil(selectedKeyVm) ? '-' :selectedKeyVm.name}} </md-list-item>
                 <md-list-item> TTL: {{_.isNil(selectedKeyVm) ? '-': (selectedKeyVm.ttl == -1 ? 'Never Expires' : selectedKeyVm.ttl)}} </md-list-item>
@@ -66,7 +72,7 @@
                 <md-divider></md-divider>
 
                 <h3 md-subheader>Actions</h3>
-            </md-list>
+            </md-list>-->
         </div>
     </div>
 </div>
