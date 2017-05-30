@@ -22,53 +22,27 @@ export class RedisKeyViewModel extends ExpandableViewModel {
         this.dataStructure = await this.loadDataStructureAsync();
     }
 
-    private loadDataStructureAsync(): ng.IPromise<RedisDataStructure> {
-        return new Promise((resolve, reject) => {
-            this.redis
-                .typeAsync(this.db, this.name)
-                .then(type => {
-                    console.log(`type: ${type}`);
-                    switch (type) {
-                        case 'string':
-                            this.redis
-                                .getAsync(this.db, this.name)
-                                .then(value => {
-                                    console.log(value);
-                                    return resolve(new RedisStringVM(value))
-                                })
-                                .error(err => console.log(err));
-                            break;
-                        case 'hash':
-                            this.redis
-                                .hgetallAsync(this.db, this.name)
-                                .then(value => {
-                                    console.log(value);
-                                    return resolve(new RedisHashVM(value));
-                                })
-                                .error(err => console.log(err));
-                            break;
-                        case 'set':
-                            this.redis
-                                .smembersAsync(this.db, this.name)
-                                .then(value => {
-                                    console.log(value);
-                                    return resolve(new RedisSetVM(value));
-                                })
-                                .error(err => console.log(err));
-                            break;
-                        case 'zset':
-                            this.redis
-                                .zrangeAsync(this.db, this.name)
-                                .then(value => {
-                                    console.log(value);
-                                    return resolve(new RedisZSetVM(value));
-                                })
-                                .error(err => console.log(err));
-                            break;
-                        default:
-                            break;
-                    }
-                });
-        });
+    private async loadDataStructureAsync() {
+        let type = await this.redis.typeAsync(this.db, this.name);
+        console.log(`type: ${type}`);
+        let value = null;
+        switch (type) {
+            case 'string':
+                value = await this.setBusy(this.redis.getAsync(this.db, this.name));
+                console.log(value);
+                return new RedisStringVM(value);
+            case 'hash':
+                value = await this.setBusy(this.redis.hgetallAsync(this.db, this.name));
+                console.log(value);
+                return new RedisHashVM(value);
+            case 'set':
+                value = await this.setBusy(this.redis.smembersAsync(this.db, this.name));
+                return new RedisSetVM(value);
+            case 'zset':
+                value = await this.setBusy(this.redis.zrangeAsync(this.db, this.name));
+                return new RedisZSetVM(value);
+            default:
+                break;
+        }
     }
 }

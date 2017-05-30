@@ -14,7 +14,6 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
     private ngZone: NgZone;
     private server: ServerViewModel;
     private treeModel: object;
-
     public details: DatabaseDetails;
 
     constructor(server: ServerViewModel, model: RedisDatabase, redis: ReliableRedisClient, ngZone: NgZone, treeModel: object, idProvider: () => number) {
@@ -34,7 +33,7 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
     }
 
     public async displaySubItems(node: any) {
-        let keys = await this.redis.keysAsync(this.model.number);
+        let keys = await this.setBusy(this.redis.keysAsync(this.model.number));
         this.displaySubItemsInternal(keys);
         this.ngZone.run(() => { node.treeModel.update(); });
     }

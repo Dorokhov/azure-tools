@@ -4,7 +4,7 @@
 
         <span class="example-fill-remaining-space"></span>-->
         <div fxFlex="20">
-            <button fxFlexAlign="start center" md-raised-button color="primary">New Key</button>
+            <button fxFlexAlign="start center" md-raised-button color="primary">Add Server</button>
         </div>
 
         <div fxFlex="60" fxLayout="column" fxFlexAlign="center center" fxFill>
@@ -31,12 +31,15 @@
                 <tree-root #tree [nodes]="nodes" [options]="options" (onToggleExpanded)="onToggleExpanded($event)" (onActivate)="onActivate($event)"
                     (onDeactivate)="onDeactivate($event)" (onEvent)="onEvent($event)">
                     <ng-template #treeNodeTemplate let-node let-index="index">
-                        <i fa class="{{node.data.isExpanded ? 'fa-caret-down' : 'fa-caret-right'}}" style="margin:5px;"></i>
-                        <i fa class="fa-server fa-lg" style="margin:5px; color:#f44336;" *ngIf="node.data.type === TreeItemType.Server"></i>
-                        <i fa class="fa-database fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Database"></i>
-                        <i fa class="fa-key fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Key"></i>
+                        <div fxLayout="row" fxFlexAlign="center center">
+                            <i fa class="{{node.data.isExpanded ? 'fa-caret-down' : 'fa-caret-right'}}" style="margin:5px;"></i>
+                            <i fa class="fa-server fa-lg" style="margin:5px; color:#f44336;" *ngIf="node.data.type === TreeItemType.Server"></i>
+                            <i fa class="fa-database fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Database"></i>
+                            <i fa class="fa-key fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Key"></i>
 
-                        <span>{{ node.data.name }}</span>
+                            <span fxLayoutAlign="space-around center">{{ node.data.name }}</span>
+                            <md-spinner fxLayoutAlign="space-around center" style="width: 15px; height:15px; margin: 5px 0 0 5px" *ngIf="node.data.isBusy"></md-spinner>
+                        </div>
                     </ng-template>
                 </tree-root>
             </div>
@@ -44,14 +47,17 @@
             <div class="split-pane-content-secondary">
                 <md-tab-group #tabGroup (selectChange)="onSelectedKeyVmChanged($event)" [(selectedIndex)]="selectedKeyVmIndex" style="margin:20px 0 0 10px">
                     <md-tab *ngFor="let keyVm of keyVmList" label="{{keyVm.name}}" style="background:white;">
-                        <p>Value</p>
+                        <div>
+                            <md-progress-bar mode="indeterminate" *ngIf="keyVm.isBusy"></md-progress-bar>
+                            <p>Value</p>
 
-                        <p class="tabHashHeight">
-                            <redis-string [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'String'"></redis-string>
-                            <redis-hash [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'Hash'"></redis-hash>
-                            <redis-set [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'Set'"></redis-set>
-                            <redis-zset [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'ZSet'"></redis-zset>
-                        </p>
+                            <p class="tabHashHeight">
+                                <redis-string [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'String'"></redis-string>
+                                <redis-hash [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'Hash'"></redis-hash>
+                                <redis-set [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'Set'"></redis-set>
+                                <redis-zset [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'ZSet'"></redis-zset>
+                            </p>
+                        </div>
                     </md-tab>
                 </md-tab-group>
             </div>
