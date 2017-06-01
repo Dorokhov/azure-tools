@@ -24,8 +24,8 @@ export class RedisMainComponent implements AfterViewInit {
   private route: ActivatedRoute;
   private userPreferencesRepository: UserPreferencesRepository;
   private currentProfile: Profile;
+  private router: Router;
 
-  router: Router;
   public nodes: ExpandableViewModel[] = [];
   redis: ReliableRedisClient;
   keyVmList: RedisKeyViewModel[] = [];
@@ -58,6 +58,7 @@ export class RedisMainComponent implements AfterViewInit {
     userPreferencesRepository: UserPreferencesRepository,
     private rd: Renderer2) {
     this.redis = redis;
+    this.router = router;
     this.ngZone = ngZone;
     this.route = route;
     this.userPreferencesRepository = userPreferencesRepository;
@@ -76,6 +77,10 @@ export class RedisMainComponent implements AfterViewInit {
     console.log('main component: view init');
     console.log(this.tree.treeModel);
     this.nodes = _.map(this.currentProfile.servers, server => new ServerViewModel(server, this.redis, this.ngZone, this.tree.treeModel, this.idProvider));
+  }
+
+  public addServer() {
+    this.router.navigate(['management/server/add']);
   }
 
   public async search() {
@@ -104,7 +109,7 @@ export class RedisMainComponent implements AfterViewInit {
       }
 
       this.selectedTreeViewModel = null;
-     // node.data.children.length = 0;
+      // node.data.children.length = 0;
       node.collapse();
     }
   }

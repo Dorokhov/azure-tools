@@ -1,28 +1,67 @@
-<md-card>
-    <md-card-content>
-        <p>
-            <md-input-container class="input-field col s6">
-                <label>Host</label>
-                <input mdInput required md-no-asterisk name="host" value="{{currentServer.host}}">
-            </md-input-container>
-        </p>
+<md-tab-group #tabGroup style="margin:20px 0 0 10px">
+    <md-tab label="Microsoft Azure">
+        <div>
+            <md-card>
+                <md-card-content>
+                    <p>
+                        <md-input-container class="input-field col s6">
+                            <label>Host</label>
+                            <div fxLayout="row" fxFlexAlign="center center">
+                                <input mdInput required md-no-asterisk name="host" [(ngModel)]="currentServer.host"><label>.redis.cache.windows.net</label>
+                            </div>
+                        </md-input-container>
+                    </p>
 
-        <p>
-            <md-input-container class="input-field col s6">
-                <label>Port</label>
-                <input mdInput required md-no-asterisk name="port" value="{{currentServer.port}}">
-            </md-input-container>
-        </p>
+                    <section>
+                        <md-slide-toggle>SSL </md-slide-toggle>
+                    </section>
 
-        <p>
-            <md-input-container class="input-field col s6">
-                <label>Password</label>
-                <input mdInput required md-no-asterisk name="password" value="{{currentServer.password}}">
-            </md-input-container>
-        </p>
-    </md-card-content>
+                    <p>
+                        <md-input-container class="input-field col s6">
+                            <label>Password</label>
+                            <input mdInput required md-no-asterisk name="password" [(ngModel)]="currentServer.password">
+                        </md-input-container>
+                    </p>
+                </md-card-content>
 
-    <p>
-        <button (click)="connect()" md-button>Add</button>
-    </p>
-</md-card>
+                <p>
+                    <button (click)="connect()" color="primary" md-raised-button>Add</button>
+                    <button (click)="cancel()" color="primary" md-raised-button>Cancel</button>
+                </p>
+            </md-card>
+        </div>
+    </md-tab>
+    <md-tab label="Standalone">
+        <div>
+            <md-card>
+                <md-card-content>
+                    <p>
+                        <md-input-container class="input-field col s6">
+                            <label>Host</label>
+                            <input mdInput required md-no-asterisk name="host" [(ngModel)]="currentServer.host">
+                        </md-input-container>
+                    </p>
+
+                    <p>
+                        <md-input-container class="input-field col s6">
+                            <label>Port</label>
+                            <input mdInput required md-no-asterisk name="port" [(ngModel)]="currentServer.port">
+                        </md-input-container>
+                    </p>
+
+                    <p>
+                        <md-input-container class="input-field col s6">
+                            <label>Password</label>
+                            <input mdInput required md-no-asterisk name="password" [(ngModel)]="currentServer.password">
+                        </md-input-container>
+                    </p>
+                </md-card-content>
+
+                <p>
+                    <button (click)="connect()" color="primary" md-raised-button>Add</button>
+                    <button (click)="cancel()" color="primary" md-raised-button>Cancel</button>
+                </p>
+            </md-card>
+        </div>
+    </md-tab>
+</md-tab-group>

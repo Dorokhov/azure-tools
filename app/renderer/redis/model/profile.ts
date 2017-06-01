@@ -7,10 +7,10 @@ export class Profile {
 
 export class RedisServer{
   id: number;
-  name: string;
-  host: string;
-  port: number;
-  password: string;
+  name: string = '';
+  host: string = '';
+  port: number = 6379;
+  password: string = '';
   maxNumberToScanNotEmpty: number = 100;
   databases: RedisDatabase[] = [];
 }
