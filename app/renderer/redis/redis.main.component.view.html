@@ -28,16 +28,20 @@
             local-storage-key="azure-tools-redis-main-splitter">
 
             <div class="split-pane-content-primary windowHeight" style="margin:20px 0 0 0;">
-                <tree-root #tree [nodes]="nodes" [options]="options" (onToggleExpanded)="onToggleExpanded($event)" (onActivate)="onActivate($event)"
-                    (onDeactivate)="onDeactivate($event)" (onEvent)="onEvent($event)">
+                <tree-root #tree [nodes]="nodes" [options]="options" (onActivate)="onActivate($event)"
+                 >
                     <ng-template #treeNodeTemplate let-node let-index="index">
                         <div fxLayout="row" fxFlexAlign="center center">
-                            <i fa class="{{node.data.isExpanded ? 'fa-caret-down' : 'fa-caret-right'}}" style="margin:5px;"></i>
+                            <div (click)="changeExpanded(node)" style="width:20px; height: 20px;margin:5px; pointer-events:auto;">
+                                <i fa class="{{node.data.isExpanded ? 'fa-caret-down' : 'fa-caret-right'}}" fxLayoutAlign="space-around center"></i>
+                            </div>
+
                             <i fa class="fa-server fa-lg" style="margin:5px; color:#f44336;" *ngIf="node.data.type === TreeItemType.Server"></i>
                             <i fa class="fa-database fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Database"></i>
                             <i fa class="fa-key fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Key"></i>
 
                             <span fxLayoutAlign="space-around center">{{ node.data.name }}</span>
+
                             <md-spinner fxLayoutAlign="space-around center" style="width: 15px; height:15px; margin: 5px 0 0 5px" *ngIf="node.data.isBusy"></md-spinner>
                         </div>
                     </ng-template>
@@ -49,8 +53,6 @@
                     <md-tab *ngFor="let keyVm of keyVmList" label="{{keyVm.name}}" style="background:white;">
                         <div>
                             <md-progress-bar mode="indeterminate" *ngIf="keyVm.isBusy"></md-progress-bar>
-                            <p>Value</p>
-
                             <p class="tabHashHeight">
                                 <redis-string [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'String'"></redis-string>
                                 <redis-hash [dataStructure]="keyVm.dataStructure" *ngIf="!_.isNil(keyVm.dataStructure) && keyVm.dataStructure.typeToDisplay == 'Hash'"></redis-hash>
@@ -69,16 +71,6 @@
                 <database-details [selectedTreeViewModel]="selectedTreeViewModel" *ngIf="_.isNil(selectedTreeViewModel) ? false : selectedTreeViewModel.typeToDisplay == 'Database'"></database-details>
                 <key-details [selectedTreeViewModel]="selectedKeyVm" *ngIf="!_.isNil(selectedKeyVm)"></key-details>
             </div>
-            <!--<md-list fxFlex="*" style="background:white;align-items:stretch; min-height: 100%; margin: 20px 20px 20px 20px">
-                <h3 md-subheader>Details</h3>
-                <md-list-item> Key: {{_.isNil(selectedKeyVm) ? '-' :selectedKeyVm.name}} </md-list-item>
-                <md-list-item> TTL: {{_.isNil(selectedKeyVm) ? '-': (selectedKeyVm.ttl == -1 ? 'Never Expires' : selectedKeyVm.ttl)}} </md-list-item>
-                <md-list-item> Type: {{_.isNil(selectedKeyVm) || _.isNil(selectedKeyVm.dataStructure) ? '-' : selectedKeyVm.dataStructure.typeToDisplay}}</md-list-item>
-
-                <md-divider></md-divider>
-
-                <h3 md-subheader>Actions</h3>
-            </md-list>-->
         </div>
     </div>
 </div>

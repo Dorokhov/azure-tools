@@ -90,32 +90,39 @@ export class RedisMainComponent implements AfterViewInit {
     console.log('search: search finished');
   }
 
-  onSelectedKeyVmChanged = ($event: any): void => {
-    this.selectedKeyVm = this.keyVmList[$event.index];
+  public changeExpanded(node) {
+    this.selectedTreeViewModel = <ExpandableViewModel>node.data;
+    this.selectedTreeViewModel.isExpanded = !this.selectedTreeViewModel.isExpanded;
+    if (this.selectedTreeViewModel.isExpanded) {
+      console.log('tree selection: selection changed');
+      console.log(this.selectedTreeViewModel);
+      this.getSubItems(node);
+    }
+    else {
+      if (node.type == TreeItemType.Server) {
+        this.searchPattern = '';
+      }
+
+      this.selectedTreeViewModel = null;
+     // node.data.children.length = 0;
+      node.collapse();
+    }
   }
 
-  onEvent = ($event) => console.log($event);
-  onToggleExpanded = ($event) => {
-    // this.getSubItems($event.node);
-  };
+  onSelectedKeyVmChanged = ($event: any): void => {
+    console.log(`user selects tab: ${$event.index}`);
+    this.displayKey(this.keyVmList[$event.index]);
+  }
 
   onActivate = ($event) => {
-    this.selectedTreeViewModel = <ExpandableViewModel>$event.node.data;
-    console.log('tree selection: selection changed');
-    console.log(this.selectedTreeViewModel);
-    this.getSubItems($event.node);
-  };
-
-  onDeactivate = ($event) => {
-    if ($event.node.type == TreeItemType.Server) {
-      this.searchPattern = '';
+    let vm = <ExpandableViewModel>$event.node.data;
+    console.log(`user selects: getting subitems for type: ${TreeItemType[vm.type]}`);
+    this.selectedTreeViewModel = vm;
+    switch (vm.type) {
+      case TreeItemType.Key:
+        this.displayKey(<RedisKeyViewModel>vm);
+        break;
     }
-
-    this.selectedTreeViewModel = null;
-
-    $event.node.data.isExpanded = false;
-    $event.node.data.children.length = 0;
-    $event.node.collapse();
   };
 
   private async getSubItems(node: any) {
@@ -131,23 +138,32 @@ export class RedisMainComponent implements AfterViewInit {
         db.displaySubItems(node);
         break;
       case TreeItemType.Key:
-        this.displayKey(vm);
+        this.displayKey(<RedisKeyViewModel>vm);
         break;
     }
   }
 
-  private displayKey(vm: ExpandableViewModel) {
+  private displayKey(vm: RedisKeyViewModel) {
     if (_.some(this.keyVmList, x => x.name === vm.name)) {
       this.selectedKeyVmIndex = _.indexOf(this.keyVmList, _.find(this.keyVmList, x => x.name === vm.name));
       return;
     }
 
-    let keyVm = new RedisKeyViewModel(this.redis, vm.name, 0);
+    this.replaceKeyVm(vm);
+  }
+
+  private replaceKeyVm(keyVm: RedisKeyViewModel) {
+    this.keyVmList.length = 0;
+    this.addKeyVm(keyVm);
+  }
+
+  private addKeyVm(keyVm: RedisKeyViewModel) {
     _.forEach(this.keyVmList, each => each.isActive = false);
     keyVm.isActive = true;
     keyVm.loadDetailsAsync();
 
     this.selectedKeyVmIndex = this.keyVmList.length;
+    this.selectedKeyVm = keyVm;
     console.log(`selected Key ${this.selectedKeyVmIndex}`)
 
     this.ngZone.run(() => this.keyVmList.push(keyVm));
