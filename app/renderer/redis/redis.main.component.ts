@@ -1,5 +1,6 @@
 import { Component, ViewChild, NgZone, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { TreeModel, TreeNode, TREE_ACTIONS } from 'angular2-tree-component';
 
 import { Profile, RedisServer, RedisDatabase } from './model/profile';
@@ -11,11 +12,12 @@ import { DatabaseViewModel } from './viewmodels/databaseViewModel';
 import { RedisKeyViewModel } from './viewmodels/redisKeyViewModel';
 import { ReliableRedisClient } from './model/reliableRedisClient';
 import { UserPreferencesRepository } from './model/userPreferencesRepository';
+import { KeyChangesEmitter } from './services/keychangesemitter';
 
 
 @Component({
   templateUrl: './redis/redis.main.component.view.html',
-  providers: [ReliableRedisClient, UserPreferencesRepository]
+  providers: [ReliableRedisClient, UserPreferencesRepository, KeyChangesEmitter]
 })
 
 
@@ -56,7 +58,9 @@ export class RedisMainComponent implements AfterViewInit {
     redis: ReliableRedisClient,
     ngZone: NgZone,
     userPreferencesRepository: UserPreferencesRepository,
-    private rd: Renderer2) {
+    private rd: Renderer2,
+    private dialog: MdDialog,
+    private keyChangesEmitter: KeyChangesEmitter) {
     this.redis = redis;
     this.router = router;
     this.ngZone = ngZone;
@@ -71,12 +75,20 @@ export class RedisMainComponent implements AfterViewInit {
 
     let newServer = <RedisServer>route.params.value;
 
+    keyChangesEmitter.keyDeleted$.subscribe(keyVm => {
+      console.log(`removing key tabs: ${keyVm.name}`);
+      if (this.selectedKeyVm.equals(keyVm)) {
+        this.selectedKeyVm = null;
+        this.selectedKeyVmIndex = -1;
+      }
+      _.remove(this.keyVmList, each => each.equals(keyVm));
+    });
   }
 
   ngAfterViewInit() {
     console.log('main component: view init');
     console.log(this.tree.treeModel);
-    this.nodes = _.map(this.currentProfile.servers, server => new ServerViewModel(server, this.redis, this.ngZone, this.tree.treeModel, this.idProvider));
+    this.nodes = _.map(this.currentProfile.servers, server => new ServerViewModel(server, this.redis, this.ngZone, this.tree.treeModel, this.idProvider, this.dialog, this.keyChangesEmitter));
   }
 
   public addServer() {
@@ -163,6 +175,11 @@ export class RedisMainComponent implements AfterViewInit {
   }
 
   private addKeyVm(keyVm: RedisKeyViewModel) {
+    if (_.isNil(keyVm)) {
+      console.log(`key not added, because it's nil`);
+      return;
+    }
+
     _.forEach(this.keyVmList, each => each.isActive = false);
     keyVm.isActive = true;
     keyVm.loadDetailsAsync();

@@ -28,8 +28,7 @@
             local-storage-key="azure-tools-redis-main-splitter">
 
             <div class="split-pane-content-primary windowHeight" style="margin:20px 0 0 0;">
-                <tree-root #tree [nodes]="nodes" [options]="options" (onActivate)="onActivate($event)"
-                 >
+                <tree-root #tree [nodes]="nodes" [options]="options" (onActivate)="onActivate($event)">
                     <ng-template #treeNodeTemplate let-node let-index="index">
                         <div fxLayout="row" fxFlexAlign="center center">
                             <div (click)="changeExpanded(node)" style="width:20px; height: 20px;margin:5px; pointer-events:auto;">

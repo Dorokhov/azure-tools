@@ -1,8 +1,10 @@
 ﻿import { Component, NgZone } from '@angular/core';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from './expandableViewModel';
 import { ReliableRedisClient } from '../model/reliableRedisClient';
 import { Profile, RedisServer, RedisDatabase } from '../model/profile';
 import { DatabaseViewModel } from '../viewmodels/databaseViewModel';
+import { KeyChangesEmitter } from '../services/keychangesemitter';
 
 export class ServerViewModel extends ExpandableViewModel {
     private redis: ReliableRedisClient;
@@ -10,7 +12,14 @@ export class ServerViewModel extends ExpandableViewModel {
     private treeModel: object;
     private idProvider: () => number;
 
-    constructor(server: RedisServer, redis: ReliableRedisClient, ngZone: NgZone, treeModel: object, idProvider: () => number) {
+    constructor(
+        server: RedisServer,
+        redis: ReliableRedisClient,
+        ngZone: NgZone,
+        treeModel: object,
+        idProvider: () => number,
+        private dialog: MdDialog,
+        private keyChangesEmitter: KeyChangesEmitter) {
         super(TreeItemType.Server, server.host);
         this.redis = redis;
         this.ngZone = ngZone;
@@ -43,7 +52,7 @@ export class ServerViewModel extends ExpandableViewModel {
             let db = new RedisDatabase();
             db.name = each.toString();
             db.number = each;
-            this.children.push(new DatabaseViewModel(this, db, this.redis, this.ngZone, this.treeModel, this.idProvider))
+            this.children.push(new DatabaseViewModel(this, db, this.redis, this.ngZone, this.treeModel, this.idProvider, this.dialog, this.keyChangesEmitter))
         });
         this.isExpanded = true;
 

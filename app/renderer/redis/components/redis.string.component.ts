@@ -12,6 +12,6 @@ import { RedisDataStructure } from '../viewModels/redisDataStructures';
 
 export class RedisStringComponent {
   public dataStructure: RedisDataStructure;
-
-  constructor() {  }
+  constructor() {
+  }
 }

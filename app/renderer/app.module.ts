@@ -25,6 +25,7 @@ import { ServerDetailsComponent } from './redis/components/server.details.compon
 import { DatabaseDetailsComponent } from './redis/components/database.details.component';
 import { KeyDetailsComponent } from './redis/components/key.details.component';
 import { CreateKeyDialogComponent } from './redis/components/create.key.component';
+import { ConfirmDialogComponent } from './redis/components/confirm.component';
 
 import { RedisMainComponent } from './redis/redis.main.component';
 import { RedisManagementComponent } from './redis/redis.management.component';
@@ -39,6 +40,7 @@ redis;
 import bluebird from 'bluebird';
 bluebird;
 import { ReliableRedisClient } from './redis/model/reliableRedisClient';
+import { KeyChangesEmitter } from './redis/services/keychangesemitter';
 
 
 
@@ -56,7 +58,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     MaterialModule,
     // MdDialog, 
-     //MdDialogRef,
+    //MdDialogRef,
     FormsModule,
     HttpModule,
     TreeModule,
@@ -66,7 +68,7 @@ const appRoutes: Routes = [
 
     DataTableModule,
     SharedModule,
-//CreateKeyDialogComponent,
+    //CreateKeyDialogComponent,
     RouterModule.forRoot(appRoutes, { useHash: true })
   ],
   declarations: [
@@ -82,9 +84,10 @@ const appRoutes: Routes = [
     DatabaseDetailsComponent,
     KeyDetailsComponent,
 
-    CreateKeyDialogComponent
+    CreateKeyDialogComponent,
+    ConfirmDialogComponent
   ],
-  entryComponents: [CreateKeyDialogComponent],
+  entryComponents: [CreateKeyDialogComponent, ConfirmDialogComponent],
   bootstrap: [RedisManagementComponent]
 })
 

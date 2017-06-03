@@ -54,6 +54,14 @@ export class ReliableRedisClient {
         return this.tryingReuseConnection(db).keysAsync('*');
     }
 
+    delAsync(db: number, key: string): Promise<string[]> {
+        return this.tryingReuseConnection(db).delAsync(key);
+    }
+
+    del(db: number, key: string): void {
+        return this.tryingReuseConnection(db).del(key);
+    }
+
     typeAsync(db: number, key: string): Promise<string> {
         return this.tryingReuseConnection(db).typeAsync(key);
     }

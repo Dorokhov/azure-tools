@@ -1,9 +1,11 @@
-﻿import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from './expandableViewModel';
+﻿import { MdDialog, MdDialogRef } from '@angular/material';
+import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from './expandableViewModel';
 import { ReliableRedisClient } from '../model/reliableRedisClient';
 import { Component, NgZone } from '@angular/core';
 import { Profile, RedisServer, RedisDatabase } from '../model/profile';
 import { ServerViewModel } from '../viewmodels/serverViewModel';
 import { RedisKeyViewModel } from '../viewmodels/redisKeyViewModel';
+import { KeyChangesEmitter } from '../services/keychangesemitter';
 
 export class DatabaseDetails {
 
@@ -16,13 +18,28 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
     private treeModel: object;
     public details: DatabaseDetails;
 
-    constructor(server: ServerViewModel, model: RedisDatabase, redis: ReliableRedisClient, ngZone: NgZone, treeModel: object, idProvider: () => number) {
+    constructor(
+        server: ServerViewModel,
+        model: RedisDatabase,
+        redis: ReliableRedisClient,
+        ngZone: NgZone,
+        treeModel: object,
+        idProvider: () => number,
+        private dialog: MdDialog,
+        private keyChangesEmitter: KeyChangesEmitter) {
         super(model, TreeItemType.Database, model.name)
         this.redis = redis;
         this.ngZone = ngZone;
         this.server = server;
         this.treeModel = treeModel;
         this.id = idProvider();
+
+        keyChangesEmitter.keyDeleted$.subscribe(keyVm => {
+            if(keyVm.db.id === this.id){
+                console.log(`removing key: ${keyVm.name}`);
+                this.removeKey(keyVm);
+            }
+        });
     }
 
     public async search(searchPattern: string) {
@@ -44,13 +61,23 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
         }
     }
 
+    public removeKey(keyVm: RedisKeyViewModel) {
+        this.redis.del(keyVm.db.model.number, keyVm.name);
+        _.remove(this.children, each => each.id === keyVm.id);
+        this.update();
+    }
+
+    public update() {
+        this.ngZone.run(() => { this.treeModel.getNodeById(this.id).treeModel.update(); });
+    }
+
     private async displayKeys(keys: string[]) {
         console.log(`number of keys loaded from db '${this.model.number}' is ${_.isNil(keys) ? 0 : keys.length}`);
         this.children.length = 0;
         this.isExpanded = true;
 
         _.map(keys, key => {
-            this.children.push(new RedisKeyViewModel(this.redis, key, this.model.number));
+            this.children.push(new RedisKeyViewModel(this.redis, key, this, this.dialog, this.keyChangesEmitter));
         });
 
         this.expand();
