@@ -6,6 +6,7 @@ import { ConfirmDialogComponent } from '../components/confirm.component';
 import { Guard } from '../common/guard';
 import { RedisKeyViewModel } from '../viewmodels/rediskeyviewmodel';
 import { KeyChangesEmitter } from '../services/keychangesemitter';
+import { ChangeTtlDialogComponent } from '../components/change.ttl.component';
 
 export class RedisDatabaseActions {
 
@@ -30,8 +31,15 @@ export abstract class RedisKeyActions {
     public changeTtlCommand;
     public deleteCommand;
 
-    protected async changeTtl(newTtl: number) {
-
+    protected async changeTtl() {
+        let dialogRef = this.dialog.open(ChangeTtlDialogComponent);
+        dialogRef.componentInstance.redis = this.redis;
+        dialogRef.componentInstance.keyVm = this.keyVm;
+        return new Promise((resolve, reject) => {
+            dialogRef.afterClosed().subscribe(result => {
+                resolve();
+            });
+        });
     }
 
     private deleteKey(): Promise<any> {

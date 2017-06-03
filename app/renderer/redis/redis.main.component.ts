@@ -162,7 +162,7 @@ export class RedisMainComponent implements AfterViewInit {
 
   private displayKey(vm: RedisKeyViewModel) {
     if (_.some(this.keyVmList, x => x.name === vm.name)) {
-      this.selectedKeyVmIndex = _.indexOf(this.keyVmList, _.find(this.keyVmList, x => x.name === vm.name));
+      this.selectedKeyVmIndex = _.indexOf(this.keyVmList, _.find(this.keyVmList, x => x.equals(vm)));
       return;
     }
 

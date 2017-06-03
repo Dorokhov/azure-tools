@@ -1,8 +1,7 @@
-<div fxLayout="column" style="width: 400px; height: 200px;" fxLayoutAlign="space-around start" >
+<div fxLayout="column" style="width: 400px; height: 200px;" fxLayoutAlign="center center">
     {{message}}
-
-    <div fxLayout="row" fxLayoutAlign="end center">
-        <button md-button (click)="confirm()" color="primary" md-raised-button>OK</button>
-        <button md-button (click)="reject()" color="warn" md-raised-button style="margin:0 0 0 10px">Cancel</button>
-    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="end center">
+    <button md-button (click)="confirm()" color="primary" md-raised-button>OK</button>
+    <button md-button (click)="reject()" color="warn" md-raised-button style="margin:0 0 0 10px">Cancel</button>
 </div>

@@ -7,7 +7,7 @@ import { DatabaseViewModel } from './databaseViewModel';
 import { KeyChangesEmitter } from '../services/keychangesemitter';
 
 export class RedisKeyViewModel extends ExpandableViewModel {
-    ttl: number;
+    public ttl: number;
     dataStructure: RedisDataStructure;
     isActive: boolean;
     commands: IAsyncCommand[];
@@ -31,7 +31,7 @@ export class RedisKeyViewModel extends ExpandableViewModel {
 
     async loadDetailsAsync() {
         console.log('loading TTL..');
-        this.ttl = await this.redis.ttlAsync(this.db.model.number, name);
+        this.ttl = await this.redis.ttlAsync(this.db.model.number, this.name);
         console.log(`TTL: ${this.ttl}`);
 
         this.dataStructure = await this.loadDataStructureAsync();

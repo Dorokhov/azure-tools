@@ -86,6 +86,10 @@ export class ReliableRedisClient {
         return this.tryingReuseConnection(db).hsetAsync(key, field, value);
     }
 
+    expireAsync(db: number, key: string, ttl: number): Promise<void> {
+        return this.tryingReuseConnection(db).expireAsync(key, ttl);
+    }
+
     private tryingReuseConnection(db: number) {
         if (this.client === null || this.client === undefined || !this.client.connected) {
             this.client = redis.createClient(this.port, this.host, { auth_pass: this.password });

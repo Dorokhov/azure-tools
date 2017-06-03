@@ -26,6 +26,7 @@ import { DatabaseDetailsComponent } from './redis/components/database.details.co
 import { KeyDetailsComponent } from './redis/components/key.details.component';
 import { CreateKeyDialogComponent } from './redis/components/create.key.component';
 import { ConfirmDialogComponent } from './redis/components/confirm.component';
+import { ChangeTtlDialogComponent } from './redis/components/change.ttl.component';
 
 import { RedisMainComponent } from './redis/redis.main.component';
 import { RedisManagementComponent } from './redis/redis.management.component';
@@ -85,9 +86,10 @@ const appRoutes: Routes = [
     KeyDetailsComponent,
 
     CreateKeyDialogComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    ChangeTtlDialogComponent
   ],
-  entryComponents: [CreateKeyDialogComponent, ConfirmDialogComponent],
+  entryComponents: [CreateKeyDialogComponent, ConfirmDialogComponent,ChangeTtlDialogComponent],
   bootstrap: [RedisManagementComponent]
 })
 
