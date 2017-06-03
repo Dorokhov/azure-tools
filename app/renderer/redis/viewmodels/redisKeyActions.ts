@@ -24,20 +24,27 @@ export abstract class RedisKeyActions {
         this.dialog = dialog;
         this.redis = redis;
         this.keyChangesEmitter = keyChangesEmitter;
-        this.changeTtlCommand = new AsyncCommandGenericParam('Change TTL', (newTtl: number) => { return this.changeTtl(newTtl); }, this.dialog);
+        this.changeTtlCommand = new AsyncCommandGenericParam('Change TTL', () => { return this.changeTtl(); }, this.dialog);
         this.deleteCommand = new AsyncCommandGenericParam('Delete Key', () => this.deleteKey(), this.dialog);
+        this.reloadValueCommand = new AsyncCommandGenericParam('Reload Value', () => this.reloadValue(), this.dialog);
     }
 
     public changeTtlCommand;
     public deleteCommand;
+    public reloadValueCommand;
 
-    protected async changeTtl() {
+    protected async changeTtl(): Promise<any> {
         let dialogRef = this.dialog.open(ChangeTtlDialogComponent);
         dialogRef.componentInstance.redis = this.redis;
         dialogRef.componentInstance.keyVm = this.keyVm;
         return new Promise((resolve, reject) => {
             dialogRef.afterClosed().subscribe(result => {
-                resolve();
+                if (result.isSaved) {
+                    let promise = this.keyVm.loadDetailsAsync();
+                }
+                else {
+                    resolve();
+                }
             });
         });
     }
@@ -58,13 +65,17 @@ export abstract class RedisKeyActions {
         });
     }
 
+    private async reloadValue() {
+        await this.keyVm.loadDetailsAsync();
+    }
+
     private async renameKey() {
 
     }
 }
 
 export class RedisStringActions extends RedisKeyActions {
-    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand];
+    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand, this.reloadValueCommand];
 
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         super(keyVm, redis, dialog, keyChangesEmitter);
@@ -73,7 +84,7 @@ export class RedisStringActions extends RedisKeyActions {
 
 export class RedisSetActions extends RedisKeyActions {
 
-    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand];
+    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand, this.reloadValueCommand];
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         super(keyVm, redis, dialog, keyChangesEmitter);
     }
@@ -81,7 +92,7 @@ export class RedisSetActions extends RedisKeyActions {
 
 export class RedisHashActions extends RedisKeyActions {
 
-    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand];
+    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand, this.reloadValueCommand];
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         super(keyVm, redis, dialog, keyChangesEmitter);
     }
@@ -89,7 +100,7 @@ export class RedisHashActions extends RedisKeyActions {
 
 export class RedisZSetActions extends RedisKeyActions {
 
-    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand];
+    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand, this.reloadValueCommand];
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         super(keyVm, redis, dialog, keyChangesEmitter);
     }

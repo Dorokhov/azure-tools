@@ -36,10 +36,10 @@ export class ChangeTtlDialogComponent {
   public async change() {
     await this.redis.expireAsync(this.keyVm.db.model.number, this.keyVm.name, this.ttl);
     console.log(`the TTL of ket '${this.keyVm.name}' in db '${this.keyVm.db.model.number}' changed to '${this.ttl}' seconds`);
-    this.dialogRef.close();
+    this.dialogRef.close({ isSaved: true });
   }
 
   public cancel() {
-    this.dialogRef.close();
+    this.dialogRef.close({ isSaved: false });
   }
 }

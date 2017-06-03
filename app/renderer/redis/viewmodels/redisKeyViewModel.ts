@@ -29,7 +29,7 @@ export class RedisKeyViewModel extends ExpandableViewModel {
         this.redisZSetActions = new RedisZSetActions(this, this.redis, this.dialog, keyChangesEmitter);
     }
 
-    async loadDetailsAsync() {
+    public async loadDetailsAsync() {
         console.log('loading TTL..');
         this.ttl = await this.redis.ttlAsync(this.db.model.number, this.name);
         console.log(`TTL: ${this.ttl}`);
