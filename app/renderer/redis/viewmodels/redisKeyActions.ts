@@ -35,14 +35,14 @@ export abstract class RedisKeyActions {
     }
 
     private deleteKey(): Promise<any> {
-        let dialogRef = this.dialog.open(ConfirmDialogComponent);
-
+        let confirmRef = this.dialog.open(ConfirmDialogComponent);
+        confirmRef.componentInstance.message = `Are you sure you want to delete '${this.keyVm.name} key'?`;
         return new Promise((resolve, reject) => {
-            dialogRef.afterClosed().subscribe(result => {
+            confirmRef.afterClosed().subscribe(result => {
                 console.log(`confirm dialog: closed with result '${result.isConfirmed}'`);
 
                 if (result.isConfirmed) {
-                     this.keyChangesEmitter.keyDeleted(this.keyVm);
+                    this.keyChangesEmitter.keyDeleted(this.keyVm);
                 }
 
                 resolve();
@@ -65,14 +65,26 @@ export class RedisStringActions extends RedisKeyActions {
 
 export class RedisSetActions extends RedisKeyActions {
 
+    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand];
+    constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
+        super(keyVm, redis, dialog, keyChangesEmitter);
+    }
 }
 
 export class RedisHashActions extends RedisKeyActions {
 
+    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand];
+    constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
+        super(keyVm, redis, dialog, keyChangesEmitter);
+    }
 }
 
 export class RedisZSetActions extends RedisKeyActions {
 
+    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand];
+    constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
+        super(keyVm, redis, dialog, keyChangesEmitter);
+    }
 }
 
 class AsyncCommand implements IAsyncCommand {

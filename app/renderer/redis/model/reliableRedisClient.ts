@@ -74,6 +74,18 @@ export class ReliableRedisClient {
         return this.tryingReuseConnection(db).setAsync(key, value);
     }
 
+    saddAsync(db: number, key: string, value: string): Promise<void> {
+        return this.tryingReuseConnection(db).saddAsync(key, value);
+    }
+
+    zaddAsync(db: number, key: string, score: number, value: string): Promise<void> {
+        return this.tryingReuseConnection(db).zaddAsync(key, score, value);
+    }
+
+    hsetAsync(db: number, key: string, field: string, value: string): Promise<void> {
+        return this.tryingReuseConnection(db).hsetAsync(key, field, value);
+    }
+
     private tryingReuseConnection(db: number) {
         if (this.client === null || this.client === undefined || !this.client.connected) {
             this.client = redis.createClient(this.port, this.host, { auth_pass: this.password });

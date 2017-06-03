@@ -70,7 +70,7 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
 
     public removeKey(keyVm: RedisKeyViewModel) {
         this.redis.del(keyVm.db.model.number, keyVm.name);
-        _.remove(this.children, each => each.id === keyVm.id);
+        _.remove(this.children, each => (<RedisKeyViewModel>each).equals(keyVm));
         this.update();
     }
 
