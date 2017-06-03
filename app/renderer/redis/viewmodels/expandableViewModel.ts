@@ -1,4 +1,6 @@
-﻿export class ExpandableViewModel {
+﻿import {BusyViewModel} from './busyViewModel'
+
+export class ExpandableViewModel extends BusyViewModel{
     constructor(type: TreeItemType, name: string = '') {
         this.type = type;
         this.name = name;
@@ -12,14 +14,6 @@
     children: ExpandableViewModel[] = [];
     hasChildren: boolean = true;
     isExpanded: boolean = false;
-
-    isBusy: boolean;
-
-    protected setBusy<T>(promise: ng.IPromise<T>): ng.IPromise<T> {
-        this.isBusy = true;
-        promise.finally(() => { this.isBusy = false; });
-        return promise;
-    }
 }
 
 export class ExpandableViewModelGeneric<T> extends ExpandableViewModel {

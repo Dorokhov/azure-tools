@@ -19,8 +19,6 @@ export abstract class RedisKeyActions {
 
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         Guard.ArgumentIsNotNil(dialog);
-        console.log('redis key action: dialog');
-        console.log(dialog);
         this.keyVm = keyVm;
         this.dialog = dialog;
         this.redis = redis;

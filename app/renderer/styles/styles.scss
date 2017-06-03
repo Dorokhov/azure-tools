@@ -36,3 +36,12 @@ body{
 md-tab-body{
     margin-right:10px;
 }
+
+.key-type-radio-group {
+  display: inline-flex;
+  flex-direction: row;
+}
+
+.key-type-radio-button {
+  margin: 5px;
+}

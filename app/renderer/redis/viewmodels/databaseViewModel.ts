@@ -35,7 +35,7 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
         this.id = idProvider();
 
         keyChangesEmitter.keyDeleted$.subscribe(keyVm => {
-            if(keyVm.db.id === this.id){
+            if (keyVm.db.id === this.id) {
                 console.log(`removing key: ${keyVm.name}`);
                 this.removeKey(keyVm);
             }
@@ -47,6 +47,13 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
         console.log(`search: search by '${searchPattern}' pattern found following keys:`);
         console.log(keys);
         this.displayKeys(keys);
+    }
+
+    public async reloadChildren() {
+        console.log('database: reload children');
+        let keys = await this.setBusy(this.redis.keysAsync(this.model.number));
+        this.displayKeys(keys);
+        this.update();
     }
 
     public async displaySubItems(node: any) {
@@ -68,23 +75,34 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
     }
 
     public update() {
-        this.ngZone.run(() => { this.treeModel.getNodeById(this.id).treeModel.update(); });
+        this.ngZone.run(() => { this.getNode().treeModel.update(); });
+    }
+
+    private getNode() {
+        return this.treeModel.getNodeById(this.id);
     }
 
     private async displayKeys(keys: string[]) {
         console.log(`number of keys loaded from db '${this.model.number}' is ${_.isNil(keys) ? 0 : keys.length}`);
         this.children.length = 0;
-        this.isExpanded = true;
 
         _.map(keys, key => {
             this.children.push(new RedisKeyViewModel(this.redis, key, this, this.dialog, this.keyChangesEmitter));
         });
 
+        if (this.isExpanded === true) {
+            this.collapse();
+        }
+
+        this.isExpanded = true;
         this.expand();
     }
 
     private expand() {
-        let node = this.treeModel.getNodeById(this.id);
-        node.toggleExpanded();
+        this.getNode().toggleExpanded();
+    }
+
+    private collapse() {
+        this.getNode().collapse();
     }
 }

@@ -6,6 +6,8 @@ import { RedisDataStructure } from '../viewModels/redisDataStructures';
 import { RedisKeyViewModel } from '../viewModels/redisKeyViewModel';
 import { ExpandableViewModel } from '../viewModels/expandableViewModel';
 import { CreateKeyDialogComponent } from '../components/create.key.component';
+import { ReliableRedisClient } from '../model/reliableRedisClient';
+import { DatabaseViewModel } from '../viewmodels/databaseViewModel';
 
 @Component({
   templateUrl: './redis/components/database.details.component.view.html',
@@ -19,13 +21,20 @@ export class DatabaseDetailsComponent {
   public _ = _;
   private dialog: MdDialog;
 
-  constructor(dialog: MdDialog) {
+  constructor(private redis: ReliableRedisClient, dialog: MdDialog) {
     this.dialog = dialog;
+  }
+
+  public async reloadKeys() {
+    let dbVm = <DatabaseViewModel>this.selectedTreeViewModel;
+    await dbVm.reloadChildren();
   }
 
   public createNewKey() {
     console.log('create new key: clicked');
     let dialogRef = this.dialog.open(CreateKeyDialogComponent);
+    dialogRef.componentInstance.redis = this.redis;
+    dialogRef.componentInstance.dbVm = <DatabaseViewModel>this.selectedTreeViewModel;
     dialogRef.afterClosed().subscribe(result => {
       console.log('create key dialog: closed');
       //this.selectedOption = result;
