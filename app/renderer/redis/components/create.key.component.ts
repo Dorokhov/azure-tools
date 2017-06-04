@@ -3,6 +3,8 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { RedisTypes } from '../model/redisTypes';
 import { ReliableRedisClient } from '../model/reliableRedisClient';
 import { DatabaseViewModel } from '../viewmodels/databaseViewModel';
+import { RedisKeyViewModel } from '../viewmodels/redisKeyViewModel';
+import { RedisStringVM, RedisHashVM, RedisSetVM, RedisZSetVM } from '../viewmodels/redisDataStructures';
 
 @Component({
   selector: 'create-key-dialog',
@@ -21,9 +23,49 @@ export class CreateKeyDialogComponent {
   public redis: ReliableRedisClient;
   public dbVm: DatabaseViewModel;
   public anyAdded: boolean = false;
+  public isEditMode: boolean = false;
 
   constructor(public dialogRef: MdDialogRef<CreateKeyDialogComponent>) {
 
+  }
+
+  public edit(keyVm: RedisKeyViewModel) {
+    this.isEditMode = true;
+    if (!_.isNil(keyVm)) {
+      switch (keyVm.dataStructure.type) {
+        case RedisTypes.String:
+          let stringDataStructure = <RedisStringVM>keyVm.dataStructure;
+          this.key = keyVm.name;
+          this.selectedType = RedisTypes[stringDataStructure.type];
+          this.value = stringDataStructure.value;
+          break;
+        case RedisTypes.Hash:
+          let hashDataStructure = <RedisHashVM>keyVm.dataStructure;
+          this.key = keyVm.name;
+          this.selectedType = RedisTypes[hashDataStructure.type];
+          let keyValue = _.first(hashDataStructure.selectedFields);
+          if (!_.isNil(keyValue)) {
+            this.field = keyValue.key;
+            this.value = keyValue.value;
+          }
+          break;
+        case RedisTypes.Set:
+          let setDataStructure = <RedisSetVM>keyVm.dataStructure;
+          this.key = keyVm.name;
+          this.selectedType = RedisTypes[setDataStructure.type];
+          let setKeyValue = _.first(hashDataStructure.selectedItems);
+          this.value = setKeyValue.value;
+          break;
+        case RedisTypes.ZSet:
+          let zsetDataStructure = <RedisZSetVM>keyVm.dataStructure;
+          this.key = keyVm.name;
+          this.selectedType = RedisTypes[zsetDataStructure.type];
+          let zsetKeyValue = _.first(hashDataStructure.selectedItems);
+          this.score = zsetKeyValue.key;
+          this.value = zsetKeyValue.value;
+          break;
+      }
+    }
   }
 
   public async add() {

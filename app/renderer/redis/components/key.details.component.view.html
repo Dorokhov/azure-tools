@@ -8,6 +8,5 @@
     <md-divider></md-divider>
 
     <h3 md-subheader>Actions</h3>
-
     <md-list-item *ngFor="let command of selectedTreeViewModel.commands"><a href="javascript:void(0)" (click)="command.execute()">{{command.name}}</a></md-list-item>
 </md-list>

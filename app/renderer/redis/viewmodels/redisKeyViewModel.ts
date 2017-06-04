@@ -52,7 +52,7 @@ export class RedisKeyViewModel extends ExpandableViewModel {
                 return new RedisStringVM(value);
             case 'hash':
                 value = await this.setBusy(this.redis.hgetallAsync(this.db.model.number, this.name));
-                this.commands = this.redisZSetActions.commands;
+                this.commands = this.redisHashActions.commands;
                 return new RedisHashVM(value);
             case 'set':
                 value = await this.setBusy(this.redis.smembersAsync(this.db.model.number, this.name));
