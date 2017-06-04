@@ -1,10 +1,9 @@
 <md-list fxFlex="*" style="background:white;align-items:stretch; min-height: 100%; margin: 20px 20px 20px 20px">
-    <h3 md-subheader>Server Details</h3>
-    <md-list-item> Key: {{_.isNil(selectedTreeViewModel) ? '-' :selectedTreeViewModel.name}} </md-list-item>
+    <h3><i fa class="fa-server" style="margin: 0px 10px 0 0; "></i>{{_.isNil(selectedTreeViewModel) ? '-' :selectedTreeViewModel.name}}</h3>
 
     <md-divider></md-divider>
 
-    <h3 md-subheader>Actions</h3>
-    <md-list-item><a href="javascript:void(0)">Manage Databases</a></md-list-item>
-    <md-list-item><a href="javascript:void(0)">Disconnect</a></md-list-item>
+    <button md-button><i fa class="fa-edit dbPrime" style="margin:0px 10px 0 0;"></i>Manage Databases</button>
+    <button md-button><i fa class="fa-power-off warning" style="margin:0px 10px 0 0;"></i>Disconnect</button>
+    <button md-button><i fa class="fa-remove warning" style="margin:0px 10px 0 0;"></i>Delete</button>
 </md-list>
