@@ -57,6 +57,6 @@ export class RedisServerManagementComponent {
 
   cancel() {
     console.log('server create: cancelled')
-    this.router.navigate(['redis', null]);
+    this.router.navigate(['redis']);
   }
 }
