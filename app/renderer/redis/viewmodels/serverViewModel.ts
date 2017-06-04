@@ -2,6 +2,7 @@
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from './expandableViewModel';
 import { ReliableRedisClient } from '../model/reliableRedisClient';
+import { ReliableRedisClientPool } from '../services/reliableRedisClientPool';
 import { Profile, RedisServer, RedisDatabase } from '../model/profile';
 import { DatabaseViewModel } from '../viewmodels/databaseViewModel';
 import { KeyChangesEmitter } from '../services/keychangesemitter';
@@ -13,15 +14,15 @@ export class ServerViewModel extends ExpandableViewModel {
     private idProvider: () => number;
 
     constructor(
-        server: RedisServer,
-        redis: ReliableRedisClient,
+        public model: RedisServer,
+        redisClientPool: ReliableRedisClientPool,
         ngZone: NgZone,
         treeModel: object,
         idProvider: () => number,
         private dialog: MdDialog,
         private keyChangesEmitter: KeyChangesEmitter) {
-        super(TreeItemType.Server, server.host);
-        this.redis = redis;
+        super(TreeItemType.Server, model.host);
+        this.redis = redisClientPool.getClientFromSeverVm(this);
         this.ngZone = ngZone;
         this.treeModel = treeModel;
         this.id = idProvider();

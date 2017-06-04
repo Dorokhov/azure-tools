@@ -11,13 +11,14 @@ import { DatabaseViewModel } from './viewmodels/databaseViewModel';
 
 import { RedisKeyViewModel } from './viewmodels/redisKeyViewModel';
 import { ReliableRedisClient } from './model/reliableRedisClient';
+import { ReliableRedisClientPool } from './services/reliableRedisClientPool';
 import { UserPreferencesRepository } from './model/userPreferencesRepository';
 import { KeyChangesEmitter } from './services/keychangesemitter';
 
 
 @Component({
   templateUrl: './redis/redis.main.component.view.html',
-  providers: [ReliableRedisClient, UserPreferencesRepository, KeyChangesEmitter]
+  providers: [ReliableRedisClientPool, UserPreferencesRepository, KeyChangesEmitter]
 })
 
 
@@ -29,7 +30,7 @@ export class RedisMainComponent implements AfterViewInit {
   private router: Router;
 
   public nodes: ExpandableViewModel[] = [];
-  redis: ReliableRedisClient;
+  private redisClientPool: ReliableRedisClientPool;
   keyVmList: RedisKeyViewModel[] = [];
   selectedKeyVm: RedisKeyViewModel = null;
   selectedKeyVmIndex: number;
@@ -55,13 +56,13 @@ export class RedisMainComponent implements AfterViewInit {
   constructor(
     router: Router,
     route: ActivatedRoute,
-    redis: ReliableRedisClient,
+    redisClientPool: ReliableRedisClientPool,
     ngZone: NgZone,
     userPreferencesRepository: UserPreferencesRepository,
     private rd: Renderer2,
     private dialog: MdDialog,
     private keyChangesEmitter: KeyChangesEmitter) {
-    this.redis = redis;
+    this.redisClientPool = redisClientPool;
     this.router = router;
     this.ngZone = ngZone;
     this.route = route;
@@ -88,7 +89,7 @@ export class RedisMainComponent implements AfterViewInit {
   ngAfterViewInit() {
     console.log('main component: view init');
     console.log(this.tree.treeModel);
-    this.nodes = _.map(this.currentProfile.servers, server => new ServerViewModel(server, this.redis, this.ngZone, this.tree.treeModel, this.idProvider, this.dialog, this.keyChangesEmitter));
+    this.nodes = _.map(this.currentProfile.servers, server => new ServerViewModel(server, this.redisClientPool, this.ngZone, this.tree.treeModel, this.idProvider, this.dialog, this.keyChangesEmitter));
   }
 
   public addServer() {

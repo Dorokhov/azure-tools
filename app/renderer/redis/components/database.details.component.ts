@@ -7,6 +7,7 @@ import { RedisKeyViewModel } from '../viewModels/redisKeyViewModel';
 import { ExpandableViewModel } from '../viewModels/expandableViewModel';
 import { CreateKeyDialogComponent } from '../components/create.key.component';
 import { ReliableRedisClient } from '../model/reliableRedisClient';
+import { ReliableRedisClientPool } from '../services/reliableRedisClientPool';
 import { DatabaseViewModel } from '../viewmodels/databaseViewModel';
 import { ConfirmDialogComponent } from '../components/confirm.component';
 
@@ -22,7 +23,7 @@ export class DatabaseDetailsComponent {
   public _ = _;
   private dialog: MdDialog;
 
-  constructor(private redis: ReliableRedisClient, dialog: MdDialog) {
+  constructor(private redisClientPool: ReliableRedisClientPool, dialog: MdDialog) {
     this.dialog = dialog;
   }
 
@@ -33,9 +34,10 @@ export class DatabaseDetailsComponent {
 
   public createNewKey() {
     console.log('create new key: clicked');
+    let dbVm = <DatabaseViewModel>this.selectedTreeViewModel;
     let dialogRef = this.dialog.open(CreateKeyDialogComponent, {disableClose: true});
-    dialogRef.componentInstance.redis = this.redis;
-    dialogRef.componentInstance.dbVm = <DatabaseViewModel>this.selectedTreeViewModel;
+    dialogRef.componentInstance.redis = this.redisClientPool.getClientFromDbVm(dbVm);
+    dialogRef.componentInstance.dbVm = dbVm;
     dialogRef.afterClosed().subscribe(result => {
       console.log(`create key dialog: closed and any added '${result.anyAdded}'`);
 

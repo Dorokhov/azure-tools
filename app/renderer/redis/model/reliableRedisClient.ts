@@ -10,10 +10,13 @@ export class ReliableRedisClient {
     private client: redis.RedisClient;
 
     private port: number = 6379;
-    private host: string = '127.0.0.1';
+    private host: string = '';
     private password: string = '';
 
-    constructor() {
+    constructor(host: string, port: number, password: string) {
+        this.host = host;
+        this.port = port;
+        this.password = password;
     }
 
     getNumberOfKeysInDb(db: number): ng.IPromise<Array<any>> {
@@ -51,6 +54,7 @@ export class ReliableRedisClient {
     }
 
     keysAsync(db: number): Promise<string[]> {
+        console.log(`reliable redis client: keysAsync called`)
         return this.tryingReuseConnection(db).keysAsync('*');
     }
 
@@ -96,6 +100,8 @@ export class ReliableRedisClient {
         }
 
         this.client.select(db);
+        console.log(`reliable redis client: client with '${this.host}' host and '${this.port}' port being used`);
+        console.log(this.client);
         return this.client;
     }
 

@@ -1,6 +1,7 @@
 ﻿import { MdDialog, MdDialogRef } from '@angular/material';
 import { RedisDataStructure, RedisStringVM, RedisHashVM, RedisSetVM, RedisZSetVM } from './redisDataStructures';
 import { ReliableRedisClient } from '../model/reliableRedisClient'
+import { ReliableRedisClientPool } from '../services/reliableRedisClientPool';
 import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from './expandableViewModel';
 import { ConfirmDialogComponent } from '../components/confirm.component';
 import { Guard } from '../common/guard';
@@ -17,6 +18,7 @@ export abstract class RedisKeyActions {
     protected keyVm: RedisKeyViewModel;
     protected dialog: MdDialog;
     protected redis: ReliableRedisClient;
+    
     private keyChangesEmitter: KeyChangesEmitter;
 
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {

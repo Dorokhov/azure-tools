@@ -41,6 +41,8 @@ redis;
 import bluebird from 'bluebird';
 bluebird;
 import { ReliableRedisClient } from './redis/model/reliableRedisClient';
+import { ReliableRedisClientPool } from './redis/services/reliableRedisClientPool';
+
 import { KeyChangesEmitter } from './redis/services/keychangesemitter';
 
 

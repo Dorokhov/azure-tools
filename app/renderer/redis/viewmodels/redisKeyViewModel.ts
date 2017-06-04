@@ -1,6 +1,7 @@
 ﻿import { MdDialog, MdDialogRef } from '@angular/material';
 import { RedisDataStructure, RedisStringVM, RedisHashVM, RedisSetVM, RedisZSetVM } from './redisDataStructures';
 import { ReliableRedisClient } from '../model/reliableRedisClient'
+import { ReliableRedisClientPool } from '../services/reliableRedisClientPool';
 import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from './expandableViewModel';
 import { IAsyncCommand, RedisStringActions, RedisHashActions, RedisSetActions, RedisZSetActions } from './redisKeyActions';
 import { DatabaseViewModel } from './databaseViewModel';
@@ -15,14 +16,16 @@ export class RedisKeyViewModel extends ExpandableViewModel {
     private redisSetActions: RedisStringActions;
     private redisHashActions: RedisStringActions;
     private redisZSetActions: RedisStringActions;
+    private redis: ReliableRedisClient;
 
     constructor(
-        private redis: ReliableRedisClient,
+        redis: ReliableRedisClient,
         public name: string,
         public db: DatabaseViewModel,
         private dialog: MdDialog,
         keyChangesEmitter: KeyChangesEmitter) {
         super(TreeItemType.Key, name);
+        this.redis = redis;
         this.redisStringActions = new RedisStringActions(this, this.redis, this.dialog, keyChangesEmitter);
         this.redisHashActions = new RedisHashActions(this, this.redis, this.dialog, keyChangesEmitter);
         this.redisSetActions = new RedisSetActions(this, this.redis, this.dialog, keyChangesEmitter);

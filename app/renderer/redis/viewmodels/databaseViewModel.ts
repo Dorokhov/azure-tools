@@ -1,6 +1,7 @@
 ﻿import { MdDialog, MdDialogRef } from '@angular/material';
 import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from './expandableViewModel';
 import { ReliableRedisClient } from '../model/reliableRedisClient';
+import { ReliableRedisClientPool } from '../services/reliableRedisClientPool';
 import { Component, NgZone } from '@angular/core';
 import { Profile, RedisServer, RedisDatabase } from '../model/profile';
 import { ServerViewModel } from '../viewmodels/serverViewModel';
@@ -14,12 +15,12 @@ export class DatabaseDetails {
 export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase> {
     private redis: ReliableRedisClient;
     private ngZone: NgZone;
-    private server: ServerViewModel;
     private treeModel: object;
     public details: DatabaseDetails;
+    public serverVm: ServerViewModel;
 
     constructor(
-        server: ServerViewModel,
+        serverVm: ServerViewModel,
         model: RedisDatabase,
         redis: ReliableRedisClient,
         ngZone: NgZone,
@@ -30,7 +31,7 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
         super(model, TreeItemType.Database, model.name)
         this.redis = redis;
         this.ngZone = ngZone;
-        this.server = server;
+        this.serverVm = serverVm;
         this.treeModel = treeModel;
         this.id = idProvider();
 
@@ -52,13 +53,18 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
     public async reloadChildren() {
         console.log('database: reload children');
         let keys = await this.setBusy(this.redis.keysAsync(this.model.number));
+        console.log('database: following keys loaded');
+        console.log(keys);
         this.displayKeys(keys);
         this.update();
     }
 
     public async displaySubItems(node: any) {
         if (this.children.length == 0) {
+            console.log('database: no children, so loading from the server');
             let keys = await this.setBusy(this.redis.keysAsync(this.model.number));
+            console.log('database: following keys loaded');
+            console.log(keys);
             this.displayKeys(keys);
             this.ngZone.run(() => { node.treeModel.update(); });
         }
@@ -83,7 +89,7 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
     }
 
     private async displayKeys(keys: string[]) {
-        console.log(`number of keys loaded from db '${this.model.number}' is ${_.isNil(keys) ? 0 : keys.length}`);
+        console.log(`number of keys to display in db '${this.model.number}' equals ${_.isNil(keys) ? 0 : keys.length}`);
         this.children.length = 0;
 
         _.map(keys, key => {
