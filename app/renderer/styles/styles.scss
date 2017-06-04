@@ -37,6 +37,11 @@ md-tab-body{
     margin-right:10px;
 }
 
+.ttl-type-radio-group {
+  display: inline-flex;
+  flex-direction: column;
+}
+
 .key-type-radio-group {
   display: inline-flex;
   flex-direction: row;
@@ -45,3 +50,20 @@ md-tab-body{
 .key-type-radio-button {
   margin: 5px;
 }
+
+h3{
+    color: #222
+}
+
+.md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover {
+  background-color: '{{primary-600}}'; }
+.md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused {
+  background-color: '{{primary-600}}'; }
+
+  .dbPrime{
+      color:#3f51b5;
+  }
+
+  .warning {
+      color: #f44336
+  }

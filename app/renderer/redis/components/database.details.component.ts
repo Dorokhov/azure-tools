@@ -33,14 +33,14 @@ export class DatabaseDetailsComponent {
 
   public createNewKey() {
     console.log('create new key: clicked');
-    let dialogRef = this.dialog.open(CreateKeyDialogComponent);
+    let dialogRef = this.dialog.open(CreateKeyDialogComponent, {disableClose: true});
     dialogRef.componentInstance.redis = this.redis;
     dialogRef.componentInstance.dbVm = <DatabaseViewModel>this.selectedTreeViewModel;
     dialogRef.afterClosed().subscribe(result => {
       console.log(`create key dialog: closed and any added '${result.anyAdded}'`);
 
       if (result.anyAdded) {
-        let confirmRef = this.dialog.open(ConfirmDialogComponent);
+        let confirmRef = this.dialog.open(ConfirmDialogComponent, {disableClose: true});
         confirmRef.componentInstance.message = 'New keys were added. Do you want to reload database keys?';
         confirmRef.afterClosed().subscribe(confirmResult => {
           if (confirmResult.isConfirmed) {

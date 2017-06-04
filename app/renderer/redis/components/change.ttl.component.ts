@@ -11,7 +11,7 @@ import { RedisKeyViewModel } from '../viewmodels/redisKeyViewModel';
 
 export class ChangeTtlDialogComponent {
   public message: string = '';
-  public types: string[] = ['Custom', 'Never'];
+  public types: string[] = ['Custom', 'Never Expires'];
   public ttl: number = -1;
   public _selectedType: string = 'Custom';
   public redis: ReliableRedisClient;
@@ -28,7 +28,7 @@ export class ChangeTtlDialogComponent {
   @Input()
   set selectedType(selectedType: string) {
     this._selectedType = selectedType;
-    if (this._selectedType === 'Never') {
+    if (this._selectedType === 'Never Expires') {
       this.ttl = -1;
     }
   }

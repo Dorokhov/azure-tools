@@ -30,16 +30,16 @@
             <div class="split-pane-content-primary windowHeight" style="margin:20px 0 0 0;">
                 <tree-root #tree [nodes]="nodes" [options]="options" (onActivate)="onActivate($event)">
                     <ng-template #treeNodeTemplate let-node let-index="index">
-                        <div fxLayout="row" fxFlexAlign="center center">
-                            <div (click)="changeExpanded(node)" style="width:20px; height: 20px;margin:5px; pointer-events:auto;">
+                        <div fxLayout="row" fxFlexAlign="center center" style="height: 15px;">
+                            <div (click)="changeExpanded(node)" style="width:20px; height: 20px; pointer-events:auto;">
                                 <i fa class="{{node.data.isExpanded ? 'fa-caret-down' : 'fa-caret-right'}}" fxLayoutAlign="space-around center"></i>
                             </div>
 
-                            <i fa class="fa-server fa-lg" style="margin:5px; color:#f44336;" *ngIf="node.data.type === TreeItemType.Server"></i>
-                            <i fa class="fa-database fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Database"></i>
-                            <i fa class="fa-key fa-sm" style="margin:5px; " *ngIf="node.data.type === TreeItemType.Key"></i>
+                            <i fa class="fa-server" style="margin: 0px 0 0 0; color:#f44336;" *ngIf="node.data.type === TreeItemType.Server"></i>
+                            <i fa class="fa-database" style="margin:0px 0 0 0; " *ngIf="node.data.type === TreeItemType.Database" ></i>
+                            <i fa class="fa-key" style="margin:0px 0 0 0; " *ngIf="node.data.type === TreeItemType.Key"></i>
 
-                            <span fxLayoutAlign="space-around center">{{ node.data.name }}</span>
+                            <span fxLayoutAlign="space-around center" style="font-size:16px; margin: 0 2px 0 5px; color: #222">{{ node.data.name }}</span>
 
                             <md-spinner fxLayoutAlign="space-around center" style="width: 15px; height:15px; margin: 5px 0 0 5px" *ngIf="node.data.isBusy"></md-spinner>
                         </div>

@@ -38,7 +38,7 @@ export class RedisMainComponent implements AfterViewInit {
   TreeItemType: object;
   options: object = {
     useVirtualScroll: true,
-    nodeHeight: (node: TreeNode) => 17,
+    nodeHeight: (node: TreeNode) => 15,
     dropSlotHeight: 0
   };
 

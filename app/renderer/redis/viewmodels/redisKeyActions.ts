@@ -25,10 +25,10 @@ export abstract class RedisKeyActions {
         this.dialog = dialog;
         this.redis = redis;
         this.keyChangesEmitter = keyChangesEmitter;
-        this.changeTtlCommand = new AsyncCommandGenericParam('Change TTL', () => { return this.changeTtl(); }, this.dialog);
-        this.deleteCommand = new AsyncCommandGenericParam('Delete Key', () => this.deleteKey(), this.dialog);
-        this.reloadValueCommand = new AsyncCommandGenericParam('Reload Value', () => this.reloadValue(), this.dialog);
-        this.editCommand = new AsyncCommandGenericParam('Edit', () => { return this.edit(); }, dialog);
+        this.changeTtlCommand = new AsyncCommandGenericParam('Change TTL', () => { return this.changeTtl(); }, this.dialog, 'fa-clock-o dbPrime');
+        this.deleteCommand = new AsyncCommandGenericParam('Delete Key', () => this.deleteKey(), this.dialog, 'fa-remove warning');
+        this.reloadValueCommand = new AsyncCommandGenericParam('Reload Value', () => this.reloadValue(), this.dialog, 'fa-refresh dbPrime');
+        this.editCommand = new AsyncCommandGenericParam('Edit', () => { return this.edit(); }, dialog, 'fa-edit dbPrime');
     }
 
     public changeTtlCommand;
@@ -37,7 +37,7 @@ export abstract class RedisKeyActions {
     public editCommand;
 
     protected async changeTtl(): Promise<any> {
-        let dialogRef = this.dialog.open(ChangeTtlDialogComponent);
+        let dialogRef = this.dialog.open(ChangeTtlDialogComponent, { disableClose: true });
         dialogRef.componentInstance.redis = this.redis;
         dialogRef.componentInstance.keyVm = this.keyVm;
         return new Promise((resolve, reject) => {
@@ -53,7 +53,7 @@ export abstract class RedisKeyActions {
     }
 
     private deleteKey(): Promise<any> {
-        let confirmRef = this.dialog.open(ConfirmDialogComponent);
+        let confirmRef = this.dialog.open(ConfirmDialogComponent, { disableClose: true });
         confirmRef.componentInstance.message = `Are you sure you want to delete '${this.keyVm.name} key'?`;
         return new Promise((resolve, reject) => {
             confirmRef.afterClosed().subscribe(result => {
@@ -78,7 +78,7 @@ export abstract class RedisKeyActions {
 
     protected edit(): Promise<any> {
         return new Promise((resolve, reject) => {
-            let dialogRef = this.dialog.open(CreateKeyDialogComponent);
+            let dialogRef = this.dialog.open(CreateKeyDialogComponent, { disableClose: true });
             dialogRef.componentInstance.redis = this.redis;
             dialogRef.componentInstance.dbVm = this.keyVm.db;
             dialogRef.componentInstance.edit(this.keyVm);
@@ -94,7 +94,7 @@ export abstract class RedisKeyActions {
 
 export class RedisStringActions extends RedisKeyActions {
 
-    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand, this.reloadValueCommand, this.editCommand];
+    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.reloadValueCommand, this.editCommand, this.deleteCommand];
 
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         super(keyVm, redis, dialog, keyChangesEmitter);
@@ -105,10 +105,11 @@ export class RedisSetActions extends RedisKeyActions {
 
     public commands: IAsyncCommand[] = [
         this.changeTtlCommand,
-        this.deleteCommand,
         this.reloadValueCommand,
-        new AsyncCommandGenericParam('Add Item', () => { return this.edit(); }, this.dialog),
-        new AsyncCommandGenericParam('Edit Selected Item', () => { return this.edit(); }, this.dialog)];
+        new AsyncCommandGenericParam('Add Item', () => { return this.edit(); }, this.dialog, 'fa-plus dbPrime'),
+        new AsyncCommandGenericParam('Edit Selected Item', () => { return this.edit(); }, this.dialog, 'fa-edit dbPrime'),
+        this.deleteCommand];
+
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         super(keyVm, redis, dialog, keyChangesEmitter);
     }
@@ -118,10 +119,10 @@ export class RedisHashActions extends RedisKeyActions {
 
     public commands: IAsyncCommand[] = [
         this.changeTtlCommand,
-        this.deleteCommand,
         this.reloadValueCommand,
-        new AsyncCommandGenericParam('Add Field', () => { return this.edit(); }, this.dialog),
-        new AsyncCommandGenericParam('Edit Selected Field', () => { return this.edit(); }, this.dialog)];
+        new AsyncCommandGenericParam('Add Field', () => { return this.edit(); }, this.dialog, 'fa-plus dbPrime'),
+        new AsyncCommandGenericParam('Edit Selected Field', () => { return this.edit(); }, this.dialog, 'fa-edit dbPrime'),
+        this.deleteCommand];
 
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         super(keyVm, redis, dialog, keyChangesEmitter);
@@ -132,10 +133,10 @@ export class RedisZSetActions extends RedisKeyActions {
 
     public commands: IAsyncCommand[] = [
         this.changeTtlCommand,
-        this.deleteCommand,
         this.reloadValueCommand,
-        new AsyncCommandGenericParam('Add Item', () => { return this.edit(); }, this.dialog),
-        new AsyncCommandGenericParam('Edit Selected Item', () => { return this.edit(); }, this.dialog)];
+        new AsyncCommandGenericParam('Add Item', () => { return this.edit(); }, this.dialog, 'fa-plus dbPrime'),
+        new AsyncCommandGenericParam('Edit Selected Item', () => { return this.edit(); }, this.dialog, 'fa-edit dbPrime'),
+        this.deleteCommand];
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         super(keyVm, redis, dialog, keyChangesEmitter);
     }
@@ -143,21 +144,21 @@ export class RedisZSetActions extends RedisKeyActions {
 
 class AsyncCommand implements IAsyncCommand {
 
-    constructor(name: string, public execute: () => Promise<void>, public dialog: MdDialog) {
+    constructor(name: string, public execute: () => Promise<void>, public dialog: MdDialog, public iconClass: string = '') {
 
     }
 }
 
 class AsyncCommandGeneric<TResult> implements IAsyncCommand {
 
-    constructor(name: string, public execute: () => Promise<TResult>, public dialog: MdDialog) {
+    constructor(name: string, public execute: () => Promise<TResult>, public dialog: MdDialog, public iconClass: string = '') {
 
     }
 }
 
 class AsyncCommandGenericParam<T> implements IAsyncCommand {
 
-    constructor(public name: string, public execute: (param: T) => Promise<void>, public dialog: MdDialog) {
+    constructor(public name: string, public execute: (param: T) => Promise<void>, public dialog: MdDialog, public iconClass: string = '') {
 
     }
 }

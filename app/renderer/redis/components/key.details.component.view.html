@@ -1,5 +1,5 @@
 <md-list fxFlex="*" style="background:white;align-items:stretch; min-height: 100%; margin: 20px 20px 20px 20px">
-    <h3 md-subheader>Details</h3>
+    <h3><i fa class="fa-key" style="margin:0px 10px 0 0;"></i>Key Details</h3>
     <md-list-item> Key: {{_.isNil(selectedTreeViewModel) ? '-' : selectedTreeViewModel.name}} </md-list-item>
     <md-list-item> TTL: {{_.isNil(selectedTreeViewModel) ? '-' : (selectedTreeViewModel.ttl === -1 ? 'Never Expires' : selectedTreeViewModel.ttl)}}
     </md-list-item>
@@ -7,6 +7,6 @@
 
     <md-divider></md-divider>
 
-    <h3 md-subheader>Actions</h3>
-    <md-list-item *ngFor="let command of selectedTreeViewModel.commands"><a href="javascript:void(0)" (click)="command.execute()">{{command.name}}</a></md-list-item>
+    <button *ngFor="let command of selectedTreeViewModel.commands" md-button (click)="command.execute()"><i fa class="{{command.iconClass}}" style="margin:0px 10px 0 0;"></i>{{command.name}}</button>
+
 </md-list>
