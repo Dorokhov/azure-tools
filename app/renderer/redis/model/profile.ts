@@ -5,7 +5,7 @@ export class Profile {
   servers: RedisServer[] = [];
 }
 
-export class RedisServer{
+export class RedisServer {
   id: number;
   name: string = '';
   host: string = '';
@@ -13,16 +13,26 @@ export class RedisServer{
   password: string = '';
   maxNumberToScanNotEmpty: number = 100;
   databases: RedisDatabase[] = [];
+  constructor() {
+
+  }
+  public equals(other: RedisServer): boolean {
+    if (_.isNil(other)) {
+      return false;
+    }
+
+    return this.host === other.host;
+  }
 }
 
-export class RedisDatabase{
+export class RedisDatabase {
   number: number;
   name: string;
   keys: RedisKey[] = [];
   separator: string;
 }
 
-export class RedisKey{
+export class RedisKey {
   name: string;
   type: RedisType;
 }

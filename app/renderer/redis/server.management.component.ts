@@ -23,7 +23,7 @@ export class RedisServerManagementComponent {
 
     this.router = router;
     this.currentServer = defaultServer;
-    this.currentProfile = this.userPreferencesRepository.getCurrentProfile();
+    this.currentProfile = this.userPreferencesRepository.getCurrentProfile()[1];
   }
 
   connect() {

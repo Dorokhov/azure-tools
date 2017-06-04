@@ -92,6 +92,7 @@ const appRoutes: Routes = [
     ChangeTtlDialogComponent
   ],
   entryComponents: [CreateKeyDialogComponent, ConfirmDialogComponent,ChangeTtlDialogComponent],
+  providers: [KeyChangesEmitter],
   bootstrap: [RedisManagementComponent]
 })
 

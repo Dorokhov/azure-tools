@@ -18,7 +18,7 @@ import { KeyChangesEmitter } from './services/keychangesemitter';
 
 @Component({
   templateUrl: './redis/redis.main.component.view.html',
-  providers: [ReliableRedisClientPool, UserPreferencesRepository, KeyChangesEmitter]
+  providers: [ReliableRedisClientPool, UserPreferencesRepository]
 })
 
 
@@ -72,7 +72,7 @@ export class RedisMainComponent implements AfterViewInit {
     this.TreeItemType = TreeItemType;
 
     let currentProfile = this.userPreferencesRepository.getCurrentProfile();
-    this.currentProfile = currentProfile;
+    this.currentProfile = currentProfile[1];
 
     let newServer = <RedisServer>route.params.value;
 
@@ -83,6 +83,15 @@ export class RedisMainComponent implements AfterViewInit {
         this.selectedKeyVmIndex = -1;
       }
       _.remove(this.keyVmList, each => each.equals(keyVm));
+    });
+
+    keyChangesEmitter.serverDeleted$.subscribe(serverVm => {
+      console.log(`delete server: removing server from UI`);
+      console.log(`delete server: number of servers before delete equals to ${this.nodes.length}`);
+      _.remove(this.nodes, each => (<ServerViewModel>each).equals(serverVm));
+      console.log(`delete server: number of servers after delete equals to ${this.nodes.length}`);
+      this.tree.treeModel.update();
+      console.log('delete server: tree updated')
     });
   }
 

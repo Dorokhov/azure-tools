@@ -45,16 +45,13 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
 
     public async search(searchPattern: string) {
         let keys = await this.redis.searchKeysAsync(this.model.number, searchPattern);
-        console.log(`search: search by '${searchPattern}' pattern found following keys:`);
-        console.log(keys);
+        console.log(`search: search by '${searchPattern}' pattern found ${keys.length} keys`);
         this.displayKeys(keys);
     }
 
     public async reloadChildren() {
         console.log('database: reload children');
         let keys = await this.setBusy(this.redis.keysAsync(this.model.number));
-        console.log('database: following keys loaded');
-        console.log(keys);
         this.displayKeys(keys);
         this.update();
     }
@@ -63,8 +60,6 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
         if (this.children.length == 0) {
             console.log('database: no children, so loading from the server');
             let keys = await this.setBusy(this.redis.keysAsync(this.model.number));
-            console.log('database: following keys loaded');
-            console.log(keys);
             this.displayKeys(keys);
             this.ngZone.run(() => { node.treeModel.update(); });
         }

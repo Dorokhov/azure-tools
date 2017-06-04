@@ -61,4 +61,20 @@ export class ServerViewModel extends ExpandableViewModel {
         node.toggleExpanded();
         this.treeModel.update();
     }
+
+    public equals(other: ServerViewModel): boolean {
+        if (_.isNil(other)) {
+            return false;
+        }
+
+        if (_.isNil(other.model)) {
+            return false;
+        }
+
+        if (_.isNil(other.model.host)) {
+            return false;
+        }
+
+        return this.model.host === other.model.host;
+    }
 }

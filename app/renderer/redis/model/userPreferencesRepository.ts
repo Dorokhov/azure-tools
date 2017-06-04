@@ -23,12 +23,12 @@ export class UserPreferencesRepository {
         }
     }
 
-    getCurrentProfile(): Profile{
+    getCurrentProfile(): [UserPreferences, Profile] {
         let preferences = this.get();
-        if(preferences == null){
+        if (preferences == null) {
             return null;
         }
 
-        return _.find(preferences.profiles, x=>x.name == preferences.selectedProfileName);
+        return [preferences, _.find(preferences.profiles, x => x.name == preferences.selectedProfileName)];
     }
 }
