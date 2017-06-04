@@ -1,3 +1,4 @@
-<p-dataTable [value]="dataStructure.keyValues">
+<p-dataTable [value]="dataStructure.keyValues" [(selection)]="dataStructure.selectedItems" dataKey="value">
+    <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
     <p-column field="value" header="Value"></p-column>
 </p-dataTable>

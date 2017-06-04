@@ -67,7 +67,7 @@
         <div fxFlex="30" style="background: white; box-shadow: -5px 0px 5px 1px rgba(0,0,0,0.19)">
             <div>
                 <server-details [selectedTreeViewModel]="selectedTreeViewModel" *ngIf="_.isNil(selectedTreeViewModel) ? false : selectedTreeViewModel.typeToDisplay == 'Server'"></server-details>
-                <database-details [selectedTreeViewModel]="selectedTreeViewModel" *ngIf="_.isNil(selectedTreeViewModel) ? false : selectedTreeViewModel.typeToDisplay == 'Database'"></database-details>
+                <database-details [selectedTreeViewModel]="(!_.isNil(selectedTreeViewModel) && selectedTreeViewModel.typeToDisplay == 'Database') ? selectedTreeViewModel : selectedKeyVm.db" *ngIf="(!_.isNil(selectedTreeViewModel) && selectedTreeViewModel.typeToDisplay == 'Database') || !_.isNil(selectedKeyVm)"></database-details>
                 <key-details [selectedTreeViewModel]="selectedKeyVm" *ngIf="!_.isNil(selectedKeyVm)"></key-details>
             </div>
         </div>

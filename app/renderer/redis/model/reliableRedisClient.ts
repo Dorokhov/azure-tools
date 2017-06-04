@@ -47,7 +47,7 @@ export class ReliableRedisClient {
     }
 
     zrangeAsync(db: number, key: string): Promise<object[]> {
-        return this.tryingReuseConnection(db).zrangeAsync(key, 0, 1);
+        return this.tryingReuseConnection(db).zrangeAsync(key, 0, -1, 'withscores');
     }
 
     keysAsync(db: number): Promise<string[]> {

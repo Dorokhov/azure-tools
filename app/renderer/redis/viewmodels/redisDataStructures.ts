@@ -37,6 +37,7 @@ export class RedisHashVM extends RedisDataStructure {
 export class RedisSetVM extends RedisDataStructure {
     typeToDisplay: string;
     keyValues: KeyValue[] = [];
+    selectedItems: KeyValue[] = [];
 
     constructor(public values: string[]) {
         super();
@@ -51,13 +52,14 @@ export class RedisSetVM extends RedisDataStructure {
 export class RedisZSetVM extends RedisDataStructure {
     typeToDisplay: string;
     keyValues: KeyValue[] = [];
+    selectedItems: KeyValue[] = [];
 
-    constructor(public zset: object) {
+    constructor(public zset: string[]) {
         super();
         this.type = RedisTypes.ZSet;
         this.typeToDisplay = RedisTypes[this.type];
-        this.keyValues = _.map(zset, (value, prop) => {
-            return new KeyValue(value, prop);
-        });
+        this.keyValues = _(zset).chunk(2).map((value) => {
+            return new KeyValue(value[0], value[1]);
+        }).value();
     }
 }

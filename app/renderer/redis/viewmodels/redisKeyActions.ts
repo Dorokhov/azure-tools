@@ -103,7 +103,12 @@ export class RedisStringActions extends RedisKeyActions {
 
 export class RedisSetActions extends RedisKeyActions {
 
-    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand, this.reloadValueCommand, this.editCommand];
+    public commands: IAsyncCommand[] = [
+        this.changeTtlCommand,
+        this.deleteCommand,
+        this.reloadValueCommand,
+        new AsyncCommandGenericParam('Add Item', () => { return this.edit(); }, this.dialog),
+        new AsyncCommandGenericParam('Edit Selected Item', () => { return this.edit(); }, this.dialog)];
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         super(keyVm, redis, dialog, keyChangesEmitter);
     }
@@ -112,11 +117,11 @@ export class RedisSetActions extends RedisKeyActions {
 export class RedisHashActions extends RedisKeyActions {
 
     public commands: IAsyncCommand[] = [
-        this.changeTtlCommand, 
+        this.changeTtlCommand,
         this.deleteCommand,
         this.reloadValueCommand,
-        this.editCommand, 
-        new AsyncCommandGenericParam('Add Field', () => { return this.edit(); }, this.dialog)];
+        new AsyncCommandGenericParam('Add Field', () => { return this.edit(); }, this.dialog),
+        new AsyncCommandGenericParam('Edit Selected Field', () => { return this.edit(); }, this.dialog)];
 
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         super(keyVm, redis, dialog, keyChangesEmitter);
@@ -125,7 +130,12 @@ export class RedisHashActions extends RedisKeyActions {
 
 export class RedisZSetActions extends RedisKeyActions {
 
-    public commands: IAsyncCommand[] = [this.changeTtlCommand, this.deleteCommand, this.reloadValueCommand, this.editCommand];
+    public commands: IAsyncCommand[] = [
+        this.changeTtlCommand,
+        this.deleteCommand,
+        this.reloadValueCommand,
+        new AsyncCommandGenericParam('Add Item', () => { return this.edit(); }, this.dialog),
+        new AsyncCommandGenericParam('Edit Selected Item', () => { return this.edit(); }, this.dialog)];
     constructor(keyVm: RedisKeyViewModel, redis: ReliableRedisClient, dialog: MdDialog, keyChangesEmitter: KeyChangesEmitter) {
         super(keyVm, redis, dialog, keyChangesEmitter);
     }

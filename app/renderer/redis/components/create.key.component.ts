@@ -53,16 +53,24 @@ export class CreateKeyDialogComponent {
           let setDataStructure = <RedisSetVM>keyVm.dataStructure;
           this.key = keyVm.name;
           this.selectedType = RedisTypes[setDataStructure.type];
-          let setKeyValue = _.first(hashDataStructure.selectedItems);
-          this.value = setKeyValue.value;
+          let setKeyValue = _.first(setDataStructure.selectedItems);
+          console.log('edit set: key value');
+          console.log(setKeyValue);
+          if (!_.isNil(setKeyValue)) {
+            this.value = setKeyValue.value;
+          }
           break;
         case RedisTypes.ZSet:
           let zsetDataStructure = <RedisZSetVM>keyVm.dataStructure;
           this.key = keyVm.name;
           this.selectedType = RedisTypes[zsetDataStructure.type];
-          let zsetKeyValue = _.first(hashDataStructure.selectedItems);
-          this.score = zsetKeyValue.key;
-          this.value = zsetKeyValue.value;
+          let zsetKeyValue = _.first(zsetDataStructure.selectedItems);
+          console.log('edit zset: key value');
+          console.log(zsetKeyValue);
+          if (!_.isNil(zsetKeyValue)) {
+            this.score = zsetKeyValue.value;
+            this.value = zsetKeyValue.key;
+          }
           break;
       }
     }
