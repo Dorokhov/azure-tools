@@ -121,10 +121,7 @@ var sassTaskDev = function () {
 gulp.task('sass', ['clean'], sassTask);
 gulp.task('sass-watch', sassTaskDev);
 
-
-var typescriptTask = function () {
-
-    var tsProject = ts.createProject({
+var compilationOptions = {
         // "target": "es5",
         // "module": "commonjs",
         // "moduleResolution": "node",
@@ -144,20 +141,39 @@ var typescriptTask = function () {
         "lib": ["es2015", "dom"],
         "noImplicitAny": true,
         "suppressImplicitAnyIndexErrors": true
-    });
+    };
+
+var typescriptTask = function () {
+
+    var tsProject = ts.createProject(compilationOptions);
 
     return gulp.src('app/renderer/**/*.ts')
         .pipe(ts(tsProject))
             // .on('error', errorHandler('TypeScript'))
         .pipe(gulp.dest(function () {
             return destDir.path('renderer/');
+        }))
+        .pipe(typescriptAngularTreeTask());
+};
+
+var typescriptAngularTreeTask = function () {
+    var tsProject = ts.createProject(compilationOptions);
+
+    return gulp.src('app/libs/angular2-tree-component/dist/**/*.ts')
+        .pipe(ts(tsProject))
+            // .on('error', errorHandler('TypeScript'))
+        .pipe(gulp.dest(function () {
+            return destDir.path('node_modules/angular2-tree-component/dist/');
         }));
 };
+
 var typescriptTaskDev = function () {
     return typescriptTask()
         .pipe(livereload());
 };
-gulp.task('typescript', ['clean'], typescriptTask);
+
+gulp.task('typescriptAngularTreeTask', ['clean'], typescriptAngularTreeTask);
+gulp.task('typescript', ['typescriptAngularTreeTask'], typescriptTask);
 gulp.task('typescript-watch', typescriptTaskDev);
 
 

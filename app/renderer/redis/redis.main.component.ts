@@ -1,4 +1,4 @@
-import { Component, ViewChild, NgZone, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, NgZone, ElementRef, Renderer2, AfterViewInit,ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { TreeModel, TreeNode, TREE_ACTIONS } from 'angular2-tree-component';
@@ -9,6 +9,7 @@ import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from '.
 import { ServerViewModel } from './viewmodels/serverViewModel';
 import { DatabaseViewModel } from './viewmodels/databaseViewModel';
 
+import { RedisFolderViewModel } from './viewmodels/redisFolderViewModel';
 import { RedisKeyViewModel } from './viewmodels/redisKeyViewModel';
 import { ReliableRedisClient } from './model/reliableRedisClient';
 import { ReliableRedisClientPool } from './services/reliableRedisClientPool';
@@ -18,7 +19,8 @@ import { KeyChangesEmitter } from './services/keychangesemitter';
 
 @Component({
   templateUrl: './redis/redis.main.component.view.html',
-  providers: [ReliableRedisClientPool, UserPreferencesRepository]
+  providers: [ReliableRedisClientPool, UserPreferencesRepository],
+   changeDetection:ChangeDetectionStrategy.OnPush
 })
 
 
@@ -38,9 +40,12 @@ export class RedisMainComponent implements AfterViewInit {
   _: object;
   TreeItemType: object;
   options: object = {
-    useVirtualScroll: true,
-    nodeHeight: (node: TreeNode) => 15,
-    dropSlotHeight: 0
+    useVirtualScroll: false,
+    nodeHeight: 15,
+    dropSlotHeight: 2,
+    allowDrag: false,
+    animateExpand:false,
+    idField: 'id',
   };
 
   public selectedTreeViewModel: ExpandableViewModel = null;
@@ -98,7 +103,7 @@ export class RedisMainComponent implements AfterViewInit {
   ngAfterViewInit() {
     console.log('main component: view init');
     console.log(this.tree.treeModel);
-    this.nodes = _.map(this.currentProfile.servers, server => new ServerViewModel(server, this.redisClientPool, this.ngZone, this.tree.treeModel, this.idProvider, this.dialog, this.keyChangesEmitter));
+    this.nodes = _.map(this.currentProfile.servers, server => new ServerViewModel(this.currentProfile, server, this.redisClientPool, this.ngZone, this.tree.treeModel, this.idProvider, this.dialog, this.keyChangesEmitter));
   }
 
   public addServer() {
@@ -140,7 +145,7 @@ export class RedisMainComponent implements AfterViewInit {
     console.log(`user selects tab: ${$event.index}`);
     this.displayKey(this.keyVmList[$event.index]);
   }
-
+  
   onActivate = ($event) => {
     let vm = <ExpandableViewModel>$event.node.data;
     console.log(`user selects: getting subitems for type: ${TreeItemType[vm.type]}`);
@@ -163,6 +168,10 @@ export class RedisMainComponent implements AfterViewInit {
       case TreeItemType.Database:
         let db = <DatabaseViewModel>vm;
         db.displaySubItems(node);
+        break;
+      case TreeItemType.Folder:
+        let folderVm = <RedisFolderViewModel>vm;
+        folderVm.displaySubItems(node);
         break;
       case TreeItemType.Key:
         this.displayKey(<RedisKeyViewModel>vm);

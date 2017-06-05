@@ -10,10 +10,11 @@ import { KeyChangesEmitter } from '../services/keychangesemitter';
 export class ServerViewModel extends ExpandableViewModel {
     private redis: ReliableRedisClient;
     private ngZone: NgZone;
-    private treeModel: object;
     private idProvider: () => number;
+    private currentProfile: Profile;
 
     constructor(
+        currentProfile: Profile,
         public model: RedisServer,
         redisClientPool: ReliableRedisClientPool,
         ngZone: NgZone,
@@ -21,12 +22,13 @@ export class ServerViewModel extends ExpandableViewModel {
         idProvider: () => number,
         private dialog: MdDialog,
         private keyChangesEmitter: KeyChangesEmitter) {
-        super(TreeItemType.Server, model.host);
+        super(treeModel, TreeItemType.Server, model.host);
         this.redis = redisClientPool.getClientFromSeverVm(this);
         this.ngZone = ngZone;
         this.treeModel = treeModel;
         this.id = idProvider();
         this.idProvider = idProvider;
+        this.currentProfile = currentProfile;
     }
 
     public async search(searchPattern: string) {
@@ -53,7 +55,7 @@ export class ServerViewModel extends ExpandableViewModel {
             let db = new RedisDatabase();
             db.name = each.toString();
             db.number = each;
-            this.children.push(new DatabaseViewModel(this, db, this.redis, this.ngZone, this.treeModel, this.idProvider, this.dialog, this.keyChangesEmitter))
+            this.children.push(new DatabaseViewModel(this.currentProfile, this, db, this.redis, this.ngZone, this.treeModel, this.idProvider, this.dialog, this.keyChangesEmitter))
         });
         this.isExpanded = true;
 

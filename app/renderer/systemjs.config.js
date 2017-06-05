@@ -28,7 +28,8 @@
 
     'mobx': '../node_modules/mobx/lib/mobx.umd.js',
     'ng2-mobx': '../node_modules/ng2-mobx/dist/ng2-mobx.umd.js',
-    'angular2-tree-component': '../node_modules/angular2-tree-component/dist/angular2-tree-component.umd.js',
+    'mobx-angular': '../node_modules/mobx-angular/dist/mobx-angular.umd.js',
+    //'angular2-tree-component': '../node_modules/angular2-tree-component/dist/angular-tree-component.ts',
 
     'rxjs': '../node_modules/rxjs',
     'angular2-in-memory-web-api': '../node_modules/angular2-in-memory-web-api',

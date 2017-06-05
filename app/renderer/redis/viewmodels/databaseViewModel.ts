@@ -6,6 +6,8 @@ import { Component, NgZone } from '@angular/core';
 import { Profile, RedisServer, RedisDatabase } from '../model/profile';
 import { ServerViewModel } from '../viewmodels/serverViewModel';
 import { RedisKeyViewModel } from '../viewmodels/redisKeyViewModel';
+import { RedisFolderViewModel } from '../viewmodels/redisFolderViewModel';
+
 import { KeyChangesEmitter } from '../services/keychangesemitter';
 
 export class DatabaseDetails {
@@ -15,25 +17,27 @@ export class DatabaseDetails {
 export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase> {
     private redis: ReliableRedisClient;
     private ngZone: NgZone;
-    private treeModel: object;
     public details: DatabaseDetails;
     public serverVm: ServerViewModel;
+    private currentProfile: Profile;
 
     constructor(
+        currentProfile: Profile,
         serverVm: ServerViewModel,
         model: RedisDatabase,
         redis: ReliableRedisClient,
         ngZone: NgZone,
         treeModel: object,
-        idProvider: () => number,
+        private idProvider: () => number,
         private dialog: MdDialog,
         private keyChangesEmitter: KeyChangesEmitter) {
-        super(model, TreeItemType.Database, model.name)
+        super(treeModel, model, TreeItemType.Database, model.name)
         this.redis = redis;
         this.ngZone = ngZone;
         this.serverVm = serverVm;
         this.treeModel = treeModel;
         this.id = idProvider();
+        this.currentProfile = currentProfile;
 
         keyChangesEmitter.keyDeleted$.subscribe(keyVm => {
             if (keyVm.db.id === this.id) {
@@ -79,17 +83,21 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
         this.ngZone.run(() => { this.getNode().treeModel.update(); });
     }
 
-    private getNode() {
-        return this.treeModel.getNodeById(this.id);
-    }
-
     private async displayKeys(keys: string[]) {
         console.log(`number of keys to display in db '${this.model.number}' equals ${_.isNil(keys) ? 0 : keys.length}`);
         this.children.length = 0;
 
-        _.map(keys, key => {
-            this.children.push(new RedisKeyViewModel(this.redis, key, this, this.dialog, this.keyChangesEmitter));
+        console.log('display keys: grouping by folders started');
+
+        let splittedKeys: string[][] = _.map(keys, key => {
+            return _.split(key, this.model.separator);
         });
+
+        this.children = this.groupRec('', keys);
+
+        // _.map(keys, key => {
+        //     this.children.push(new RedisKeyViewModel(this.treeModel, this.redis, key, this, this.dialog, this.keyChangesEmitter, this.idProvider));
+        // });
 
         if (this.isExpanded === true) {
             this.collapse();
@@ -99,11 +107,39 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
         this.expand();
     }
 
-    private expand() {
-        this.getNode().toggleExpanded();
-    }
+    private groupRec(previous: string, source: string[]): ExpandableViewModel[] {
+        let childrenFolders = _(source)
+            .filter(each => each.indexOf(':') !== -1)
+            .map(key => {
+                var i = key.indexOf(':');
+                var splittedKeys = [key.slice(0, i), key.slice(i + 1)];
+                return splittedKeys;
+            })
+            .groupBy(x => x[0])
+            .mapValues((value: string[][], key: string) => {
+                let values: string[] = <string[]>_(value).map((each: string[]) => {
+                    if (each.length === 2) {
+                        return each[1];
+                    }
 
-    private collapse() {
-        this.getNode().collapse();
+                    return each;
+                }).flatten().value();
+
+                if (values.length > 1) {
+                    var folder = new RedisFolderViewModel(previous + key, values, this.treeModel, this.redis, key, this, this.dialog, this.keyChangesEmitter, this.ngZone, this.idProvider);
+                    return folder;
+                }
+
+                return new RedisKeyViewModel(this.treeModel, this.redis, previous + key, this, this.dialog, this.keyChangesEmitter, this.idProvider)
+            })
+            .values()
+            .value();
+
+        let childrenKeys = _(source)
+            .filter(each => each.indexOf(':') === -1)
+            .map(x => new RedisKeyViewModel(this.treeModel, this.redis, `${previous}:${x}`, this, this.dialog, this.keyChangesEmitter, this.idProvider))
+            .value();
+            
+        return childrenFolders.concat(childrenKeys);
     }
 }

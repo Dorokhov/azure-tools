@@ -29,7 +29,7 @@ export class RedisDatabase {
   number: number;
   name: string;
   keys: RedisKey[] = [];
-  separator: string;
+  separator: string = ':';
 }
 
 export class RedisKey {

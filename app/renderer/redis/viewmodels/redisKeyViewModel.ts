@@ -19,12 +19,14 @@ export class RedisKeyViewModel extends ExpandableViewModel {
     private redis: ReliableRedisClient;
 
     constructor(
+        treeModel: object,
         redis: ReliableRedisClient,
         public name: string,
         public db: DatabaseViewModel,
         private dialog: MdDialog,
-        keyChangesEmitter: KeyChangesEmitter) {
-        super(TreeItemType.Key, name);
+        keyChangesEmitter: KeyChangesEmitter,
+        idProvider: () => number) {
+        super(treeModel, TreeItemType.Key, name);
         this.redis = redis;
         this.redisStringActions = new RedisStringActions(this, this.redis, this.dialog, keyChangesEmitter);
         this.redisHashActions = new RedisHashActions(this, this.redis, this.dialog, keyChangesEmitter);

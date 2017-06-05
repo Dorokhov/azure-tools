@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { Angular2FontawesomeModule } from 'angular2-fontawesome'
-import { TreeModule } from 'angular2-tree-component';
+import { TreeModule } from '../node_modules/angular2-tree-component/dist/angular-tree-component';
 
 import { RedisStringComponent } from './redis/components/redis.string.component';
 import { RedisHashComponent } from './redis/components/redis.hash.component';
