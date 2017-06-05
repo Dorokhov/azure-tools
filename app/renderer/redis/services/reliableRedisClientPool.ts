@@ -13,11 +13,12 @@ export class ReliableRedisClientPool {
 
     public getClient(host: string, port: number, password: string): ReliableRedisClient {
         console.log(`get redis client from pool: host '${host}' port '${port}'`);
-        let client = this.pool[host];
+        let key = `${host}${port}`;
+        let client = this.pool[key];
         if (_.isNil(client)) {
             console.log(`get redis client from pool: client not found in the pool by '${host}' host name`);
             client = new ReliableRedisClient(host, port, password);
-            this.pool[host] = client;
+            this.pool[key] = client;
         }
 
         console.log(`get redis client from pool: end`);

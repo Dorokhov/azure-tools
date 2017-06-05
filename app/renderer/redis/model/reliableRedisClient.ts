@@ -96,7 +96,8 @@ export class ReliableRedisClient {
 
     private tryingReuseConnection(db: number) {
         if (this.client === null || this.client === undefined || !this.client.connected) {
-            this.client = redis.createClient(this.port, this.host, { auth_pass: this.password });
+
+            this.client = redis.createClient(this.port, this.host, this.getSecurity());
         }
 
         this.client.select(db);
@@ -106,7 +107,18 @@ export class ReliableRedisClient {
     }
 
     private newClient() {
-        this.client = redis.createClient(this.port, this.host, { auth_pass: this.password });
+        this.client = redis.createClient(this.port, this.host, this.getSecurity());
         return this.client;
+    }
+
+    private getSecurity() {
+        let security = { auth_pass: this.password };
+        if (this.port === 6380) {
+            security['tls'] = { servername: this.host };
+            console.log('reliable redis client: added TLS');
+            console.log(security);
+        }
+
+        return security;
     }
 }

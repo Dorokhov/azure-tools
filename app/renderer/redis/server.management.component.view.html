@@ -1,4 +1,4 @@
-<md-tab-group #tabGroup style="margin:20px 0 0 10px">
+<md-tab-group #tabGroup style="margin:20px 0 0 10px" (selectChange)="onSelectedConnectionTypeChanged($event)">
     <md-tab label="Microsoft Azure">
         <div>
             <md-card>
@@ -13,7 +13,7 @@
                     </p>
 
                     <section>
-                        <md-slide-toggle>SSL </md-slide-toggle>
+                        <md-slide-toggle (change)="sslChange($event)">SSL </md-slide-toggle>
                     </section>
 
                     <p>

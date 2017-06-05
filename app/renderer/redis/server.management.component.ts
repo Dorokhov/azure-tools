@@ -14,19 +14,49 @@ export class RedisServerManagementComponent {
   router: Router;
   userPreferencesRepository: UserPreferencesRepository;
   currentProfile: Profile;
+  public isSsl: boolean = false;
+  public errorMessages: string[] = [];
+  private azureLabel = 'Microsoft Azure';
+  private standaloneLabel = 'Standalone'
+  selectedTab: string;
 
   constructor(router: Router, userPreferencesRepository: UserPreferencesRepository) {
     this.userPreferencesRepository = userPreferencesRepository;
 
     let defaultServer = new RedisServer();
-    defaultServer.host = '127.0.0.1';
+    defaultServer.host = '';
 
     this.router = router;
     this.currentServer = defaultServer;
     this.currentProfile = this.userPreferencesRepository.getCurrentProfile()[1];
+    this.selectedTab = this.azureLabel;
+  }
+
+  public onSelectedConnectionTypeChanged($event) {
+    console.log(`connection changed: following event`);
+    console.log($event);
+
+    this.selectedTab = $event.tab.textLabel;
+    if ($event.tab.textLabel === this.standaloneLabel) {
+      this.currentServer.host = '127.0.0.1';
+    }
+    else {
+      this.currentServer.host = '';
+    }
+  }
+
+  public sslChange($event) {
+    this.isSsl = $event.checked;
   }
 
   connect() {
+    if (!this.validate()) return;
+
+    if (this.selectedTab === this.azureLabel) {
+      this.currentServer.port = this.isSsl ? 6380 : 6379;
+      this.currentServer.host += '.redis.cache.windows.net';
+    }
+
     let userPreferences = this.userPreferencesRepository.get();
 
     console.log(`user preferences ${userPreferences} and current profile ${this.currentProfile}`);
@@ -58,5 +88,15 @@ export class RedisServerManagementComponent {
   cancel() {
     console.log('server create: cancelled')
     this.router.navigate(['redis']);
+  }
+
+  private validate(): boolean {
+    this.errorMessages.length = 0;
+    if (_.isEmpty(this.currentServer.host)) {
+      this.errorMessages.push(`'Host' is required`);
+      return false;
+    }
+
+    return true;
   }
 }
