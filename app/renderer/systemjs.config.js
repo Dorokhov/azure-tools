@@ -93,7 +93,7 @@
       }
     },
 
-    '../node_modules/hiredis/build/Release': {
+     '../node_modules/hiredis/build/Release': {
       defaultExtension: false,
       meta: {
         '*.node': {
@@ -101,6 +101,7 @@
         }
       }
     },
+
     'angular2-fontawesome': {
       defaultExtension: 'js'
     },

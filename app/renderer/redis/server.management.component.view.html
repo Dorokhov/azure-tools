@@ -1,7 +1,12 @@
 <md-tab-group #tabGroup style="margin:20px 0 0 10px" (selectChange)="onSelectedConnectionTypeChanged($event)">
-    <md-tab label="Microsoft Azure">
+    <md-tab>
+        <ng-template md-tab-label>
+            <i fa class="fa-windows fa-lg" style="margin:0 10px 0 0"></i>Microsoft Azure
+        </ng-template>
         <div>
             <md-card>
+                <label>Connect to your Azure Redis Cache. You can find credentials on Microsoft Azure Portal (Redis Caches->Cache Name->Access Keys)</label>
+
                 <md-card-content>
                     <p>
                         <md-input-container class="input-field col s6">

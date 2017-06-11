@@ -4,7 +4,10 @@
 
         <span class="example-fill-remaining-space"></span>-->
         <div fxFlex="20">
-            <button fxFlexAlign="start center" md-raised-button color="primary" (click)="addServer()">Add Server</button>
+
+            <button md-mini-fab (click)="sidenav.toggle()" color="primary" placeholder="Settings">
+        <i fa class="fa-cog fa-lg"></i>
+    </button>
         </div>
 
         <div fxFlex="60" fxLayout="column" fxFlexAlign="center center" fxFill>
@@ -27,7 +30,18 @@
         <vertical-split-pane fxFlex="70" primary-component-minsize="150" secondary-component-minsize="180" primary-component-initialratio="0.3"
             local-storage-key="azure-tools-redis-main-splitter">
 
-            <div class="split-pane-content-primary windowHeight" style="margin:20px 0 0 0;">
+            <md-sidenav-container class="split-pane-content-primary windowHeight" style="margin:20px 0 0 0;">
+
+                <md-sidenav #sidenav mode="side" opened="false" fxFill>
+                    <div>
+                        <button fxFlexAlign="start center" md-button color="primary" (click)="addServer()" style="margin:20px">
+                            
+                            <i fa class="fa-plus dbPrime" style="margin:0px 10px 0 0;"></i>
+                            Add Server
+                            </button>
+                    </div>
+                </md-sidenav>
+
                 <tree-root #tree [nodes]="nodes" [options]="options" (onActivate)="onActivate($event)">
                     <ng-template #treeNodeTemplate let-node let-index="index">
                         <div fxLayout="row" fxFlexAlign="center center" style="height: 15px;">
@@ -36,9 +50,9 @@
                             </div>
 
                             <i fa class="fa-server" style="margin: 0px 0 0 0; color:#f44336;" *ngIf="node.data.type === TreeItemType.Server"></i>
-                            <i fa class="fa-database" style="margin:0px 0 0 0; " *ngIf="node.data.type === TreeItemType.Database" ></i>
-                            <i fa class="fa-folder" style="margin:0px 0 0 0;color:orange; " *ngIf="node.data.type === TreeItemType.Folder && !node.data.isExpanded" ></i>
-                            <i fa class="fa-folder-open" style="margin:0px 0 0 0; color:orange;" *ngIf="node.data.type === TreeItemType.Folder && node.data.isExpanded" ></i>
+                            <i fa class="fa-database" style="margin:0px 0 0 0; " *ngIf="node.data.type === TreeItemType.Database"></i>
+                            <i fa class="fa-folder" style="margin:0px 0 0 0;color:orange; " *ngIf="node.data.type === TreeItemType.Folder && !node.data.isExpanded"></i>
+                            <i fa class="fa-folder-open" style="margin:0px 0 0 0; color:orange;" *ngIf="node.data.type === TreeItemType.Folder && node.data.isExpanded"></i>
                             <i fa class="fa-key" style="margin:0px 0 0 20px; " *ngIf="node.data.type === TreeItemType.Key"></i>
 
                             <span fxLayoutAlign="space-around center" style="font-size:16px; margin: 0 2px 0 5px; color: #222">{{ node.data.name }}</span>
@@ -47,7 +61,7 @@
                         </div>
                     </ng-template>
                 </tree-root>
-            </div>
+            </md-sidenav-container>
 
             <div class="split-pane-content-secondary">
                 <md-tab-group #tabGroup (selectChange)="onSelectedKeyVmChanged($event)" [(selectedIndex)]="selectedKeyVmIndex" style="margin:20px 0 0 10px">
@@ -69,7 +83,8 @@
         <div fxFlex="30" style="background: white; box-shadow: -5px 0px 5px 1px rgba(0,0,0,0.19)">
             <div>
                 <server-details [selectedTreeViewModel]="selectedTreeViewModel" *ngIf="_.isNil(selectedTreeViewModel) ? false : selectedTreeViewModel.typeToDisplay == 'Server'"></server-details>
-                <database-details [selectedTreeViewModel]="(!_.isNil(selectedTreeViewModel) && selectedTreeViewModel.typeToDisplay == 'Database') ? selectedTreeViewModel : selectedKeyVm.db" *ngIf="(!_.isNil(selectedTreeViewModel) && selectedTreeViewModel.typeToDisplay == 'Database') || !_.isNil(selectedKeyVm)"></database-details>
+                <database-details [selectedTreeViewModel]="(!_.isNil(selectedTreeViewModel) && selectedTreeViewModel.typeToDisplay == 'Database') ? selectedTreeViewModel : selectedKeyVm.db"
+                    *ngIf="(!_.isNil(selectedTreeViewModel) && selectedTreeViewModel.typeToDisplay == 'Database') || !_.isNil(selectedKeyVm)"></database-details>
                 <key-details [selectedTreeViewModel]="selectedKeyVm" *ngIf="!_.isNil(selectedKeyVm)"></key-details>
             </div>
         </div>

@@ -122,26 +122,26 @@ gulp.task('sass', ['clean'], sassTask);
 gulp.task('sass-watch', sassTaskDev);
 
 var compilationOptions = {
-        // "target": "es5",
-        // "module": "commonjs",
-        // "moduleResolution": "node",
-        // "sourceMap": true,
-        // "emitDecoratorMetadata": true,
-        // "experimentalDecorators": true,
-        // "lib": ["es2015", "dom"],
-        // "noImplicitAny": true,
-        // "suppressImplicitAnyIndexErrors": true
+    // "target": "es5",
+    // "module": "commonjs",
+    // "moduleResolution": "node",
+    // "sourceMap": true,
+    // "emitDecoratorMetadata": true,
+    // "experimentalDecorators": true,
+    // "lib": ["es2015", "dom"],
+    // "noImplicitAny": true,
+    // "suppressImplicitAnyIndexErrors": true
 
-          "target": "es5",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "lib": ["es2015", "dom"],
-        "noImplicitAny": true,
-        "suppressImplicitAnyIndexErrors": true
-    };
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es2015", "dom"],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true
+};
 
 var typescriptTask = function () {
 
@@ -149,7 +149,7 @@ var typescriptTask = function () {
 
     return gulp.src('app/renderer/**/*.ts')
         .pipe(ts(tsProject))
-            // .on('error', errorHandler('TypeScript'))
+        // .on('error', errorHandler('TypeScript'))
         .pipe(gulp.dest(function () {
             return destDir.path('renderer/');
         }))
@@ -159,9 +159,10 @@ var typescriptTask = function () {
 var typescriptAngularTreeTask = function () {
     var tsProject = ts.createProject(compilationOptions);
 
-    return gulp.src('app/libs/angular2-tree-component/dist/**/*.ts')
+    return gulp
+        .src('app/libs/angular2-tree-component/dist/**/*.ts')
         .pipe(ts(tsProject))
-            // .on('error', errorHandler('TypeScript'))
+        // .on('error', errorHandler('TypeScript'))
         .pipe(gulp.dest(function () {
             return destDir.path('node_modules/angular2-tree-component/dist/');
         }));
