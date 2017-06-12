@@ -61,7 +61,8 @@ export abstract class RedisKeyActions {
             confirmRef.afterClosed().subscribe(result => {
                 console.log(`confirm dialog: closed with result '${result.isConfirmed}'`);
 
-                if (result.isConfirmed) {
+                if (result.isConfirmed) { 
+                    this.keyVm.db.removeKey(this.keyVm);
                     this.keyChangesEmitter.keyDeleted(this.keyVm);
                 }
 

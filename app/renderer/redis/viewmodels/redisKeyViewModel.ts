@@ -6,6 +6,7 @@ import { ExpandableViewModel, ExpandableViewModelGeneric, TreeItemType } from '.
 import { IAsyncCommand, RedisStringActions, RedisHashActions, RedisSetActions, RedisZSetActions } from './redisKeyActions';
 import { DatabaseViewModel } from './databaseViewModel';
 import { KeyChangesEmitter } from '../services/keychangesemitter';
+import { RedisFolderViewModel } from './redisFolderViewModel';
 
 export class RedisKeyViewModel extends ExpandableViewModel {
     public ttl: number;
@@ -23,6 +24,7 @@ export class RedisKeyViewModel extends ExpandableViewModel {
         redis: ReliableRedisClient,
         public name: string,
         public db: DatabaseViewModel,
+        public folderVm: RedisFolderViewModel,
         private dialog: MdDialog,
         keyChangesEmitter: KeyChangesEmitter,
         idProvider: () => number) {

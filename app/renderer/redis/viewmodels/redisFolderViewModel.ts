@@ -48,6 +48,23 @@ export class RedisFolderViewModel extends ExpandableViewModel {
         this.ngZone.run(() => { this.getNode().treeModel.update(); });
     }
 
+    public removeKey(keyVm: RedisKeyViewModel) {
+        console.log(`remove key from folder: started removing of ${keyVm.name} key`);
+        console.log(`remove key from folder: folder ${name} contains following children`);
+        console.log(this.children);
+        console.log(`and following source:`);
+        console.log(this.source);
+
+        _.remove(this.children, each => {
+            return each instanceof RedisKeyViewModel && (<RedisKeyViewModel>each).equals(keyVm);
+        });
+
+        console.log(`remove key from folder: there are ${this.source.length} keys in source before remove`);
+        _.remove(this.source, each => `${this.previous}${this.db.model.separator}${each}` === keyVm.name);
+        console.log(`remove key from folder: there are ${this.source.length} keys in source after remove`);
+        console.log(`remove key from folder: ended removing of ${keyVm.name} key`);
+    }
+
     private splitSubItems(): ExpandableViewModel[] {
         let childrenFolders = _(this.source)
             .filter(each => each.indexOf(this.db.model.separator) !== -1)
@@ -66,19 +83,19 @@ export class RedisFolderViewModel extends ExpandableViewModel {
                     return each;
                 }).flatten().value();
 
-                if (values.length > 1) {
-                    var folder = new RedisFolderViewModel( _.isEmpty(this.previous) ? `${key}` : `${this.previous}${this.db.model.separator}${key}`, values, this.treeModel, this.redis, key, this.db, this.dialog, this.keyChangesEmitter, this.ngZone, this.idProvider);
+                if (values.length >= 1) {
+                    var folder = new RedisFolderViewModel(_.isEmpty(this.previous) ? `${key}` : `${this.previous}${this.db.model.separator}${key}`, values, this.treeModel, this.redis, key, this.db, this.dialog, this.keyChangesEmitter, this.ngZone, this.idProvider);
                     return folder;
                 }
 
-                return new RedisKeyViewModel(this.treeModel, this.redis, _.isEmpty(this.previous) ? `${key}` :`${this.previous}${this.db.model.separator}${key}`, this.db, this.dialog, this.keyChangesEmitter, this.idProvider)
+                return new RedisKeyViewModel(this.treeModel, this.redis, _.isEmpty(this.previous) ? `${key}` : `${this.previous}${this.db.model.separator}${key}`, this.db, this, this.dialog, this.keyChangesEmitter, this.idProvider)
             })
             .values()
             .value();
 
         let childrenKeys = _(this.source)
-            .filter(each => each.indexOf(':') === -1)
-            .map(x => new RedisKeyViewModel(this.treeModel, this.redis, _.isEmpty(this.previous) ? `${x}` :`${this.previous}${this.db.model.separator}${x}`, this.db, this.dialog, this.keyChangesEmitter, this.idProvider))
+            .filter(each => each.indexOf(this.db.model.separator) === -1)
+            .map(x => new RedisKeyViewModel(this.treeModel, this.redis, _.isEmpty(this.previous) ? `${x}` : `${this.previous}${this.db.model.separator}${x}`, this.db, this, this.dialog, this.keyChangesEmitter, this.idProvider))
             .value();
 
         return childrenFolders.concat(childrenKeys);

@@ -38,13 +38,6 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
         this.treeModel = treeModel;
         this.id = idProvider();
         this.currentProfile = currentProfile;
-
-        keyChangesEmitter.keyDeleted$.subscribe(keyVm => {
-            if (keyVm.db.id === this.id) {
-                console.log(`removing key: ${keyVm.name}`);
-                this.removeKey(keyVm);
-            }
-        });
     }
 
     public async search(searchPattern: string) {
@@ -75,7 +68,14 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
 
     public removeKey(keyVm: RedisKeyViewModel) {
         this.redis.del(keyVm.db.model.number, keyVm.name);
-        _.remove(this.children, each => (<RedisKeyViewModel>each).equals(keyVm));
+        _.remove(this.children, each => {
+            return each instanceof RedisKeyViewModel && (<RedisKeyViewModel>each).equals(keyVm);
+        });
+
+        if (keyVm.folderVm !== null) {
+            keyVm.folderVm.removeKey(keyVm);
+        }
+        
         this.update();
     }
 
@@ -88,16 +88,8 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
         this.children.length = 0;
 
         console.log('display keys: grouping by folders started');
-
-        let splittedKeys: string[][] = _.map(keys, key => {
-            return _.split(key, this.model.separator);
-        });
-
         this.children = this.splitSubItems('', keys);
-
-        // _.map(keys, key => {
-        //     this.children.push(new RedisKeyViewModel(this.treeModel, this.redis, key, this, this.dialog, this.keyChangesEmitter, this.idProvider));
-        // });
+        console.log('display keys: grouping by folders ended');
 
         if (this.isExpanded === true) {
             this.collapse();
@@ -117,6 +109,9 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
             })
             .groupBy(x => x[0])
             .mapValues((value: string[][], key: string) => {
+
+                console.log(`map values: mapping key '${key}' and following value:`);
+                console.log(value);
                 let values: string[] = <string[]>_(value).map((each: string[]) => {
                     if (each.length === 2) {
                         return each[1];
@@ -125,19 +120,21 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
                     return each;
                 }).flatten().value();
 
-                if (values.length > 1) {
+                console.log(`map values: values length is ${values.length} and contains following items:`);
+                console.log(values);
+                if (values.length >= 1) {
                     var folder = new RedisFolderViewModel(_.isEmpty(previous) ? `${key}` : `${previous}${this.model.separator}${key}`, values, this.treeModel, this.redis, key, this, this.dialog, this.keyChangesEmitter, this.ngZone, this.idProvider);
                     return folder;
                 }
 
-                return new RedisKeyViewModel(this.treeModel, this.redis, _.isEmpty(previous) ? `${key}` : `${previous}${this.model.separator}${key}`, this, this.dialog, this.keyChangesEmitter, this.idProvider)
+                return new RedisKeyViewModel(this.treeModel, this.redis, _.isEmpty(previous) ? `${key}` : `${previous}${this.model.separator}${key}`, this, null, this.dialog, this.keyChangesEmitter, this.idProvider)
             })
             .values()
             .value();
 
         let childrenKeys = _(source)
             .filter(each => each.indexOf(this.model.separator) === -1)
-            .map(x => new RedisKeyViewModel(this.treeModel, this.redis, _.isEmpty(previous) ? `${x}` : `${previous}${this.model.separator}${x}`, this, this.dialog, this.keyChangesEmitter, this.idProvider))
+            .map(x => new RedisKeyViewModel(this.treeModel, this.redis, _.isEmpty(previous) ? `${x}` : `${previous}${this.model.separator}${x}`, this, null, this.dialog, this.keyChangesEmitter, this.idProvider))
             .value();
 
         return childrenFolders.concat(childrenKeys);
