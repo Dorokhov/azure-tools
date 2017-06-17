@@ -7,6 +7,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.50",
     "asar": "^0.7.2",
+    "electron-builder-squirrel-windows": "^19.4.2",
     "electron-prebuilt": "^1.4.13",
     "electron-rebuild": "^1.5.11",
     "fs-jetpack": "^0.13.3",

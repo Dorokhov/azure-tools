@@ -1,4 +1,4 @@
-import { Component, ViewChild, NgZone, ElementRef, Renderer2, AfterViewInit,ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewChild, NgZone, ElementRef, Renderer2, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { TreeModel, TreeNode, TREE_ACTIONS } from 'angular2-tree-component';
@@ -17,10 +17,13 @@ import { UserPreferencesRepository } from './model/userPreferencesRepository';
 import { KeyChangesEmitter } from './services/keychangesemitter';
 
 
+var electron = System._nodeRequire('electron');
+electron;
+
 @Component({
   templateUrl: './redis/redis.main.component.view.html',
   providers: [ReliableRedisClientPool, UserPreferencesRepository],
-   changeDetection:ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 
@@ -44,12 +47,13 @@ export class RedisMainComponent implements AfterViewInit {
     nodeHeight: 15,
     dropSlotHeight: 2,
     allowDrag: false,
-    animateExpand:false,
+    animateExpand: false,
     idField: 'id',
   };
 
   public selectedTreeViewModel: ExpandableViewModel = null;
   public searchPattern = 'Key:4';
+  public shell;
 
   counter: number = 0;
   private idProvider = () => {
@@ -98,12 +102,18 @@ export class RedisMainComponent implements AfterViewInit {
       this.tree.treeModel.update();
       console.log('delete server: tree updated')
     });
+
+    this.shell = electron.shell;
   }
 
   ngAfterViewInit() {
     console.log('main component: view init');
     console.log(this.tree.treeModel);
     this.nodes = _.map(this.currentProfile.servers, server => new ServerViewModel(this.currentProfile, server, this.redisClientPool, this.ngZone, this.tree.treeModel, this.idProvider, this.dialog, this.keyChangesEmitter));
+  }
+
+  public openExternal(url: string) {
+    this.shell.openExternal(url);
   }
 
   public addServer() {
@@ -145,7 +155,7 @@ export class RedisMainComponent implements AfterViewInit {
     console.log(`user selects tab: ${$event.index}`);
     this.displayKey(this.keyVmList[$event.index]);
   }
-  
+
   onActivate = ($event) => {
     let vm = <ExpandableViewModel>$event.node.data;
     console.log(`user selects: getting subitems for type: ${TreeItemType[vm.type]}`);

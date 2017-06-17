@@ -3,9 +3,9 @@
   "scripts": {
     "start": "electron main.js"
   },
-  "name": "setup",
-  "productName": "setup",
-  "identifier": "setup",
+  "name": "setup1",
+  "productName": "setup1",
+  "identifier": "setup1",
   "version": "1.0.0",
   "main": "main.js",
   "dependencies": {

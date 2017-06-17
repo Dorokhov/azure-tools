@@ -23,7 +23,12 @@ export class RedisManagementComponent {
     this.buildVersion = _.isNil(localStorage.getItem('buildVersion')) ? 3 : parseInt(localStorage.getItem('buildVersion'), 10);
     localStorage.setItem('buildVersion', (this.buildVersion + 1).toString());
 
-    let currentProfile = userPreferencesRepository.getCurrentProfile()[1];
+    let currentProfile = null;
+    let tuple = userPreferencesRepository.getCurrentProfile();
+    if (!_.isNil(tuple)) {
+      currentProfile = userPreferencesRepository.getCurrentProfile()[1];
+    }
+
     if (currentProfile === null) {
       router.navigate(['management/server/add']);
     }

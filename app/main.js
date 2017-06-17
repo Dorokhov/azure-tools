@@ -29,6 +29,14 @@ app.on('ready', function () {
 
     mainWindow.loadURL('file://' + __dirname + '/renderer/app.html');
 
+    mainWindow.webContents.executeJavaScript(`
+    var path = require('path');
+    module.paths.push(path.resolve('node_modules'));
+module.paths.push(path.resolve('../node_modules'));
+module.paths.push(path.resolve(__dirname, '..', '..', '..', '..', 'resources', 'app', 'node_modules'));
+module.paths.push(path.resolve(__dirname, '..', '..', '..', '..', 'resources', 'app.asar', 'node_modules'));
+    path = undefined;
+  `);
     if (env.name === 'development') {
         devHelper.setDevMenu();
         mainWindow.openDevTools();

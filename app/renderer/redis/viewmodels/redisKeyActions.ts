@@ -56,7 +56,7 @@ export abstract class RedisKeyActions {
 
     private deleteKey(): Promise<any> {
         let confirmRef = this.dialog.open(ConfirmDialogComponent, { disableClose: true });
-        confirmRef.componentInstance.message = `Are you sure you want to delete '${this.keyVm.name} key'?`;
+        confirmRef.componentInstance.message = `Are you sure you want to delete '${this.keyVm.name}' key?`;
         return new Promise((resolve, reject) => {
             confirmRef.afterClosed().subscribe(result => {
                 console.log(`confirm dialog: closed with result '${result.isConfirmed}'`);

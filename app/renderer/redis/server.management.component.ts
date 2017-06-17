@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Profile, RedisServer } from './model/profile';
 import { UserPreferences } from './model/userPreferences';
 import { UserPreferencesRepository } from './model/userPreferencesRepository';
+var electron = System._nodeRequire('electron');
+electron;
 
 @Component({
   templateUrl: './redis/server.management.component.view.html',
@@ -19,6 +21,7 @@ export class RedisServerManagementComponent {
   private azureLabel = 'Microsoft Azure';
   private standaloneLabel = 'Standalone'
   selectedTab: string;
+  public shell;
 
   constructor(router: Router, userPreferencesRepository: UserPreferencesRepository) {
     this.userPreferencesRepository = userPreferencesRepository;
@@ -28,8 +31,18 @@ export class RedisServerManagementComponent {
 
     this.router = router;
     this.currentServer = defaultServer;
-    this.currentProfile = this.userPreferencesRepository.getCurrentProfile()[1];
+    this.currentProfile = null;
+    var tuple = this.userPreferencesRepository.getCurrentProfile();
+    if (tuple !== null) {
+      this.currentProfile = tuple[1];
+    }
+
     this.selectedTab = this.azureLabel;
+    this.shell = electron.shell;
+  }
+
+  public openExternal(url: string) {
+    this.shell.openExternal(url);
   }
 
   public onSelectedConnectionTypeChanged($event) {

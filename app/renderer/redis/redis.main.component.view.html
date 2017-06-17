@@ -33,12 +33,30 @@
             <md-sidenav-container class="split-pane-content-primary windowHeight" style="margin:20px 0 0 0;">
 
                 <md-sidenav #sidenav mode="side" opened="false" fxFill>
-                    <div>
-                        <button fxFlexAlign="start center" md-button color="primary" (click)="addServer()" style="margin:20px">
-                            
-                            <i fa class="fa-plus dbPrime" style="margin:0px 10px 0 0;"></i>
-                            Add Server
-                            </button>
+                    <div fxLayout="column" fxFill>
+                        <div fxFill fxFlex="90">
+                            <div style="margin:20px 0 0 20px">
+                                Settings
+                            </div>
+
+                            <button fxFlexAlign="center start" md-button color="primary" (click)="addServer()" style="margin:10px 0 0 10px">
+                            <i fa class="fa-plus dbPrime" style="margin:0px 10px 0 0;"></i>Add Server
+                        </button>
+                        </div>
+
+                        <div style="min-height: 50px" fxFlex="10" fxLayout="column">
+                            <div  fxLayout="row" fxLayoutAlign="center center" fxFill>
+                                <div>
+                                    <i class="fa fa-twitter"></i> Twitter:
+                                    <a href="javascript:void(0)" (click)="openExternal('https://twitter.com/AzureTools')" style="cursor: pointer;">@AzureTools</a>
+                                </div>
+
+                                <div style="margin:0 0 0 20px">
+                                    <i class="fa fa-github" style="margin-left: 5px;"></i> Github:
+                                    <a href="javascript:void(0)" (click)="openExternal('https://github.com/Dorokhov/azure-tools')" style="cursor: pointer;">Like or Fork Me</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </md-sidenav>
 

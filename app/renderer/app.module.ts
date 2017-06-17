@@ -45,8 +45,6 @@ import { ReliableRedisClientPool } from './redis/services/reliableRedisClientPoo
 
 import { KeyChangesEmitter } from './redis/services/keychangesemitter';
 
-
-
 const appRoutes: Routes = [
   { path: 'redis-management', component: RedisManagementComponent },
   { path: 'management/server/add', component: RedisServerManagementComponent },
