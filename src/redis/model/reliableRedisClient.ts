@@ -34,7 +34,8 @@ export class ReliableRedisClient {
     }
 
     searchKeysAsync(db: number, keyPattern: string): Promise<string[]> {
-        return this.tryingReuseConnection(db).keysAsync(keyPattern);
+        // return this.tryingReuseConnection(db).keysAsync(keyPattern);
+        return this.tryingReuseConnection(db).scanAsync(keyPattern, 0, 1000);
     }
 
     getAsync(db: number, key: string): Promise<string> {
@@ -55,7 +56,11 @@ export class ReliableRedisClient {
 
     keysAsync(db: number): Promise<string[]> {
         console.log(`reliable redis client: keysAsync called`)
-        return this.tryingReuseConnection(db).keysAsync('*');
+        var promise = this
+                .tryingReuseConnection(db)
+                .scanAsync(0, 'MATCH', '*', 'COUNT', '10000');
+        console.log(promise)
+        return promise;
     }
 
     delAsync(db: number, key: string): Promise<string[]> {

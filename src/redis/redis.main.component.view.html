@@ -12,7 +12,7 @@
 
         <div fxFlex="60" fxLayout="column" fxFlexAlign="center center" fxFill>
             <md-input-container>
-                <input mdInput placeholder="search" [mdAutocomplete]="auto" fxFlexAlign="center center" [(ngModel)]="searchPattern">
+                <input #input mdInput placeholder="filter by keys containing:" [mdAutocomplete]="auto" fxFlexAlign="center center" [(ngModel)]="searchPattern">
                 <i fa class="fa-search" style="margin:5px;" (click)="search()"></i>
             </md-input-container>
         </div>
@@ -45,7 +45,7 @@
                         </div>
 
                         <div style="min-height: 50px" fxFlex="10" fxLayout="column">
-                            <div  fxLayout="row" fxLayoutAlign="center center" fxFill>
+                            <div fxLayout="row" fxLayoutAlign="center center" fxFill>
                                 <div>
                                     <i class="fa fa-twitter"></i> Twitter:
                                     <a href="javascript:void(0)" (click)="openExternal('https://twitter.com/AzureTools')" style="cursor: pointer;">@AzureTools</a>
@@ -62,20 +62,21 @@
 
                 <tree-root #tree [nodes]="nodes" [options]="options" (onActivate)="onActivate($event)">
                     <ng-template #treeNodeTemplate let-node let-index="index">
-                        <div fxLayout="row" fxFlexAlign="center center" style="height: 15px;">
-                            <div (click)="changeExpanded(node)" style="width:20px; height: 20px; pointer-events:auto;" *ngIf="node.data.type !== TreeItemType.Key">
-                                <i fa class="{{node.data.isExpanded ? 'fa-caret-down' : 'fa-caret-right'}}" fxLayoutAlign="space-around center"></i>
+                        <div fxLayout="row" fxFlexAlign="start center" style="height: 15px;width:15px">
+                            <div (click)="changeExpanded(node)" style="width:35px; height: 15px; pointer-events:auto;" *ngIf="node.data.type !== TreeItemType.Key"
+                                fxFlexAlign="start center">
+                                <i fa class="{{node.data.isExpanded ? 'fa-caret-down' : 'fa-caret-right'}}" fxLayoutAlign="space-around center" style="margin:0 10px 0 0"></i>
                             </div>
 
-                            <i fa class="fa-server" style="margin: 0px 0 0 0; color:#f44336;" *ngIf="node.data.type === TreeItemType.Server"></i>
-                            <i fa class="fa-database" style="margin:0px 0 0 0; " *ngIf="node.data.type === TreeItemType.Database"></i>
-                            <i fa class="fa-folder" style="margin:0px 0 0 0;color:orange; " *ngIf="node.data.type === TreeItemType.Folder && !node.data.isExpanded"></i>
-                            <i fa class="fa-folder-open" style="margin:0px 0 0 0; color:orange;" *ngIf="node.data.type === TreeItemType.Folder && node.data.isExpanded"></i>
-                            <i fa class="fa-key" style="margin:0px 0 0 20px; " *ngIf="node.data.type === TreeItemType.Key"></i>
+                            <i fa class="fa-server" style="margin: 0px 0 0 0px; color:#f44336;height: 15px;" *ngIf="node.data.type === TreeItemType.Server"></i>
+                            <i fa class="fa-database" style="margin:0px 0 0 0px;height: 15px; " *ngIf="node.data.type === TreeItemType.Database"></i>
+                            <i fa class="fa-folder" style="margin:0px 0 0 0px;color:orange;width: 15px; " *ngIf="node.data.type === TreeItemType.Folder && !node.data.isExpanded"></i>
+                            <i fa class="fa-folder-open" style="margin:0px 0 0 0px; color:orange;width: 15px;" *ngIf="node.data.type === TreeItemType.Folder && node.data.isExpanded"></i>
+                            <i fa class="fa-key" style="margin:0px 0 0 0px; height: 15px;" *ngIf="node.data.type === TreeItemType.Key"></i>
 
-                            <span fxLayoutAlign="space-around center" style="font-size:16px; margin: 0 2px 0 5px; color: #222">{{ node.data.name }}</span>
+                            <span fxLayoutAlign="start center" style="font-size:14px; margin: 0 2px 0 5px; color: #222; text-overflow: ellipsis; white-space: nowrap;">{{ node.data.name }}</span>
 
-                            <md-spinner fxLayoutAlign="space-around center" style="width: 15px; height:15px;" *ngIf="node.data.isBusy"></md-spinner>
+                            <md-spinner fxLayoutAlign="start center" style="width: 15px; height:15px;" *ngIf="node.data.isBusy"></md-spinner>
                         </div>
                     </ng-template>
                 </tree-root>

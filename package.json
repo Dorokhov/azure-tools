@@ -1,11 +1,11 @@
 {
   "name": "electron-boilerplate",
-  "productName": "Electron Boilerplate",
+  "productName": "Azure Tools",
   "description": "Starter for your Electron application",
-  "version": "0.0.0",
-  "author": "Mr. Gumby <mr.gumby@example.com>",
-  "copyright": "© 2017, Gumby inc.",
-  "homepage": "http://example.com",
+  "version": "0.0.2",
+  "author": "Vladimir Dorokhov<dorokhov.vladimir@gmail.com>",
+  "copyright": "© 2017, Vladimir Dorokhov",
+  "homepage": "http://azure-tools.com",
   "license": "MIT",
   "main": "app/background.js",
   "build": {
@@ -53,6 +53,7 @@
     "bootstrap": "^3.3.6",
     "core-js": "^2.4.1",
     "double-ended-queue": "^2.1.0-0",
+    "electron-gh-releases": "^2.0.4",
     "font-awesome": "~4.7.0",
     "fs-jetpack": "^0.13.3",
     "hammerjs": "^2.0.8",
@@ -70,13 +71,13 @@
     "redis-commands": "file:./src/libs/redis-commands",
     "redis-parser": "file:./src/libs/redis-parser",
     "reflect-metadata": "^0.1.3",
+    "run-sequence": "^1.2.2",
     "rxjs": "5.0.1",
     "systemjs": "0.19.27",
     "systemjs-plugin-node-binary": "^0.1.2",
     "typescript": "^2.3.2",
-    "zone.js": "^0.8.4",
-    "run-sequence": "^1.2.2",
-    "wiredep": "^3.0.0-beta"
+    "wiredep": "^3.0.0-beta",
+    "zone.js": "^0.8.4"
   },
   "devDependencies": {
     "@types/electron": "^1.4.33",

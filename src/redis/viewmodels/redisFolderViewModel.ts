@@ -33,15 +33,15 @@ export class RedisFolderViewModel extends ExpandableViewModel {
     }
 
     public displaySubItems(node: any) {
-        if (this.children.length == 0) {
+        if (this.children.length === 0) {
             this.children = this.splitSubItems();
+            this.expand();
+            this.update();
         }
         else {
             console.log('display folder sub items: skip calculation');
+            this.expand();
         }
-
-        this.expand();
-        this.update();
     }
 
     public update() {
@@ -66,7 +66,7 @@ export class RedisFolderViewModel extends ExpandableViewModel {
     }
 
     private splitSubItems(): ExpandableViewModel[] {
-        let childrenFolders = _(this.source)
+        let childrenFolders = _(this.source).sortBy()
             .filter(each => each.indexOf(this.db.model.separator) !== -1)
             .map(key => {
                 var i = key.indexOf(this.db.model.separator);

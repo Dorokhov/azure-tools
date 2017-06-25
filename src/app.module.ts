@@ -32,7 +32,7 @@ import { RedisMainComponent } from './redis/redis.main.component';
 import { RedisManagementComponent } from './redis/redis.management.component';
 import { RedisServerManagementComponent } from './redis/server.management.component';
 import { SplitPaneModule } from 'ng2-split-pane';
-import { DataTableModule, SharedModule } from 'primeng';
+import { TreeTableModule,TreeNode,DataTableModule, SharedModule } from 'primeng';
 
 import { readFile } from '@node/fs'
 readFile;
@@ -67,6 +67,7 @@ const appRoutes: Routes = [
     SplitPaneModule,
     Angular2FontawesomeModule,
 
+    TreeTableModule,
     DataTableModule,
     SharedModule,
     //CreateKeyDialogComponent,

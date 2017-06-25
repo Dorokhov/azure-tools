@@ -39,7 +39,7 @@ export class ServerViewModel extends ExpandableViewModel {
 
         for (let each of this.children) {
             let db = <DatabaseViewModel>each;
-            console.log(`search: server ${this.name}: database ${db.id}: searching`);
+            console.log(`search: server ${this.name}: database ${db.name}: searching`);
             await db.search(searchPattern);
         }
     }

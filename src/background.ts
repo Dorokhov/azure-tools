@@ -10,6 +10,33 @@ import { devMenuTemplate } from './menu/dev_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
 
+const GhReleases = require('electron-gh-releases')
+
+let options = {
+  repo: 'Dorokhov/azure-tools',
+  currentVersion: app.getVersion()
+}
+
+const updater = new GhReleases(options)
+
+// Check for updates
+// `status` returns true if there is a new update available
+updater.check((err, status) => {
+  if (!err && status) {
+    // Download the update
+    updater.download()
+  }
+})
+
+// When an update has been downloaded
+updater.on('update-downloaded', (info) => {
+  // Restart the app and install the update
+  updater.install()
+})
+
+// Access electrons autoUpdater
+//updater.autoUpdater
+
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from './env';

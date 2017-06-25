@@ -2,6 +2,7 @@ import { Component, ViewChild, NgZone, ElementRef, Renderer2, AfterViewInit, Cha
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { TreeModel, TreeNode, TREE_ACTIONS } from 'angular2-tree-component';
+import {Observable} from 'rxjs/Observable';
 
 import { Profile, RedisServer, RedisDatabase } from './model/profile';
 import { RedisTypes } from './model/redisTypes';
@@ -15,7 +16,6 @@ import { ReliableRedisClient } from './model/reliableRedisClient';
 import { ReliableRedisClientPool } from './services/reliableRedisClientPool';
 import { UserPreferencesRepository } from './model/userPreferencesRepository';
 import { KeyChangesEmitter } from './services/keychangesemitter';
-
 
 var electron = System._nodeRequire('electron');
 electron;
@@ -42,17 +42,17 @@ export class RedisMainComponent implements AfterViewInit {
   JSON: object;
   _: object;
   TreeItemType: object;
-  options: object = {
-    useVirtualScroll: false,
+  public options: object = {
+    useVirtualScroll: true,
     nodeHeight: 15,
-    dropSlotHeight: 2,
+    dropSlotHeight: 0,
     allowDrag: false,
     animateExpand: false,
     idField: 'id',
   };
 
   public selectedTreeViewModel: ExpandableViewModel = null;
-  public searchPattern = 'Key:4';
+  public searchPattern = '';
   public shell;
 
   counter: number = 0;
@@ -62,6 +62,7 @@ export class RedisMainComponent implements AfterViewInit {
   }
 
   @ViewChild('tree') tree: ElementRef;
+  @ViewChild('input') inputElRef: ElementRef;
   constructor(
     router: Router,
     route: ActivatedRoute,
@@ -110,6 +111,15 @@ export class RedisMainComponent implements AfterViewInit {
     console.log('main component: view init');
     console.log(this.tree.treeModel);
     this.nodes = _.map(this.currentProfile.servers, server => new ServerViewModel(this.currentProfile, server, this.redisClientPool, this.ngZone, this.tree.treeModel, this.idProvider, this.dialog, this.keyChangesEmitter));
+
+    this.ngZone.runOutsideAngular( () => {
+      Observable.fromEvent(this.inputElRef.nativeElement, 'keyup')
+        .debounceTime(1000)
+        .subscribe(keyboardEvent => {
+          this.search();
+        });
+    });
+
   }
 
   public openExternal(url: string) {

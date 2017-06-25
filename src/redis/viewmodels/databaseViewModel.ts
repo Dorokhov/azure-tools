@@ -41,24 +41,43 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
     }
 
     public async search(searchPattern: string) {
-        let keys = await this.redis.searchKeysAsync(this.model.number, searchPattern);
-        console.log(`search: search by '${searchPattern}' pattern found ${keys.length} keys`);
-        this.displayKeys(keys);
+        if (this.children.length === 0) {
+            // TODO: Maybe scan redis server?
+            //  let keys = await this.redis.searchKeysAsync(this.model.number, searchPattern);
+            // console.log(`search: search by '${searchPattern}' pattern found ${keys.length} keys`);
+
+            // this.displayKeys(keys);
+        }
+        else {
+
+            this.getNode().treeModel.filterNodes((node) => {
+                return node.data.name.toLowerCase().indexOf(searchPattern.toLowerCase()) != -1;
+            });
+        }
     }
 
     public async reloadChildren() {
         console.log('database: reload children');
-        let keys = await this.setBusy(this.redis.keysAsync(this.model.number));
+        let tuple = await this.setBusy(this.redis.keysAsync(this.model.number));
+        let keys = <string[]>tuple[1];
         this.displayKeys(keys);
+        // this.displayKeysFlat(keys);
         this.update();
     }
 
     public async displaySubItems(node: any) {
         if (this.children.length == 0) {
             console.log('database: no children, so loading from the server');
-            let keys = await this.setBusy(this.redis.keysAsync(this.model.number));
+            let tuple = await this.setBusy(this.redis.keysAsync(this.model.number));
+            let keys = <string[]>tuple[1];
+            console.log(keys);
+            console.log(`database display ${keys.length} keys started`);
+            console.log(keys);
+
             this.displayKeys(keys);
+            //this.displayKeysFlat(keys);
             this.ngZone.run(() => { node.treeModel.update(); });
+            console.log('database display keys ended');
         }
         else {
             this.expand();
@@ -75,7 +94,7 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
         if (keyVm.folderVm !== null) {
             keyVm.folderVm.removeKey(keyVm);
         }
-        
+
         this.update();
     }
 
@@ -83,10 +102,28 @@ export class DatabaseViewModel extends ExpandableViewModelGeneric<RedisDatabase>
         this.ngZone.run(() => { this.getNode().treeModel.update(); });
     }
 
-    private async displayKeys(keys: string[]) {
+    private async displayKeysFlat(keys: string[]) {
         console.log(`number of keys to display in db '${this.model.number}' equals ${_.isNil(keys) ? 0 : keys.length}`);
         this.children.length = 0;
 
+        console.log('display keys flat: grouping by folders started');
+        this.children = _(keys)
+            .map(x => new RedisKeyViewModel(this.treeModel, this.redis, x, this, null, this.dialog, this.keyChangesEmitter, this.idProvider))
+            .value();
+        console.log('display keys flat: grouping by folders ended');
+
+        if (this.isExpanded === true) {
+            this.collapse();
+        }
+
+        this.isExpanded = true;
+        this.expand();
+    }
+
+    private async displayKeys(keys: string[]) {
+        console.log(`number of keys to display in db '${this.model.number}' equals ${_.isNil(keys) ? 0 : keys.length}`);
+        this.children.length = 0;
+        keys = _(keys).sortBy().toArray().value();
         console.log('display keys: grouping by folders started');
         this.children = this.splitSubItems('', keys);
         console.log('display keys: grouping by folders ended');
