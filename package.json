@@ -2,7 +2,7 @@
   "name": "electron-boilerplate",
   "productName": "Azure Tools",
   "description": "Starter for your Electron application",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Vladimir Dorokhov<dorokhov.vladimir@gmail.com>",
   "copyright": "© 2017, Vladimir Dorokhov",
   "homepage": "http://azure-tools.com",
